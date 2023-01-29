@@ -1,6 +1,6 @@
 # LoMap Es3C
 
-[![Actions Status](https://github.com/arquisoft/lomap_es3c/workflows/CI%20for%20LOMAP_ES3C/badge.svg)](https://github.com/arquisoft/lomap_es3c/actions)
+[![CI for LOMAP ES3C](https://github.com/Arquisoft/lomap_es3c/actions/workflows/lomap_es3c.yml/badge.svg)](https://github.com/Arquisoft/lomap_es3c/actions/workflows/lomap_es3c.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es3c&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es3c)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es3c&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es3c)
 
