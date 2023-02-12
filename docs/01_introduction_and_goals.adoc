@@ -11,11 +11,18 @@ Describes the relevant requirements and the driving forces that software archite
 ****
 
 === Requirements Overview
-
+* Permitir añadir lugares en categorías diferentes.
+* Se mostrarán lugares en una ventana tipo mapa.
+* A los lugares añadidos se les puede asociar información extra.
+* Se podrán gestionar los accesos a la información que comparten con otros usuarios.
+* La información sobre los lugares se almacenará en el pod de cada usuario.
+* Los usuarios podrán ver lugares e información aportada por sus amigos.
+* Se podrán incorporar filtros a los mapas.
+Documento extendido: https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements
 [role="arc42help"]
 ****
 .Contents
-Short description of the functional requirements, driving forces, extract (or abstract)
+Shortsdasdas description of the functional requirements, driving forces, extract (or abstract)
 of requirements. Link to (hopefully existing) requirements documents
 (with version number and information where to find it).
 
@@ -32,6 +39,13 @@ Keep these excerpts as short as possible. Balance readability of this document w
 
 === Quality Goals
 
+[options="header",cols="1,2,2"]
+|===
+|Objetivo de calidad|Descripción|Prioridad
+| Interoperabilidad | Los datos deben ser operables entre distintas aplicaciones similares| MEDIUM HIGH
+| Disponibilidad | El sistema debe ser capaz de reaccionar a caídas del sistema | HIGH HIGH
+| Seguridad | El sistema debe estar actualizado periódicamente| HIGH MEDIUM
+|===
 [role="arc42help"]
 ****
 .Contents
@@ -46,7 +60,15 @@ A table with quality goals and concrete scenarios, ordered by priorities
 ****
 
 === Stakeholders
-
+[options="header",cols="1,2,2"]
+|===
+|Rol/Nombre|Contacto|Expectativas
+| HappySw | https://www.linkedin.com/redir/redirect?url=http%3A%2F%2Fwww%2Ehappysoftware%2Ecom&urlhash=p128&trk=about_website| Desarrollo fluido con el objetivo de cumplir los objetivos de calidad
+| Ayuntamiento de la ciudad de Bruselas| https://www.brussels.be/city-hall | Aplicación para que los ciudadanos puedan disponer de mapas personalizados sobre lugares y negocios locales de la ciudad.
+| Usuarios| | Poder crear mapas personalizados sobre los lugares en los que esté interesado. 
+| Negocios| | Permitir crear sus propios espacios como una versión digital de su lugar físico.
+|===
+Ayuntamiento de la ciudad de Bruselas
 [role="arc42help"]
 ****
 .Contents
@@ -70,6 +92,6 @@ Table with role names, person names, and their expectations with respect to the 
 [options="header",cols="1,2,2"]
 |===
 |Role/Name|Contact|Expectations
-| _<Role-1>_ | _<Contact-1>_ | _<Expectation-1>_
+| _<Rol-1>_ | _<Contact-1>_ | _<Expectation-1>_
 | _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
 |===
