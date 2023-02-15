@@ -442,14 +442,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#section-introduction-and-goals">1. Introduction and Goals</a>
+<li><a href="#section-introduction-and-goals">1. Introducción y objetivos</a>
 <ul class="sectlevel2">
-<li><a href="#_requirements_overview">1.1. Requirements Overview</a></li>
-<li><a href="#_quality_goals">1.2. Quality Goals</a></li>
+<li><a href="#_descripción_general_de_los_requisitos">1.1. Descripción general de los requisitos</a></li>
+<li><a href="#_objetivos_de_calidad">1.2. Objetivos de calidad</a></li>
 <li><a href="#_stakeholders">1.3. Stakeholders</a></li>
 </ul>
 </li>
-<li><a href="#section-architecture-constraints">2. Architecture Constraints</a></li>
+<li><a href="#section-architecture-constraints">2. Restricciones de la arquitectura</a>
+<ul class="sectlevel2">
+<li><a href="#_restricciones_técnicas">2.1. Restricciones técnicas</a></li>
+<li><a href="#_restricciones_de_organización">2.2. Restricciones de organización</a></li>
+<li><a href="#_convenciones">2.3. Convenciones</a></li>
+</ul>
+</li>
 <li><a href="#section-system-scope-and-context">3. System Scope and Context</a>
 <ul class="sectlevel2">
 <li><a href="#_business_context">3.1. Business Context</a></li>
@@ -534,7 +540,7 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-introduction-and-goals">1. Introduction and Goals</h2>
+<h2 id="section-introduction-and-goals">1. Introducción y objetivos</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -557,7 +563,7 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </div>
 </div>
 <div class="sect2">
-<h3 id="_requirements_overview">1.1. Requirements Overview</h3>
+<h3 id="_descripción_general_de_los_requisitos">1.1. Descripción general de los requisitos</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -579,8 +585,10 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <p>Los usuarios podrán ver lugares e información aportada por sus amigos.</p>
 </li>
 <li>
-<p>Se podrán incorporar filtros a los mapas.
-Documento extendido: <a href="https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements" class="bare">https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements</a></p>
+<p>Se podrán incorporar filtros a los mapas.</p>
+</li>
+<li>
+<p><a href="https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements" class="bare">https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements</a></p>
 </li>
 </ul>
 </div>
@@ -609,7 +617,7 @@ If requirements documents exist this overview should refer to these documents.</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_quality_goals">1.2. Quality Goals</h3>
+<h3 id="_objetivos_de_calidad">1.2. Objetivos de calidad</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 20%;">
@@ -697,9 +705,6 @@ If you as an architect do not know how the quality of your work will be judged �
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>Ayuntamiento de la ciudad de Bruselas</p>
-</div>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -737,39 +742,115 @@ These stakeholders determine the extent and the level of detail of your work and
 </div>
 </div>
 </div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 20%;">
-<col style="width: 40%;">
-<col style="width: 40%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Role/Name</th>
-<th class="tableblock halign-left valign-top">Contact</th>
-<th class="tableblock halign-left valign-top">Expectations</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Rol-1&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Contact-1&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Expectation-1&gt;</em></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Role-2&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Contact-2&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;Expectation-2&gt;</em></p></td>
-</tr>
-</tbody>
-</table>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-architecture-constraints">2. Architecture Constraints</h2>
+<h2 id="section-architecture-constraints">2. Restricciones de la arquitectura</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_restricciones_técnicas">2.1. Restricciones técnicas</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Restricción</th>
+<th class="tableblock halign-left valign-top">Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">React</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Librería Javascript para crear interfaces de usuario, caracterizado por su facilidad de uso.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Typescript</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lenguaje de programación que añade funcionalidad a Javascript y permite fácilmente la escalabilidad del código. Lo utilizaremos para implementar la lógica de negocio.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Solid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Solid es una especificación que permite a los usuarios almacenar sus datos de una forma segura en Pods, que son unos almacenes de datos descentralizados en los que los usuarios pueden controlar que aplicaciones o usuarios pueden acceder a él.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación será desplegada en contenedores Docker.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">GitHub</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se utilizará Git como sistema de control de versiones, además el repositorio del proyeto será alojado en Github. Esto es un requisito.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Nodejs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se utilizará Nodejs como entorno de ejecución.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_restricciones_de_organización">2.2. Restricciones de organización</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Restricción</th>
+<th class="tableblock halign-left valign-top">Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planificación</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe cumplir los requisitos y objetivos propuestos en un tiempo aproximado de 3 meses, realizando entregas parciales cuando se solicite.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Equipo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El equipo está formado por 4 personas cuya experiencia con las tecnologías mencionadas anteriormente es muy limitada.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Reuniones</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Ya que tenemos el mismo horario todas las semanas, nos reuniremos en clase para tomar decisiones sobre cualquier aspecto necesario pudiendo también realizar más reuniones si es imprescindible.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="_convenciones">2.3. Convenciones</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Restricción</th>
+<th class="tableblock halign-left valign-top">Explicación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Documentación</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Usaremos la plantilla Arc42 para el desarrollo de la documentación.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Protección de datos</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Debemos realizar un trato cuidadoso con los datos sensibles de los usuarios.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Solid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación debe seguir las convenciones Solid.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Convenciones de nombrado</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">La aplicación debe seguir las convenciones de nombrado de las múltiples tecnologías.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -791,6 +872,7 @@ conventions (e.g. programming or versioning guidelines, documentation or naming 
 </div>
 </div>
 <div style="page-break-after: always;"></div>
+</div>
 </div>
 </div>
 <div class="sect1">
