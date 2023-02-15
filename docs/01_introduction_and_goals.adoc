@@ -19,10 +19,11 @@ Describes the relevant requirements and the driving forces that software archite
 * Los usuarios podrán ver lugares e información aportada por sus amigos.
 * Se podrán incorporar filtros a los mapas.
 * https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements
+
 [role="arc42help"]
 ****
 .Contents
-Shortsdasdas description of the functional requirements, driving forces, extract (or abstract)
+Short description of the functional requirements, driving forces, extract (or abstract)
 of requirements. Link to (hopefully existing) requirements documents
 (with version number and information where to find it).
 
