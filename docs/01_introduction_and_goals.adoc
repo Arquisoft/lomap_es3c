@@ -1,5 +1,5 @@
 [[section-introduction-and-goals]]
-== Introduction and Goals
+== Introducción y objetivos
 
 [role="arc42help"]
 ****
@@ -10,7 +10,7 @@ Describes the relevant requirements and the driving forces that software archite
 * relevant stakeholders and their expectations
 ****
 
-=== Requirements Overview
+=== Descripción general de los requisitos
 * Permitir añadir lugares en categorías diferentes.
 * Se mostrarán lugares en una ventana tipo mapa.
 * A los lugares añadidos se les puede asociar información extra.
@@ -18,7 +18,7 @@ Describes the relevant requirements and the driving forces that software archite
 * La información sobre los lugares se almacenará en el pod de cada usuario.
 * Los usuarios podrán ver lugares e información aportada por sus amigos.
 * Se podrán incorporar filtros a los mapas.
-Documento extendido: https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements
+* https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements
 [role="arc42help"]
 ****
 .Contents
@@ -37,7 +37,7 @@ If requirements documents exist this overview should refer to these documents.
 Keep these excerpts as short as possible. Balance readability of this document with potential redundancy w.r.t to requirements documents.
 ****
 
-=== Quality Goals
+=== Objetivos de calidad
 
 [options="header",cols="1,2,2"]
 |===
@@ -68,7 +68,6 @@ A table with quality goals and concrete scenarios, ordered by priorities
 | Usuarios| | Poder crear mapas personalizados sobre los lugares en los que esté interesado. 
 | Negocios| | Permitir crear sus propios espacios como una versión digital de su lugar físico.
 |===
-Ayuntamiento de la ciudad de Bruselas
 [role="arc42help"]
 ****
 .Contents
@@ -88,10 +87,3 @@ These stakeholders determine the extent and the level of detail of your work and
 .Form
 Table with role names, person names, and their expectations with respect to the architecture and its documentation.
 ****
-
-[options="header",cols="1,2,2"]
-|===
-|Role/Name|Contact|Expectations
-| _<Rol-1>_ | _<Contact-1>_ | _<Expectation-1>_
-| _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
-|===
