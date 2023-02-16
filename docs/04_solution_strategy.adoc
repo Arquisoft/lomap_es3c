@@ -1,6 +1,23 @@
 [[section-solution-strategy]]
-== Solution Strategy
+== Estrategia de solución
+=== Decisiones tecnológicas
+* React: Librería Javascript para crear interfaces de usuario, caracterizado por su facilidad de uso.
+* Node.js: Entorno de ejecución para desarrollar aplicaciones del lado del servidor. Facilita el uso de eventos.
+* SOLID: Especificación que permite almacenar datos de forma descentralizada.
+* TypeScript: Lenguaje de programación que añade funcionalidad a Javascript y permite fácilmente la escalabilidad del código, además de detección de errores más rápidamente.
+* Git: Sistema de control de versiones.
+* GitHub: Plataforma para Git.
+* Docker: Lo utilizaremos para desplegar las aplicaciones con todas las dependencias de nuestro proyecto.
+* Jest: Framework de pruebas JavaScript simple y rápido.
+* Maps API
+* MongoDB: Sistema de base de datos NoSQL orientado a documentos. 
+* Bootstrap: Librería de código abierto para el diseño de aplicaciones, permitiendo un diseño web adaptable sin dificultad.
 
+=== Enfoques para alcanzar objetivos de calidad
+Para alcanzar los objetivos de calidad trataremos de aplicar un conjunto de herramientas y decisiones que puedan hacer que los datos sean interoperables. Aplicando los Pods conseguimos que la información esté descentralizada, por lo que mejora la seguridad al no tener datos sensibles de los usuarios.
+
+=== Decisiones organizativas relevantes
+Cada semana realizaremos una reunión presencial en clase, pudiendo también realizar reuniones por la plataforma Microsoft Teams. Para establecer las tareas que hace cada uno utilizaremos GitHub Projects y para el tratamiento de errores utilizaremos las Issues.
 
 [role="arc42help"]
 ****
