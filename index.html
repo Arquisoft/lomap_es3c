@@ -501,7 +501,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#section-quality-scenarios">10. Requisitos de calidad</a>
 <ul class="sectlevel2">
 <li><a href="#_árbol_de_calidad">10.1. Árbol de calidad</a></li>
-<li><a href="#_quality_scenarios">10.2. Quality Scenarios</a></li>
+<li><a href="#_escenario_de_calidad">10.2. Escenario de calidad</a></li>
 </ul>
 </li>
 <li><a href="#section-technical-risks">11. Risks and Technical Debts</a></li>
@@ -1924,7 +1924,7 @@ concrete and measurable.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_quality_scenarios">10.2. Quality Scenarios</h3>
+<h3 id="_escenario_de_calidad">10.2. Escenario de calidad</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1963,6 +1963,48 @@ more precisely down to a level of scenarios that can be discussed and evaluated.
 </div>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 50%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6668%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Objetivo de calidad</th>
+<th class="tableblock halign-left valign-top">Escenario</th>
+<th class="tableblock halign-left valign-top">Prioridad para el usuario</th>
+<th class="tableblock halign-left valign-top">Prioridad para el desarrollador</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Interoperabilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los usuarios pueden tener dispositivos muy variados, con SO diversos, herramientas concretas, etc. Si se elabora un sistema orientado a un único tipo de dispositivo, se cierra una enorme puerta a una cantidad masiva de usuarios. La interoperabilidad hace referencia a la posibilidad de desplegar y trabajar con un sistema desde diversos tipos de terminales, con características distintas, pudiendo ofrecer un servicio unificado y de igual calidad, independientemente del dispositivo.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disponibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Un sistema cuyo servicio está caído la mayor parte del tiempo es un servicio inútil. La disponibilidad hace referencia a la capacidad del sistema para ofrecer un servicio de manera ininterrumpida, pudiendo responder ante situaciones que comprometan su funcionamiento de manera adecuada y recuperarse de la forma más rápida, segura y eficiente posible.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MEDIUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MEDIUM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Seguridad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Todo sistema está expuesto a una serie de riesgos, tanto a nivel físico (hardware) como a nivel de software. Aplicar unas correctas contramedidas para asegurar el perímetro de los elementos influyentes, evitando así propagación de virus, extracción de información, etc&#8230;&#8203; resulta fundamental. Además, el almacenamiento de información descentralizadamente es una buena práctica para preservar la privacidad del usuario.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Escalabilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A medida que un sistema va creciendo, existe la posibilidad de que haya un impacto en el rendimiento. La mayor cantidad de datos a manejar y el incremento del tráfico en el sistema, puede ralentizar y deteriorar la experiencia de usuario, pudiendo llegar a convertir la aplicación en una pieza de software inútil e ineficiente. La escalabilidad describe la forma que tiene de reaccionar el sistema ante la evolución y el crecimiento de sí mismo.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MEDIUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH</p></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
