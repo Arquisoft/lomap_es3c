@@ -478,10 +478,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-runtime-view">6. Runtime View</a>
 <ul class="sectlevel2">
-<li><a href="#_runtime_scenario_1">6.1. &lt;Runtime Scenario 1&gt;</a></li>
-<li><a href="#_runtime_scenario_2">6.2. &lt;Runtime Scenario 2&gt;</a></li>
-<li><a href="#">6.3. &#8230;&#8203;</a></li>
-<li><a href="#_runtime_scenario_n">6.4. &lt;Runtime Scenario n&gt;</a></li>
+<li><a href="#_registro_de_usuarios">6.1. Registro de usuarios</a></li>
+<li><a href="#_inicio_de_sesión_en_base_de_datos">6.2. Inicio de sesión en base de datos</a></li>
+<li><a href="#_añadir_lugar_en_mapa">6.3. Añadir lugar en mapa</a></li>
+<li><a href="#_compartir_lugar">6.4. Compartir lugar</a></li>
+<li><a href="#_añadir_información_a_lugar">6.5. Añadir información a lugar</a></li>
+<li><a href="#_visualizar_lugares">6.6. Visualizar lugares</a></li>
+<li><a href="#_añadir_amigo">6.7. Añadir amigo</a></li>
+<li><a href="#_listar_lugares_de_amigos">6.8. Listar lugares de amigos</a></li>
+<li><a href="#_filtrar_lugares">6.9. Filtrar lugares</a></li>
 </ul>
 </li>
 <li><a href="#section-deployment-view">7. Deployment View</a>
@@ -1525,37 +1530,163 @@ You will mainly capture scenarios in your documentation to communicate your arch
 </div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_scenario_1">6.1. &lt;Runtime Scenario 1&gt;</h3>
-<div class="ulist">
-<ul>
-<li>
-<p><em>&lt;insert runtime diagram or textual description of the scenario&gt;</em></p>
-</li>
-<li>
-<p><em>&lt;insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.&gt;</em></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>It is possible to use a sequence diagram:</p>
-</div>
+<h3 id="_registro_de_usuarios">6.1. Registro de usuarios</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="332" height="335">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="740" height="596">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_scenario_2">6.2. &lt;Runtime Scenario 2&gt;</h3>
-
+<h3 id="_inicio_de_sesión_en_base_de_datos">6.2. Inicio de sesión en base de datos</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Solicita inicio de sesión
+boundary API_REST
+database MongoDB as "MongoDB"
+LoMap-&gt; Usuario: Envía ventana de inicio de sesión
+Usuario -&gt; LoMap: Introduce información de inicio de sesión
+LoMap -&gt; API_REST: Envía información de inicio de sesión
+API_REST -&gt; MongoDB: Busca información
+MongoDB -&gt; API_REST: Envía información
+API_REST -&gt; API_REST: Comprueba información
+alt Información de inicio correcta
+API_REST -&gt; LoMap: Notifica sobre inicio correcto
+LoMap-&gt; Usuario: Muestra resultado de inicio de sesión
+else Información de inicio incorrecta
+API_REST -&gt; LoMap: Notifica sobre inicio de sesión incorrecto
+LoMap-&gt; Usuario: Notifica sobre inicio de sesión incorrecto
+end</pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="">6.3. &#8230;&#8203;</h3>
-
+<h3 id="_añadir_lugar_en_mapa">6.3. Añadir lugar en mapa</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Selecciona un lugar en el mapa
+Usuario -&gt; LoMap: Añade lugar en el mapa
+boundary API_REST
+database Pod as "Pods"
+LoMap-&gt; Usuario: Envía ventana de creación de un lugar
+Usuario-&gt; LoMap: Añade información al lugar
+LoMap-&gt; API_REST: Envía información sobre el lugar
+API_REST-&gt; Pod: Añade lugar
+Pod -&gt; API_REST: Confirma operación
+API_REST-&gt; LoMap: Confirma operación
+LoMap-&gt; Usuario: Muestra nuevo lugar en el mapa</pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_scenario_n">6.4. &lt;Runtime Scenario n&gt;</h3>
+<h3 id="_compartir_lugar">6.4. Compartir lugar</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Selecciona un lugar (ya añadido)
+Usuario -&gt; LoMap: Compartir lugar con amigos
+boundary API_REST
+database Pod as "Pods"
+LoMap-&gt; API_REST: Envía información sobre el lugar
+API_REST-&gt; Pod : Añade lugar
+Pod -&gt; API_REST: Confirma operación
+API_REST-&gt; LoMap: Confirma operación
+LoMap-&gt; Usuario: Muestra nuevo lugar en los lugares compartidos</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_añadir_información_a_lugar">6.5. Añadir información a lugar</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Selecciona un lugar (ya añadido)
+Usuario -&gt; LoMap: Añadir información al lugar
+boundary API_REST
+database Pod as "Pods"
+LoMap-&gt; API_REST: Envía información adicional sobre el lugar
+API_REST-&gt; Pod: Actualiza información sobre el lugar
+Pod-&gt; API_REST: Confirma operación
+API_REST-&gt; LoMap: Confirma operación
+LoMap-&gt; Usuario: Muestra lugar con información actualizada</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_visualizar_lugares">6.6. Visualizar lugares</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Solicita ver los lugares
+boundary API_REST
+database Pod as "Pods"
+LoMap-&gt; API_REST: Envía solicitud ver lugares
+API_REST-&gt; Pod: Solicita los lugares del usuario
+Pod-&gt; API_REST: Envía lugares
+API_REST-&gt; LoMap: Envía lugares
+LoMap-&gt; Usuario: Muestra lugares</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_añadir_amigo">6.7. Añadir amigo</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario1
+actor Usuario2
+Usuario2 -&gt; Usuario1: Envía identificador de amigo
+Usuario1-&gt;LoMap: Añadir amigo
+boundary API_REST
+LoMap-&gt; API_REST: Envía solicitud
+database Pod as "Pods"
+API_REST-&gt; Pod: Añade un amigo
+Pod-&gt; API_REST: Confirma operación
+API_REST-&gt; LoMap: Confirma operación
+LoMap-&gt; Usuario1: Muestra lista de amigos</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_listar_lugares_de_amigos">6.8. Listar lugares de amigos</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Solicitar ver los lugares de amigos
+boundary API_REST
+database Pod as "Pods"
+LoMap-&gt; API_REST: Enviar solicitud ver lugares
+API_REST-&gt; Pod: Solicitar los lugares compartidos por amigos
+Pod-&gt; API_REST: Devolver lugares de amigos
+API_REST-&gt; LoMap: Enviar lugares
+LoMap-&gt; Usuario: Mostrar lugares de amigos</pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_filtrar_lugares">6.9. Filtrar lugares</h3>
+<div class="listingblock">
+<div class="content">
+<pre>actor Usuario
+Usuario -&gt; LoMap: Filtrar lugares
+LoMap-&gt; Usuario: Envía ventana de filtros
+Usuario -&gt; LoMap: Introduce filtros
+boundary API_REST
+database Pod as "Pods"
+LoMap-&gt; API_REST: Enviar solicitud filtrada
+API_REST-&gt; API_REST: Comprobar validez de filtros
+alt Filtros correctos
+API_REST-&gt; Pod: Solicitar los lugares filtrados
+Pod-&gt; API_REST: Devolver lugares filtrados
+API_REST-&gt; LoMap: Enviar lugares
+LoMap-&gt; Usuario: Mostrar lugares
+else Filtros incorrectos
+API_REST -&gt; LoMap: Notifica sobre filtrado incorrecto
+LoMap-&gt; Usuario: Reinicia ventana de filtros
+end</pre>
+</div>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -2209,7 +2340,7 @@ Created by Dr. Peter Hruschka &amp; Dr. Gernot Starke.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-17 15:47:55 +0100
+Last updated 2023-02-17 18:10:52 +0100
 </div>
 </div>
 </body>
