@@ -1542,6 +1542,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Solicita inicio de sesión
 entity API_REST
 database MongoDB as "MongoDB"
@@ -1566,6 +1567,7 @@ end</pre>
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Selecciona un lugar en el mapa
 Usuario -&gt; LoMap: Añade lugar en el mapa
 entity API_REST
@@ -1585,6 +1587,7 @@ LoMap-&gt; Usuario: Muestra nuevo lugar en el mapa</pre>
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Selecciona un lugar (ya añadido)
 Usuario -&gt; LoMap: Compartir lugar con amigos
 entity API_REST
@@ -1602,6 +1605,7 @@ LoMap-&gt; Usuario: Muestra nuevo lugar en los lugares compartidos</pre>
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Selecciona un lugar (ya añadido)
 Usuario -&gt; LoMap: Añadir información al lugar
 entity API_REST
@@ -1619,6 +1623,7 @@ LoMap-&gt; Usuario: Muestra lugar con información actualizada</pre>
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Solicita ver los lugares
 entity API_REST
 database Pod as "Pods"
@@ -1637,6 +1642,7 @@ LoMap-&gt; Usuario: Muestra lugares</pre>
 <pre>actor Usuario1
 actor Usuario2
 Usuario2 -&gt; Usuario1: Envía identificador de amigo
+entity LoMap
 Usuario1-&gt;LoMap: Añadir amigo
 entity API_REST
 LoMap-&gt; API_REST: Envía solicitud
@@ -1653,6 +1659,7 @@ LoMap-&gt; Usuario1: Muestra lista de amigos</pre>
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Solicitar ver los lugares de amigos
 entity API_REST
 database Pod as "Pods"
@@ -1669,6 +1676,7 @@ LoMap-&gt; Usuario: Mostrar lugares de amigos</pre>
 <div class="listingblock">
 <div class="content">
 <pre>actor Usuario
+entity LoMap
 Usuario -&gt; LoMap: Filtrar lugares
 LoMap-&gt; Usuario: Envía ventana de filtros
 Usuario -&gt; LoMap: Introduce filtros
