@@ -456,10 +456,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_convenciones">2.3. Convenciones</a></li>
 </ul>
 </li>
-<li><a href="#section-system-scope-and-context">3. ALcance y contexto del sistema</a>
+<li><a href="#section-system-scope-and-context">3. Alcance y contexto del sistema</a>
 <ul class="sectlevel2">
 <li><a href="#_contexto_de_negocio">3.1. Contexto de negocio</a></li>
-<li><a href="#_technical_context">3.2. Technical Context</a></li>
+<li><a href="#_contexto_técnico">3.2. Contexto técnico</a></li>
 </ul>
 </li>
 <li><a href="#section-solution-strategy">4. Estrategia de solución</a>
@@ -884,7 +884,7 @@ conventions (e.g. programming or versioning guidelines, documentation or naming 
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-system-scope-and-context">3. ALcance y contexto del sistema</h2>
+<h2 id="section-system-scope-and-context">3. Alcance y contexto del sistema</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -985,7 +985,7 @@ The title of the table is the name of your system, the three columns contain the
 </table>
 </div>
 <div class="sect2">
-<h3 id="_technical_context">3.2. Technical Context</h3>
+<h3 id="_contexto_técnico">3.2. Contexto técnico</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1003,15 +1003,44 @@ together with a mapping table showing the relationships between channels and inp
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p><strong>&lt;Diagram or Table&gt;</strong></p>
-</div>
-<div class="paragraph">
-<p><strong>&lt;optionally: Explanation of technical interfaces&gt;</strong></p>
-</div>
-<div class="paragraph">
-<p><strong>&lt;Mapping Input/Output to Channels&gt;</strong></p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Interfaces</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TypeScript</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lenguaje para implementar y desarrollar la aplicación</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">React</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Para componer la interfaz gráfica de usuario (Front-End)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sistema de persistencia de datos</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NodeJS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Entorno de ejecución de JavaScript</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOLID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Para almacenar datos de forma descentralizada</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Plataforma para elaborar y probar el sistema en funcionamiento</p></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
