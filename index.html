@@ -576,13 +576,13 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <p>Permitir añadir lugares en categorías diferentes.</p>
 </li>
 <li>
-<p>Se mostrarán lugares en una ventana tipo mapa.</p>
+<p>Se podrán mostrar lugares en una ventana tipo mapa.</p>
 </li>
 <li>
 <p>A los lugares añadidos se les puede asociar información extra.</p>
 </li>
 <li>
-<p>Se podrán gestionar los accesos a la información que comparten con otros usuarios.</p>
+<p>Se podrán gestionar los accesos a la información compartida por otros usuarios.</p>
 </li>
 <li>
 <p>La información sobre los lugares se almacenará en el pod de cada usuario.</p>
@@ -593,10 +593,10 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <li>
 <p>Se podrán incorporar filtros a los mapas.</p>
 </li>
-<li>
-<p><a href="https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements" class="bare">https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements</a></p>
-</li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Información más detallada: <a href="https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements" class="bare">https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements</a></p>
 </div>
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -634,24 +634,29 @@ If requirements documents exist this overview should refer to these documents.</
 <tr>
 <th class="tableblock halign-left valign-top">Objetivo de calidad</th>
 <th class="tableblock halign-left valign-top">Descripción</th>
-<th class="tableblock halign-left valign-top">Prioridad</th>
+<th class="tableblock halign-left valign-top">Prioridad (IMPORTANCIA, DIFICULTAD)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Interoperabilidad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Los datos deben ser operables entre distintas aplicaciones similares</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">MEDIUM HIGH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Los datos deben ser operables entre distintas aplicaciones similares - Compatibilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH, MEDIUM</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Disponibilidad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe ser capaz de reaccionar a caídas del sistema</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH HIGH</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe ser capaz de reaccionar a caídas del sistema y ofrecer el servicio adecuadamente el máximo tiempo posible</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MEDIUM, HIGH</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Seguridad</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe estar actualizado periódicamente</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH MEDIUM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe ser revisado y actualizado periódicamente, y aplicar las medidas de seguridad pertinentes de forma correcta - Privacidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH, MEDIUM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Escalabilidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">El sistema debe reaccionar y no decrementar su rendimiento ante un crecimiento exponencial de usuarios y datos</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">HIGH, HIGH</p></td>
 </tr>
 </tbody>
 </table>
@@ -691,23 +696,23 @@ If you as an architect do not know how the quality of your work will be judged �
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">HappySw</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.linkedin.com/redir/redirect?url=http%3A%2F%2Fwww%2Ehappysoftware%2Ecom&amp;urlhash=p128&amp;trk=about_website" class="bare">https://www.linkedin.com/redir/redirect?url=http%3A%2F%2Fwww%2Ehappysoftware%2Ecom&amp;urlhash=p128&amp;trk=about_website</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Desarrollo fluido con el objetivo de cumplir los objetivos de calidad</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.happysoftware.com/tc/index.php" class="bare">https://www.happysoftware.com/tc/index.php</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cumplimiento de los objetivos de calidad y obtención de un sistema óptimo</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Ayuntamiento de la ciudad de Bruselas</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://www.brussels.be/city-hall" class="bare">https://www.brussels.be/city-hall</a></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Aplicación para que los ciudadanos puedan disponer de mapas personalizados sobre lugares y negocios locales de la ciudad.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Entrega de una aplicación para que los ciudadanos puedan disponer de mapas personalizados sobre lugares y negocios</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Usuarios</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Poder crear mapas personalizados sobre los lugares en los que esté interesado.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Posibilidad de crear mapas personalizados sobre los lugares en los que estén interesados, e interaccionar con ellos</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Negocios</p></td>
 <td class="tableblock halign-left valign-top"></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Permitir crear sus propios espacios como una versión digital de su lugar físico.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permitir crear sus propios espacios como una versión digital de su lugar físico</p></td>
 </tr>
 </tbody>
 </table>
