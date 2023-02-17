@@ -1543,7 +1543,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <div class="content">
 <pre>actor Usuario
 Usuario -&gt; LoMap: Solicita inicio de sesión
-boundary API_REST
+entity API_REST
 database MongoDB as "MongoDB"
 LoMap-&gt; Usuario: Envía ventana de inicio de sesión
 Usuario -&gt; LoMap: Introduce información de inicio de sesión
@@ -1568,7 +1568,7 @@ end</pre>
 <pre>actor Usuario
 Usuario -&gt; LoMap: Selecciona un lugar en el mapa
 Usuario -&gt; LoMap: Añade lugar en el mapa
-boundary API_REST
+entity API_REST
 database Pod as "Pods"
 LoMap-&gt; Usuario: Envía ventana de creación de un lugar
 Usuario-&gt; LoMap: Añade información al lugar
@@ -1587,7 +1587,7 @@ LoMap-&gt; Usuario: Muestra nuevo lugar en el mapa</pre>
 <pre>actor Usuario
 Usuario -&gt; LoMap: Selecciona un lugar (ya añadido)
 Usuario -&gt; LoMap: Compartir lugar con amigos
-boundary API_REST
+entity API_REST
 database Pod as "Pods"
 LoMap-&gt; API_REST: Envía información sobre el lugar
 API_REST-&gt; Pod : Añade lugar
@@ -1604,7 +1604,7 @@ LoMap-&gt; Usuario: Muestra nuevo lugar en los lugares compartidos</pre>
 <pre>actor Usuario
 Usuario -&gt; LoMap: Selecciona un lugar (ya añadido)
 Usuario -&gt; LoMap: Añadir información al lugar
-boundary API_REST
+entity API_REST
 database Pod as "Pods"
 LoMap-&gt; API_REST: Envía información adicional sobre el lugar
 API_REST-&gt; Pod: Actualiza información sobre el lugar
@@ -1620,7 +1620,7 @@ LoMap-&gt; Usuario: Muestra lugar con información actualizada</pre>
 <div class="content">
 <pre>actor Usuario
 Usuario -&gt; LoMap: Solicita ver los lugares
-boundary API_REST
+entity API_REST
 database Pod as "Pods"
 LoMap-&gt; API_REST: Envía solicitud ver lugares
 API_REST-&gt; Pod: Solicita los lugares del usuario
@@ -1638,7 +1638,7 @@ LoMap-&gt; Usuario: Muestra lugares</pre>
 actor Usuario2
 Usuario2 -&gt; Usuario1: Envía identificador de amigo
 Usuario1-&gt;LoMap: Añadir amigo
-boundary API_REST
+entity API_REST
 LoMap-&gt; API_REST: Envía solicitud
 database Pod as "Pods"
 API_REST-&gt; Pod: Añade un amigo
@@ -1654,7 +1654,7 @@ LoMap-&gt; Usuario1: Muestra lista de amigos</pre>
 <div class="content">
 <pre>actor Usuario
 Usuario -&gt; LoMap: Solicitar ver los lugares de amigos
-boundary API_REST
+entity API_REST
 database Pod as "Pods"
 LoMap-&gt; API_REST: Enviar solicitud ver lugares
 API_REST-&gt; Pod: Solicitar los lugares compartidos por amigos
@@ -1672,7 +1672,7 @@ LoMap-&gt; Usuario: Mostrar lugares de amigos</pre>
 Usuario -&gt; LoMap: Filtrar lugares
 LoMap-&gt; Usuario: Envía ventana de filtros
 Usuario -&gt; LoMap: Introduce filtros
-boundary API_REST
+entity API_REST
 database Pod as "Pods"
 LoMap-&gt; API_REST: Enviar solicitud filtrada
 API_REST-&gt; API_REST: Comprobar validez de filtros
