@@ -1,5 +1,5 @@
 [[section-system-scope-and-context]]
-== System Scope and Context
+== Alcance y contexto del sistema
 
 
 [role="arc42help"]
@@ -21,7 +21,7 @@ Various options:
 ****
 
 
-=== Business Context
+=== Contexto de negocio
 
 [role="arc42help"]
 ****
@@ -39,11 +39,21 @@ Alternatively (or additionally) you can use a table.
 The title of the table is the name of your system, the three columns contain the name of the communication partner, the inputs, and the outputs.
 ****
 
-**<Diagram or Table>**
+:imagesdir: images/
+image::esquemaAp3.png[]
 
-**<optionally: Explanation of external domain interfaces>**
+Socios de comunicación detallados:
 
-=== Technical Context
+[options="header",cols="1,2,2"]
+|===
+|Elemento|Entradas|Salidas
+| Usuario | Órdenes a través de la interfaz de usuario | La ejecución asociada a la orden recibida, y su materialización en la interfaz
+| LOMAP System | Recibe peticiones del usuario y datos del POD del usuario y de la BD | Solicita información a los PODs y a la BD, y genera respuestas al usuario
+| MongoDB | Recibe datos para almacenarlos y recibe solicitudes de recuperación de los mismos | Genera una respuesta con los datos pedidos por el sistema
+| PODs | Almacena información asociada a un usuario determinado, y se va actualizando | Facilita información al sistema y trabaja con información del usuario
+|===
+
+=== Contexto técnico
 
 [role="arc42help"]
 ****
@@ -59,8 +69,13 @@ together with a mapping table showing the relationships between channels and inp
 
 ****
 
-**<Diagram or Table>**
-
-**<optionally: Explanation of technical interfaces>**
-
-**<Mapping Input/Output to Channels>**
+[options="header",cols="1,2"]
+|===
+|Interfaces|Descripción
+| TypeScript | Lenguaje para implementar y desarrollar la aplicación
+| React | Para componer la interfaz gráfica de usuario (Front-End)
+| MongoDB | Sistema de persistencia de datos
+| NodeJS | Entorno de ejecución de JavaScript
+| SOLID | Para almacenar datos de forma descentralizada
+| Docker | Plataforma para elaborar y probar el sistema en funcionamiento
+|===
