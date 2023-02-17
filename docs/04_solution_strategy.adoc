@@ -26,22 +26,24 @@ Refer to details in the following sections.
 [options="header",cols="1,2"]
 |===
 |Decisión|Explicación
-|React| Librería Javascript para crear interfaces de usuario, caracterizado por su facilidad de uso.
+|SOLID| Especificación que permite almacenar datos de forma descentralizada. De uso obligatorio.
+|Git| Sistema de control de versiones. De uso obligatorio.
+|GitHub| Plataforma para Git. De uso obligatorio.
+|React| Librería de Javascript para crear interfaces de usuario, caracterizado por su facilidad de uso. Muy popular en estos menesteres.
 |Node.js| Entorno de ejecución para desarrollar aplicaciones del lado del servidor. Facilita el uso de eventos.
-|SOLID| Especificación que permite almacenar datos de forma descentralizada.
-|TypeScript| Lenguaje de programación que añade funcionalidad a Javascript y permite fácilmente la escalabilidad del código, además de detección de errores más rápidamente.
-|Git|Sistema de control de versiones.
-| GitHub| Plataforma para Git.
-| Docker| Lo utilizaremos para desplegar las aplicaciones con todas las dependencias de nuestro proyecto.
-| Jest| Framework de pruebas JavaScript simple y rápido.
-| Maps API
-| MongoDB| Sistema de base de datos NoSQL orientado a documentos. 
-| Bootstrap| Librería de código abierto para el diseño de aplicaciones, permitiendo un diseño web adaptable sin dificultad.
+|TypeScript| Lenguaje de programación que añade funcionalidad a Javascript y permite fácilmente la escalabilidad del código, además de detección de errores más rápidamente. Enfocado en la lógica de negocio.
+|Docker| Orientado al despliegue de aplicaciones con todas las dependencias necesarias del proyecto.
+|Jest| Framework de pruebas JavaScript simple y rápido.
+|Maps API| Para la creación de mapas y el uso de funciones variadas relativas a ello. La API permite realizar un consumo del servicio web de manera fácil y cómoda.
+|MongoDB| Sistema de base de datos NoSQL orientado a documentos. 
+|Bootstrap| Librería de código abierto para el diseño de aplicaciones, permitiendo un diseño web adaptable sin dificultad.
 |===
 
 === Enfoques para alcanzar objetivos de calidad
-Para alcanzar los objetivos de calidad trataremos de aplicar un conjunto de herramientas y decisiones que puedan hacer que los datos sean interoperables. Aplicando los Pods conseguimos que la información esté descentralizada, por lo que mejora la seguridad al no tener datos sensibles de los usuarios.
+Para alcanzar los objetivos de calidad trataremos de aplicar un conjunto de herramientas y decisiones que puedan hacer que los datos sean interoperables. 
+Aplicando los Pods conseguimos que la información esté descentralizada, lo que desemboca en una considerable mejora de la seguridad al no tener datos sensibles 
+de los usuarios de forma centralizada.
 
 === Decisiones organizativas relevantes
-Cada semana realizaremos una reunión presencial en clase, pudiendo también realizar reuniones por la plataforma Microsoft Teams. Para establecer las tareas que hace cada uno utilizaremos GitHub Projects y para el tratamiento de errores utilizaremos las Issues.
-
+Cada semana realizaremos una reunión presencial (en el espacio reservado a la sesión de prácticas), pudiendo también realizar reuniones por la plataforma Microsoft Teams. 
+Para establecer las tareas que hace cada miembro, se utilizará GitHub Projects; y para el tratamiento de errores se utilizarán las Issues.

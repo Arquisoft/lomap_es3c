@@ -12,13 +12,14 @@ Describes the relevant requirements and the driving forces that software archite
 
 === Descripción general de los requisitos
 * Permitir añadir lugares en categorías diferentes.
-* Se mostrarán lugares en una ventana tipo mapa.
+* Se podrán mostrar lugares en una ventana tipo mapa.
 * A los lugares añadidos se les puede asociar información extra.
-* Se podrán gestionar los accesos a la información que comparten con otros usuarios.
+* Se podrán gestionar los accesos a la información compartida por otros usuarios.
 * La información sobre los lugares se almacenará en el pod de cada usuario.
 * Los usuarios podrán ver lugares e información aportada por sus amigos.
 * Se podrán incorporar filtros a los mapas.
-* https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements
+
+Información más detallada: https://arquisoft.github.io/course2223/labEnunciadoPractica.html#requirements
 
 [role="arc42help"]
 ****
@@ -42,10 +43,11 @@ Keep these excerpts as short as possible. Balance readability of this document w
 
 [options="header",cols="1,2,2"]
 |===
-|Objetivo de calidad|Descripción|Prioridad
-| Interoperabilidad | Los datos deben ser operables entre distintas aplicaciones similares| MEDIUM HIGH
-| Disponibilidad | El sistema debe ser capaz de reaccionar a caídas del sistema | HIGH HIGH
-| Seguridad | El sistema debe estar actualizado periódicamente| HIGH MEDIUM
+|Objetivo de calidad|Descripción|Prioridad (IMPORTANCIA, DIFICULTAD)
+| Interoperabilidad | Los datos deben ser operables entre distintas aplicaciones similares - Compatibilidad | HIGH, MEDIUM
+| Disponibilidad | El sistema debe ser capaz de reaccionar a caídas del sistema y ofrecer el servicio adecuadamente el máximo tiempo posible | MEDIUM, HIGH
+| Seguridad | El sistema debe ser revisado y actualizado periódicamente, y aplicar las medidas de seguridad pertinentes de forma correcta - Privacidad | HIGH, MEDIUM
+| Escalabilidad | El sistema debe reaccionar y no decrementar su rendimiento ante un crecimiento exponencial de usuarios y datos | HIGH, HIGH
 |===
 [role="arc42help"]
 ****
@@ -64,10 +66,11 @@ A table with quality goals and concrete scenarios, ordered by priorities
 [options="header",cols="1,1,2"]
 |===
 |Rol/Nombre|Contacto|Expectativas
-| HappySw | https://www.linkedin.com/redir/redirect?url=http%3A%2F%2Fwww%2Ehappysoftware%2Ecom&urlhash=p128&trk=about_website| Desarrollo fluido con el objetivo de cumplir los objetivos de calidad
-| Ayuntamiento de la ciudad de Bruselas| https://www.brussels.be/city-hall | Aplicación para que los ciudadanos puedan disponer de mapas personalizados sobre lugares y negocios locales de la ciudad.
-| Usuarios| | Poder crear mapas personalizados sobre los lugares en los que esté interesado. 
-| Negocios| | Permitir crear sus propios espacios como una versión digital de su lugar físico.
+| HappySw | https://www.happysoftware.com/tc/index.php | Cumplimiento de los objetivos de calidad y obtención de un sistema óptimo
+| Ayuntamiento Bruselas| https://www.brussels.be/city-hall | Entrega de una aplicación para que los ciudadanos puedan disponer de mapas personalizados sobre lugares y negocios
+| Equipo de desarrollo | https://github.com/Arquisoft/lomap_es3c | Desarrollo y entrega en plazo del producto solicitado, cumpliendo con todos los requisitos
+| Usuarios| | Posibilidad de crear mapas personalizados sobre los lugares en los que estén interesados, e interaccionar con ellos
+| Negocios| | Permitir crear sus propios espacios como una versión digital de su lugar físico
 |===
 [role="arc42help"]
 ****
