@@ -1,5 +1,5 @@
 [[section-glossary]]
-== Glossary
+== Glosario
 
 
 
@@ -26,6 +26,17 @@ Potentially more columns in case you need translations.
 [options="header"]
 |===
 | Term         | Definition
-| <Term-1>     | <definition-1>
-| <Term-2>     | <definition-2>
+| arc42     | Plantilla para la documentación de arquitectura de sistemas y de software.
+| React     | Librería de código abierto de JavaScript para desarrollar interfaces de usuario.
+| Solid     | Proyecto de descentralización de datos en la web, cuyo objetivo es que los usuarios tengan el control de sus datos privados.
+| Docker     | Permite el despliegue de aplicaciones dentro de contenedores de software, proporcionando una capa adicional de abstracción.
+| POD     | Contenedor de información de caracter privado del usuario. Puede estar asociado a uno o varios contenedores, como los de Docker.
+| TypeScript     | Es un preprocesador, un lenguaje de programación libre y de código abierto que genera JavaScript.
+| GUI     | Interfaz gráfica de usuario, es decir, la parte del sistema con la que interacciona un usuario.
+| Git/GitHub     | Sistema de control de versiones, es decir, programa que facilita el trabajo multiusuario a través de un sistema dedicado, que ofrece funciones para mezclar partes de código, controlar modificaciones, etc...
+| NodeJS     | Entorno en tiempo de ejecución multiplataforma, de código abierto, basado en JavaScript.
+| MongoDB     | SIstema de Base de Datos NoSQL, de código abierto, que permite persistir la información manejada por una aplicación de forma eficiente.
+| JSON     | Tipo de archivo con un formato concreto destinado al intercambio de información a través de medios como la web. Más eficiente que XML.
+| API     | Pieza de código incrustada en un programa que permite a una aplicación comunicarse con otra para recibir información, consumir servicios web, etc...
+| Stakeholder     | Entidad (persona, empresa, ...) interesada en el proyecto, implicada en el mismo o a la que afecte directa o tangencialmente.
 |===
