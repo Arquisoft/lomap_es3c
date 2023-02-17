@@ -1,5 +1,5 @@
 [[section-technical-risks]]
-== Risks and Technical Debts
+== Riesgos y deudas técnicas
 
 
 [role="arc42help"]
@@ -15,3 +15,16 @@ This should be your motto for systematic detection and evaluation of risks and t
 .Form
 List of risks and/or technical debts, probably including suggested measures to minimize, mitigate or avoid risks or reduce technical debts.
 ****
+
+A continuación, la lista de riesgos y deudas técnicas localizadas, ordenadas por prioridad / importancia:
+
+[options="header",cols="1,2,2"]
+|===
+|Riesgo|Descripción|Solución
+| Mal diseño / enfoque de un problema | Si el sistema contiene fallos en las fases preliminares del proyecto, que a su vez suelen ser las más importantes, esto puede tener consecuencias fatales. Las decisiones de diseño son vitales, y un error detectado tiempo después de comenzar la implementación puede ser imposible de subsanar. De ahí, la importancia de plantear las cosas bien desde el principio y tener visión de futuro, para evitar caer en errores que acaben pagándose tiempo después, con el proyecto ya en fase de implementación, y teniendo que tirar parte del producto. | Hacer especial hincapié en las fases de diseño, considerar todas las posibilidades, aplicar patrones conocidos, ser ordenado a la hora de trabajar.
+| Desconocimiento de las tecnologías | Inicialmente, los integrantes del grupo parten de un nivel prácticamente nulo sobre las tecnologías que van a ser empleadas. Esto puede implicar que no se aproveche todo el potencial de las herramientas. | Formación autodidacta a través de investigación operativa por parte de todos los miembros, pudiendo incluso especializarse cada uno de ellos en una herramienta específica (conociendo el funcionamiento básico del resto, indispensable).
+| Fallo en la implementación | Pueden existir fallos en la lógica de negocio que persistan en el sistema durante largo tiempo, sin que los desarrolladores se percaten. No suelen ser fallos críticos, ya que en tal caso serían facilmente detectables, pero nunca un programa va a estar al 100% libre de bugs. | Hacer pruebas suficientes del funcionamiento, comprobar la lógica adecuadamente, implementar con especial atención y cuidado.
+| Mala comunicación entre miembros | Al trabajar conjuntamente, los distintos integrantes deben comunicarse para llevar a cabo un plan de trabajo bajo un marco común. No siempre es posible, debido a múltiples factores: discrepancia en opiniones, diferencias personales, pasividad por parte de miembros,... Esto es fundamental para un buen trabajo en grupo. | Establecer unas reglas de trabajo firmes desde el primer momento, y tomar las medidas pertinentes para que el desarrollo no se vea perturbado por la mala práctica de cierto sector del grupo.
+| Mala distribución de trabajo | Generalmente cada miembro se encarga de partes diferentes, o comparten una parte pero hacen una labor distinta sobre ella. Se trata de evitar una mala distribución de las tareas, para que un miembro no se vea sobrecargado y saturado con sus responsabilidades, mientras que otros están mucho más liberados en ese aspecto. | Repartición de responsabilidades equitativa mediante un sistema de votación en el que se persiga la unanimidad.
+| Disminución del tamaño del grupo | Cualquier integrante puede llegar a fallar y desvincularse del proyecto. Esto no puede implicar la detención del proyecto, sino que debe seguir adelante. Al ser un hecho de caracter personal, no existe una medida a ciencia cierta para evitarla, pero sí ciertas políticas para responder ante estos casos. | Supuesta la situación mencionada conviene, en primer lugar, que nadie del grupo sea categoricamente imprescindible. De esta forma, mediante una nueva planificación y repartición del trabajo, se podrá proseguir (aunque con mayor carga de trabajo individual).
+|===
