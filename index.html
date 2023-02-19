@@ -469,11 +469,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_decisiones_organizativas_relevantes">4.3. Decisiones organizativas relevantes</a></li>
 </ul>
 </li>
-<li><a href="#section-building-block-view">5. Building Block View</a>
+<li><a href="#section-building-block-view">5. Vista por bloques</a>
 <ul class="sectlevel2">
-<li><a href="#_whitebox_overall_system">5.1. Whitebox Overall System</a></li>
-<li><a href="#_level_2">5.2. Level 2</a></li>
-<li><a href="#_level_3">5.3. Level 3</a></li>
+<li><a href="#_sistema_general_de_caja_blanca">5.1. Sistema general de caja blanca</a></li>
+<li><a href="#_nivel_2">5.2. Nivel 2</a></li>
+<li><a href="#_nivel_3">5.3. Nivel 3</a></li>
 </ul>
 </li>
 <li><a href="#section-runtime-view">6. Runtime View</a>
@@ -497,9 +497,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-concepts">8. Cross-cutting Concepts</a>
 <ul class="sectlevel2">
-<li><a href="#_domain_model">8.1. Domain model</a></li>
-<li><a href="#_concept_2">8.2. <em>&lt;Concept 2&gt;</em></a></li>
-<li><a href="#_concept_n">8.3. <em>&lt;Concept n&gt;</em></a></li>
+<li><a href="#_modelo_de_dominio">8.1. Modelo de dominio</a></li>
+<li><a href="#_experiencia_de_usuario">8.2. Experiencia de usuario</a></li>
+<li><a href="#_seguridad">8.3. Seguridad</a></li>
+<li><a href="#_testeabilidad">8.4. Testeabilidad</a></li>
+<li><a href="#_persistencia">8.5. Persistencia</a></li>
 </ul>
 </li>
 <li><a href="#section-design-decisions">9. Design Decisions</a></li>
@@ -1170,7 +1172,7 @@ Para establecer las tareas que hace cada miembro, se utilizará GitHub Projects;
 </div>
 </div>
 <div class="sect1">
-<h2 id="section-building-block-view">5. Building Block View</h2>
+<h2 id="section-building-block-view">5. Vista por bloques</h2>
 <div class="sectionbody">
 <div class="sidebarblock arc42help">
 <div class="content">
@@ -1214,7 +1216,7 @@ Thus it contains the white box description of selected building blocks of level 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_whitebox_overall_system">5.1. Whitebox Overall System</h3>
+<h3 id="_sistema_general_de_caja_blanca">5.1. Sistema general de caja blanca</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1254,32 +1256,16 @@ In the best case you will get away with examples or simple signatures.</p>
 </div>
 </div>
 <div class="paragraph">
-<p><em><strong>&lt;Overview Diagram&gt;</strong></em></p>
+<p><span class="image"><img src="./images/WhiteBoxLevel1.png" alt="WhiteBox overall system"></span></p>
 </div>
 <div class="dlist">
 <dl>
-<dt class="hdlist1">Motivation</dt>
+<dt class="hdlist1">Motivación</dt>
 <dd>
-<p><em>&lt;text explanation&gt;</em></p>
+<p>Los usuarios interactuarán con la aplicación LoMap que es la estructura general del sistema en la que podrán añadir lugares, mostrarlos y opinar sobre ellos. Toda esta información será almacenada de forma segura en sus propios PODs. Los usuarios serán los dueños de estos PODs.</p>
 </dd>
-<dt class="hdlist1">Contained Building Blocks</dt>
-<dd>
-<p><em>&lt;Description of contained building block (black boxes)&gt;</em></p>
-</dd>
-<dt class="hdlist1">Important Interfaces</dt>
-<dd>
-<p><em>&lt;Description of important interfaces&gt;</em></p>
-</dd>
+<dt class="hdlist1">Bloques de construcción contenidos</dt>
 </dl>
-</div>
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<p>Insert your explanations of black boxes from level 1:</p>
-</div>
-<div class="paragraph">
-<p>If you use tabular form you will only describe your black boxes with name and
-responsibility according to the following schema:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1288,103 +1274,28 @@ responsibility according to the following schema:</p>
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top"><strong>Name</strong></th>
-<th class="tableblock halign-left valign-top"><strong>Responsibility</strong></th>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;black box 1&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"> <em>&lt;Text&gt;</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">User</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es el cliente que usará la aplicación LoMap a través de la interacción con esta y también tendrá un POD personal.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>&lt;black box 2&gt;</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"> <em>&lt;Text&gt;</em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LoMap</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Aplicación desarrollada que intercambia información con los PODs y está diseñada para interactuar con el usuario</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">POD&#8217;s</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Almacena la información del usuario y se comunica con la aplicación</p></td>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>If you use a list of black box descriptions then you fill in a separate black box template for every important building block .
-Its headline is the name of the black box.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_name_black_box_1">5.1.1. &lt;Name black box 1&gt;</h4>
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<p>Here you describe &lt;black box 1&gt;
-according the the following black box template:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Purpose/Responsibility</p>
-</li>
-<li>
-<p>Interface(s), when they are not extracted as separate paragraphs. This interfaces may include qualities and performance characteristics.</p>
-</li>
-<li>
-<p>(Optional) Quality-/Performance characteristics of the black box, e.g.availability, run time behavior, &#8230;&#8203;.</p>
-</li>
-<li>
-<p>(Optional) directory/file location</p>
-</li>
-<li>
-<p>(Optional) Fulfilled requirements (if you need traceability to requirements).</p>
-</li>
-<li>
-<p>(Optional) Open issues/problems/risks</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p><em>&lt;Purpose/Responsibility&gt;</em></p>
-</div>
-<div class="paragraph">
-<p><em>&lt;Interface(s)&gt;</em></p>
-</div>
-<div class="paragraph">
-<p><em>&lt;(Optional) Quality/Performance Characteristics&gt;</em></p>
-</div>
-<div class="paragraph">
-<p><em>&lt;(Optional) Directory/File Location&gt;</em></p>
-</div>
-<div class="paragraph">
-<p><em>&lt;(Optional) Fulfilled Requirements&gt;</em></p>
-</div>
-<div class="paragraph">
-<p><em>&lt;(optional) Open Issues/Problems/Risks&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_name_black_box_2">5.1.2. &lt;Name black box 2&gt;</h4>
-<div class="paragraph">
-<p><em>&lt;black box template&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_name_black_box_n">5.1.3. &lt;Name black box n&gt;</h4>
-<div class="paragraph">
-<p><em>&lt;black box template&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_name_interface_1">5.1.4. &lt;Name interface 1&gt;</h4>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_name_interface_m">5.1.5. &lt;Name interface m&gt;</h4>
-
-</div>
 </div>
 <div class="sect2">
-<h3 id="_level_2">5.2. Level 2</h3>
+<h3 id="_nivel_2">5.2. Nivel 2</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1397,8 +1308,44 @@ Leave out normal, simple, boring or standardized parts of your system</p>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_white_box_building_block_1">5.2.1. White Box <em>&lt;building block 1&gt;</em></h4>
+<div class="paragraph">
+<p><span class="image"><img src="./images/Level2.png" alt="WhiteBox Level 2"></span></p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Motivación</dt>
+<dd>
+<p>La aplicación LoMap se ve dividida en 3 capas del MVC (Modelo Vista Controlador) que se especificarán en el siguiente nivel.</p>
+</dd>
+<dt class="hdlist1">Bloques de construcción contenidos</dt>
+</dl>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 66.6667%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Nombre</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Model</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se comunica con los PODs para intercambiar información y con los controladores para que esta información pueda comunicarse con el resto de la aplicación</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">View</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encargada de la interacción con el usuario y se comunica con los controladores.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Controller</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Encargado de interaccionar entre las distintas capas.</p></td>
+</tr>
+</tbody>
+</table>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1406,28 +1353,9 @@ Leave out normal, simple, boring or standardized parts of your system</p>
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p><em>&lt;white box template&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_white_box_building_block_2">5.2.2. White Box <em>&lt;building block 2&gt;</em></h4>
-<div class="paragraph">
-<p><em>&lt;white box template&gt;</em></p>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_white_box_building_block_m">5.2.3. White Box <em>&lt;building block m&gt;</em></h4>
-<div class="paragraph">
-<p><em>&lt;white box template&gt;</em></p>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="_level_3">5.3. Level 3</h3>
+<h3 id="_nivel_3">5.3. Nivel 3</h3>
 <div class="sidebarblock arc42help">
 <div class="content">
 <div class="paragraph">
@@ -1439,32 +1367,18 @@ part of arc42 for additional levels.</p>
 </div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_white_box_building_block_x_1">5.3.1. White Box &lt;_building block x.1_&gt;</h4>
-<div class="sidebarblock arc42help">
-<div class="content">
 <div class="paragraph">
-<p>Specifies the internal structure of <em>building block x.1</em>.</p>
+<p><span class="image"><img src="./images/Level3.png" alt="WhiteBox Level 3"></span></p>
 </div>
-</div>
-</div>
-<div class="paragraph">
-<p><em>&lt;white box template&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_white_box_building_block_x_2">5.3.2. White Box &lt;_building block x.2_&gt;</h4>
-<div class="paragraph">
-<p><em>&lt;white box template&gt;</em></p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_white_box_building_block_y_1">5.3.3. White Box &lt;_building block y.1_&gt;</h4>
-<div class="paragraph">
-<p><em>&lt;white box template&gt;</em></p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Motivación</dt>
+<dd>
+<p>Se detallan las 3 capas del modelo para especificar la estructura del sistema.</p>
+</dd>
+</dl>
 </div>
 <div style="page-break-after: always;"></div>
-</div>
 </div>
 </div>
 </div>
@@ -1533,7 +1447,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_registro_de_usuarios">6.1. Registro de usuarios</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram1.png" alt="Sequence diagram1" width="740" height="596">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="740" height="596">
 </div>
 </div>
 </div>
@@ -1541,7 +1455,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_inicio_de_sesión">6.2. Inicio de sesión</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram2.png" alt="Sequence diagram2" width="748" height="578">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="748" height="578">
 </div>
 </div>
 </div>
@@ -1549,7 +1463,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_añadir_lugar_en_mapa">6.3. Añadir lugar en mapa</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram3.png" alt="Sequence diagram3" width="650" height="456">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="650" height="456">
 </div>
 </div>
 </div>
@@ -1557,7 +1471,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_compartir_lugar">6.4. Compartir lugar</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram4.png" alt="Sequence diagram4" width="708" height="396">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="708" height="396">
 </div>
 </div>
 </div>
@@ -1565,7 +1479,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_añadir_información_a_lugar">6.5. Añadir información a lugar</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram5.png" alt="Sequence diagram5" width="826" height="396">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="826" height="396">
 </div>
 </div>
 </div>
@@ -1573,7 +1487,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_visualizar_lugares">6.6. Visualizar lugares</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram6.png" alt="Sequence diagram6" width="594" height="365">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="594" height="365">
 </div>
 </div>
 </div>
@@ -1581,7 +1495,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_filtrar_lugares">6.7. Filtrar lugares</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram7.png" alt="Sequence diagram7" width="646" height="578">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="646" height="578">
 </div>
 </div>
 </div>
@@ -1589,7 +1503,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_añadir_amigo">6.8. Añadir amigo</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram8.png" alt="Sequence diagram8" width="590" height="396">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="590" height="396">
 </div>
 </div>
 </div>
@@ -1597,7 +1511,7 @@ You will mainly capture scenarios in your documentation to communicate your arch
 <h3 id="_listar_lugares_de_amigos">6.9. Listar lugares de amigos</h3>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram9.png" alt="Sequence diagram9" width="746" height="365">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="746" height="365">
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -1842,24 +1756,33 @@ on this list.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_domain_model">8.1. Domain model</h3>
+<h3 id="_modelo_de_dominio">8.1. Modelo de dominio</h3>
 <div class="paragraph">
-<p><span class="image"><img src="./images/UmlDiagram.png" alt="Example UML Diagram"></span></p>
+<p><span class="image"><img src="./images/DomainModel.png" alt="Domain Model"></span></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_concept_2">8.2. <em>&lt;Concept 2&gt;</em></h3>
+<h3 id="_experiencia_de_usuario">8.2. Experiencia de usuario</h3>
 <div class="paragraph">
-<p><em>&lt;explanation&gt;</em></p>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
+<p>Se diseñará una interfaz de usuario que facilite la experiencia utilizando el framework React jutno con TypeScript. Se seguirán todas las medidas posibles para garantizar la usabilidad y adaptabilidad del sitio web. Además se tratará de ofrecer toda la ayuda posible junto a interfaces que sean intuitivas para el usuario.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_concept_n">8.3. <em>&lt;Concept n&gt;</em></h3>
+<h3 id="_seguridad">8.3. Seguridad</h3>
 <div class="paragraph">
-<p><em>&lt;explanation&gt;</em></p>
+<p>La seguridad en LoMap será un aspecto muy importante ya que cada usuario almacenará la información personal. Se evitará el uso malicioso sobre las API y el sistema de POD integrará la información necesaria para que la información sea personal. Por otro lado las contraseñas de los usuarios si se ven expuestas serán cifradas. También se implementará un sistema para que los roles de los usuarios se puedan distinguir y asi separar sus opciones (Usuario normal, Dueños de negocio, Administradores).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testeabilidad">8.4. Testeabilidad</h3>
+<div class="paragraph">
+<p>Antes de que cualquier cambio se realice se probará todos los escenarios posible dejandolos documentados para su posible reutilización en un futuro. Tambien habrá pruebas no solo defuncionalidad sino tambien de tiempo de respuesta.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_persistencia">8.5. Persistencia</h3>
+<div class="paragraph">
+<p>la forma en la que se almacenará la información está en debate y se fijará en los próximos días.</p>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -2253,7 +2176,7 @@ Created by Dr. Peter Hruschka &amp; Dr. Gernot Starke.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-17 18:10:52 +0100
+Last updated 2023-02-19 21:29:56 +0100
 </div>
 </div>
 </body>
