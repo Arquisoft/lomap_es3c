@@ -51,8 +51,8 @@ image:08-Crosscutting-Concepts-Structure-EN.png["Possible topics for crosscuttin
 
 
 === Modelo de dominio
-
-image:DomainModel.png["Domain Model"]
+:imagesdir: images/
+image::DomainModel.png["Domain Model"]
 
 === Experiencia de usuario
 
