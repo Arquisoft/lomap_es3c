@@ -50,18 +50,22 @@ image:08-Crosscutting-Concepts-Structure-EN.png["Possible topics for crosscuttin
 ****
 
 
-=== Domain model
+=== Modelo de dominio
 
-image:UmlDiagram.png["Example UML Diagram"]
+image:DomainModel.png["Domain Model"]
 
+=== Experiencia de usuario
 
+Se diseñará una interfaz de usuario que facilite la experiencia utilizando el framework React jutno con TypeScript. Se seguirán todas las medidas posibles para garantizar la usabilidad y adaptabilidad del sitio web. Además se tratará de ofrecer toda la ayuda posible junto a interfaces que sean intuitivas para el usuario.
 
-=== _<Concept 2>_
+=== Seguridad
 
-_<explanation>_
+La seguridad en LoMap será un aspecto muy importante ya que cada usuario almacenará la información personal. Se evitará el uso malicioso sobre las API y el sistema de POD integrará la información necesaria para que la información sea personal. Por otro lado las contraseñas de los usuarios si se ven expuestas serán cifradas. También se implementará un sistema para que los roles de los usuarios se puedan distinguir y asi separar sus opciones (Usuario normal, Dueños de negocio, Administradores).
 
-...
+=== Testeabilidad
 
-=== _<Concept n>_
+Antes de que cualquier cambio se realice se probará todos los escenarios posible dejandolos documentados para su posible reutilización en un futuro. Tambien habrá pruebas no solo defuncionalidad sino tambien de tiempo de respuesta.
 
-_<explanation>_
+=== Persistencia
+
+la forma en la que se almacenará la información está en debate y se fijará en los próximos días.

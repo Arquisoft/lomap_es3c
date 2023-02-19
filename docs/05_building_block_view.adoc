@@ -1,7 +1,7 @@
 [[section-building-block-view]]
 
 
-== Building Block View
+== Vista por bloques
 
 [role="arc42help"]
 ****
@@ -34,7 +34,7 @@ Thus it contains the white box description of selected building blocks of level 
 *Level 3* zooms into selected building blocks of level 2, and so on.
 ****
 
-=== Whitebox Overall System
+=== Sistema general de caja blanca
 
 [role="arc42help"]
 ****
@@ -57,89 +57,23 @@ In the best case you will get away with examples or simple signatures.
 
 ****
 
-_**<Overview Diagram>**_
+image:WhiteBoxLevel1.png["WhiteBox overall system"]
 
-Motivation::
+Motivación::
 
-_<text explanation>_
+Los usuarios interactuarán con la aplicación LoMap que es la estructura general del sistema en la que podrán añadir lugares, mostrarlos y opinar sobre ellos. Toda esta información será almacenada de forma segura en sus propios PODs. Los usuarios serán los dueños de estos PODs.
 
 
-Contained Building Blocks::
-_<Description of contained building block (black boxes)>_
-
-Important Interfaces::
-_<Description of important interfaces>_
-
-[role="arc42help"]
-****
-Insert your explanations of black boxes from level 1:
-
-If you use tabular form you will only describe your black boxes with name and
-responsibility according to the following schema:
-
-[cols="1,2" options="header"]
+Bloques de construcción contenidos::
+[options="header",cols="1,2"]
 |===
-| **Name** | **Responsibility**
-| _<black box 1>_ | _<Text>_
-| _<black box 2>_ | _<Text>_
+|Nombre|Descripción
+| User | Es el cliente que usará la aplicación LoMap a través de la interacción con esta y también tendrá un POD personal.
+| LoMap | Aplicación desarrollada que intercambia información con los PODs y está diseñada para interactuar con el usuario 
+| POD's | Almacena la información del usuario y se comunica con la aplicación
 |===
 
-
-
-If you use a list of black box descriptions then you fill in a separate black box template for every important building block .
-Its headline is the name of the black box.
-****
-
-
-==== <Name black box 1>
-
-[role="arc42help"]
-****
-Here you describe <black box 1>
-according the the following black box template:
-
-* Purpose/Responsibility
-* Interface(s), when they are not extracted as separate paragraphs. This interfaces may include qualities and performance characteristics.
-* (Optional) Quality-/Performance characteristics of the black box, e.g.availability, run time behavior, ....
-* (Optional) directory/file location
-* (Optional) Fulfilled requirements (if you need traceability to requirements).
-* (Optional) Open issues/problems/risks
-
-****
-
-_<Purpose/Responsibility>_
-
-_<Interface(s)>_
-
-_<(Optional) Quality/Performance Characteristics>_
-
-_<(Optional) Directory/File Location>_
-
-_<(Optional) Fulfilled Requirements>_
-
-_<(optional) Open Issues/Problems/Risks>_
-
-
-
-
-==== <Name black box 2>
-
-_<black box template>_
-
-==== <Name black box n>
-
-_<black box template>_
-
-
-==== <Name interface 1>
-
-...
-
-==== <Name interface m>
-
-
-
-=== Level 2
+=== Nivel 2
 
 [role="arc42help"]
 ****
@@ -149,31 +83,28 @@ You have to decide which building blocks of your system are important enough to 
 Please prefer relevance over completeness. Specify important, surprising, risky, complex or volatile building blocks.
 Leave out normal, simple, boring or standardized parts of your system
 ****
+image:Level2.png["WhiteBox Level 2"]
 
-==== White Box _<building block 1>_
+Motivación::
+
+La aplicación LoMap se ve dividida en 3 capas del MVC (Modelo Vista Controlador) que se especificarán en el siguiente nivel.
+
+
+Bloques de construcción contenidos::
+[options="header",cols="1,2"]
+|===
+|Nombre|Descripción
+| Model | Se comunica con los PODs para intercambiar información y con los controladores para que esta información pueda comunicarse con el resto de la aplicación
+| View | Encargada de la interacción con el usuario y se comunica con los controladores.
+| Controller | Encargado de interaccionar entre las distintas capas.
+|===
 
 [role="arc42help"]
 ****
 ...describes the internal structure of _building block 1_.
 ****
 
-_<white box template>_
-
-==== White Box _<building block 2>_
-
-
-_<white box template>_
-
-...
-
-==== White Box _<building block m>_
-
-
-_<white box template>_
-
-
-
-=== Level 3
+=== Nivel 3
 
 [role="arc42help"]
 ****
@@ -183,24 +114,7 @@ When you need more detailed levels of your architecture please copy this
 part of arc42 for additional levels.
 ****
 
+image:Level3.png["WhiteBox Level 3"]
 
-==== White Box <_building block x.1_>
-
-[role="arc42help"]
-****
-Specifies the internal structure of _building block x.1_.
-****
-
-
-_<white box template>_
-
-
-==== White Box <_building block x.2_>
-
-_<white box template>_
-
-
-
-==== White Box <_building block y.1_>
-
-_<white box template>_
+Motivación::
+Se detallan las 3 capas del modelo para especificar la estructura del sistema.
