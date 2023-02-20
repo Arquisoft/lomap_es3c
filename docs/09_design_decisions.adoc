@@ -1,6 +1,13 @@
 [[section-design-decisions]]
 == Design Decisions
 
+[options="header",cols="2,2"]
+|===
+|Contexto   |Decision 
+| Es necesario almacenar las relaciones entre los usuarios, así como los lugares destacados de cada uno de estos. Del mismo modo, se han de almacenar ciertas caracteristicas, comentarios, etc. de cada ubicación. | Para guardar los datos se usará MongoDB.
+| Necesitamos obtener los datos de los usuario, id y contraseña, para poder identificarse | Utilizaremos un sistema de PODS para obtener los datos cliente.
+| Será necesario poder mostrar la opción de ver las diferentes ubicaciones en un mapa. | Para ello usaremos Maps API.
+|===
 
 [role="arc42help"]
 ****

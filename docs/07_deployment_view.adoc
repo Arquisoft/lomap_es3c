@@ -48,39 +48,16 @@ Describe (usually in a combination of diagrams, tables, and text):
 For multiple environments or alternative deployments please copy that section of arc42 for all relevant environments.
 ****
 
-_**<Overview Diagram>**_
+_**Overview Diagram**_
 
-Motivation::
-
-_<explanation in text form>_
-
-Quality and/or Performance Features::
-
-_<explanation in text form>_
-
-Mapping of Building Blocks to Infrastructure::
-_<description of the mapping>_
+:imagesdir: images/
+image::Overview_Diagrama.png[]
 
 
-=== Infrastructure Level 2
+Componentes::
 
-[role="arc42help"]
-****
-Here you can include the internal structure of (some) infrastructure elements from level 1.
+* El cliente accederá a nuestra aplicación LoMap y tendrá que registrarse o iniciar sesión (Uso de PODs).
 
-Please copy the structure from level 1 for each selected element.
-****
+* La aplicación principal se le mostrará al usuario el front end con el que este interactuará.
 
-==== _<Infrastructure Element 1>_
-
-_<diagram + explanation>_
-
-==== _<Infrastructure Element 2>_
-
-_<diagram + explanation>_
-
-...
-
-==== _<Infrastructure Element n>_
-
-_<diagram + explanation>_
+* Del mismo modo el back end se encargará del acceso a datos (MongoDB) y su gestión, así como el manejo del mapa (Maps API).
