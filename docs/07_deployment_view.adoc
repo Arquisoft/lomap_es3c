@@ -51,13 +51,17 @@ For multiple environments or alternative deployments please copy that section of
 _**Diagrama general**_
 
 :imagesdir: images/
-image::Overview_Diagrama.png[]
+image::Overview_Diagram.png[]
 
 
 Componentes::
 
-* El cliente accederá a nuestra aplicación LoMap y tendrá que registrarse o iniciar sesión (Uso de PODs).
+* El cliente accederá a nuestra aplicación LoMap (Parte de vista) y tendrá que registrarse o iniciar sesión.
 
-* La aplicación principal se le mostrará al usuario el front end con el que este interactuará.
+* Una vez introducidas sus credenciales la parte del modelo (Aceso a datos) se encargará de verifecarlas (Uso de PODs).
 
-* Del mismo modo el back end se encargará del acceso a datos (MongoDB) y su gestión, así como el manejo del mapa (Maps API).
+* La aplicación principal se le mostrará al usuario la parte de la vista con el que este interactuará.
+
+* Del mismo modo el controlador manejaraá los datos y ciertas librerias (Maps API) 
+
+* Mientras que la parte del modelo se encargará del acceso a datos (MongoDB y PODs) y su persistencia.
