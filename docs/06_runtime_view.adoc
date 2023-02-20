@@ -1,5 +1,5 @@
 [[section-runtime-view]]
-== Runtime View
+== Vista en tiempo de ejecución
 
 
 [role="arc42help"]
