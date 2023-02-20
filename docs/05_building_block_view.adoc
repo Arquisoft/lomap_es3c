@@ -57,7 +57,7 @@ In the best case you will get away with examples or simple signatures.
 
 ****
 :imagesdir: images/
-image::WhiteBoxLevel1.png["WhiteBox overall system"]
+image::Level1.png[]
 
 Motivación::
 
@@ -84,7 +84,7 @@ Please prefer relevance over completeness. Specify important, surprising, risky,
 Leave out normal, simple, boring or standardized parts of your system
 ****
 :imagesdir: images/
-image::Level2.png["WhiteBox Level 2"]
+image::Level2.png[]
 
 Motivación::
 
@@ -115,7 +115,7 @@ When you need more detailed levels of your architecture please copy this
 part of arc42 for additional levels.
 ****
 :imagesdir: images/
-image::Level3.png["WhiteBox Level 3"]
+image::Level3.png[]
 
 Motivación::
 Se detallan las 3 capas del modelo para especificar la estructura del sistema.
