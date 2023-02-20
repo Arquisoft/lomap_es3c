@@ -1,7 +1,7 @@
 [[section-deployment-view]]
 
 
-== Deployment View
+== Vista de despliegue
 
 [role="arc42help"]
 ****
@@ -34,7 +34,7 @@ when your infrastructure is more complex.
 * When your (hardware) stakeholders prefer other kinds of diagrams rather than the deployment diagram, let them use any kind that is able to show nodes and channels of the infrastructure.
 ****
 
-=== Infrastructure Level 1
+=== Nivel 1 de infraestructura
 
 [role="arc42help"]
 ****
@@ -48,7 +48,7 @@ Describe (usually in a combination of diagrams, tables, and text):
 For multiple environments or alternative deployments please copy that section of arc42 for all relevant environments.
 ****
 
-_**Overview Diagram**_
+_**Diagrama general**_
 
 :imagesdir: images/
 image::Overview_Diagrama.png[]

@@ -1,5 +1,5 @@
 [[section-concepts]]
-== Cross-cutting Concepts
+== Conceptos transversales
 
 
 [role="arc42help"]
@@ -67,5 +67,4 @@ La seguridad en LoMap será un aspecto muy importante ya que cada usuario almace
 Antes de que cualquier cambio se realice se probará todos los escenarios posible dejandolos documentados para su posible reutilización en un futuro. Tambien habrá pruebas no solo defuncionalidad sino tambien de tiempo de respuesta.
 
 === Persistencia
-
-la forma en la que se almacenará la información está en debate y se fijará en los próximos días.
+Los datos se almacenarán en una base de datos NoSQL llamada MongoDB.
