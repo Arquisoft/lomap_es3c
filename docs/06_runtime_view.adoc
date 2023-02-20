@@ -31,7 +31,7 @@ There are many notations for describing scenarios, e.g.
 ****
 
 === Registro de usuarios
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram1",png]
 ----
 actor Usuario
 entity LoMap
@@ -54,7 +54,7 @@ LoMap-> Usuario: Notifica sobre registro incorrecto
 end
 ----
 === Inicio de sesión
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram2",png]
 ----
 actor Usuario
 entity LoMap
@@ -77,7 +77,7 @@ end
 ----
 
 === Añadir lugar en mapa
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram3",png]
 ----
 actor Usuario
 entity LoMap
@@ -94,7 +94,7 @@ API_REST-> LoMap: Confirma operación
 LoMap-> Usuario: Muestra nuevo lugar en el mapa
 ----
 === Compartir lugar
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram4",png]
 ----
 actor Usuario
 entity LoMap
@@ -109,7 +109,7 @@ API_REST-> LoMap: Confirma operación
 LoMap-> Usuario: Muestra nuevo lugar en los lugares compartidos
 ----
 === Añadir información a lugar
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram5",png]
 ----
 actor Usuario
 entity LoMap
@@ -124,7 +124,7 @@ API_REST-> LoMap: Confirma operación
 LoMap-> Usuario: Muestra lugar con información actualizada
 ----
 === Visualizar lugares
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram6",png]
 ----
 actor Usuario
 entity LoMap
@@ -138,7 +138,7 @@ API_REST-> LoMap: Envía lugares
 LoMap-> Usuario: Muestra lugares
 ----
 === Filtrar lugares
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram7",png]
 ----
 actor Usuario
 entity LoMap
@@ -160,7 +160,7 @@ LoMap-> Usuario: Reinicia ventana de filtros
 end
 ----
 === Añadir amigo
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram8",png]
 ----
 actor Usuario1
 actor Usuario2
@@ -176,7 +176,7 @@ API_REST-> LoMap: Confirma operación
 LoMap-> Usuario1: Muestra lista de amigos
 ----
 === Listar lugares de amigos
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram9",png]
 ----
 actor Usuario
 entity LoMap
