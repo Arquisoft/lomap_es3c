@@ -38,19 +38,19 @@ entity LoMap
 Usuario -> LoMap: Solicita registro de cuenta
 entity API_REST
 database MongoDB as "MongoDB"
-LoMap-> Usuario: Envía ventana de registro
+LoMap--> Usuario: Envía ventana de registro
 Usuario -> LoMap: Introduce información de registro
 LoMap -> API_REST: Envía información de registro
 API_REST -> MongoDB: Almacena información de registro
 alt Información de registro correcta
-MongoDB-> API_REST : Confirmación de registro
-API_REST -> LoMap: Notifica sobre registro correcto
-LoMap-> Usuario: Notifica sobre registro correcto
-LoMap-> Usuario: Envía ventana de inicio de sesión
+MongoDB--> API_REST : Confirmación de registro
+API_REST--> LoMap: Notifica sobre registro correcto
+LoMap--> Usuario: Notifica sobre registro correcto
+LoMap--> Usuario: Envía ventana de inicio de sesión
 else Información de registro incorrecta
-MongoDB-> API_REST: Informa sobre invalidez de datos
-API_REST -> LoMap: Notifica sobre registro incorrecto
-LoMap-> Usuario: Notifica sobre registro incorrecto
+MongoDB--> API_REST: Informa sobre invalidez de datos
+API_REST--> LoMap: Notifica sobre registro incorrecto
+LoMap--> Usuario: Notifica sobre registro incorrecto
 end
 ----
 === Inicio de sesión
@@ -61,18 +61,18 @@ entity LoMap
 Usuario -> LoMap: Solicita inicio de sesión
 entity API_REST
 database MongoDB as "MongoDB"
-LoMap-> Usuario: Envía ventana de inicio de sesión
+LoMap--> Usuario: Envía ventana de inicio de sesión
 Usuario -> LoMap: Introduce información de inicio de sesión
-LoMap -> API_REST: Envía información de inicio de sesión
+LoMap--> API_REST: Envía información de inicio de sesión
 API_REST -> MongoDB: Busca información
 MongoDB -> API_REST: Envía información
-API_REST -> API_REST: Comprueba información
+API_REST--> API_REST: Comprueba información
 alt Información de inicio correcta
-API_REST -> LoMap: Notifica sobre inicio correcto
-LoMap-> Usuario: Muestra resultado de inicio de sesión
+API_REST--> LoMap: Notifica sobre inicio correcto
+LoMap--> Usuario: Muestra resultado de inicio de sesión
 else Información de inicio incorrecta
-API_REST -> LoMap: Notifica sobre inicio de sesión incorrecto
-LoMap-> Usuario: Notifica sobre inicio de sesión incorrecto
+API_REST--> LoMap: Notifica sobre inicio de sesión incorrecto
+LoMap--> Usuario: Notifica sobre inicio de sesión incorrecto
 end
 ----
 
@@ -85,13 +85,13 @@ Usuario -> LoMap: Selecciona un lugar en el mapa
 Usuario -> LoMap: Añade lugar en el mapa
 entity API_REST
 database Pod as "Pods"
-LoMap-> Usuario: Envía ventana de creación de un lugar
+LoMap--> Usuario: Envía ventana de creación de un lugar
 Usuario-> LoMap: Añade información al lugar
 LoMap-> API_REST: Envía información sobre el lugar
 API_REST-> Pod: Añade lugar
-Pod -> API_REST: Confirma operación
-API_REST-> LoMap: Confirma operación
-LoMap-> Usuario: Muestra nuevo lugar en el mapa
+Pod--> API_REST: Confirma operación
+API_REST--> LoMap: Confirma operación
+LoMap--> Usuario: Muestra nuevo lugar en el mapa
 ----
 === Compartir lugar
 [plantuml,"Sequence diagram4",png]
@@ -104,9 +104,9 @@ entity API_REST
 database Pod as "Pods"
 LoMap-> API_REST: Envía información sobre el lugar 
 API_REST-> Pod : Añade lugar
-Pod -> API_REST: Confirma operación
-API_REST-> LoMap: Confirma operación
-LoMap-> Usuario: Muestra nuevo lugar en los lugares compartidos
+Pod--> API_REST: Confirma operación
+API_REST--> LoMap: Confirma operación
+LoMap--> Usuario: Muestra nuevo lugar en los lugares compartidos
 ----
 === Añadir información a lugar
 [plantuml,"Sequence diagram5",png]
@@ -119,9 +119,9 @@ entity API_REST
 database Pod as "Pods"
 LoMap-> API_REST: Envía información adicional sobre el lugar 
 API_REST-> Pod: Actualiza información sobre el lugar
-Pod-> API_REST: Confirma operación
-API_REST-> LoMap: Confirma operación
-LoMap-> Usuario: Muestra lugar con información actualizada
+Pod--> API_REST: Confirma operación
+API_REST--> LoMap: Confirma operación
+LoMap--> Usuario: Muestra lugar con información actualizada
 ----
 === Visualizar lugares
 [plantuml,"Sequence diagram6",png]
@@ -133,9 +133,9 @@ entity API_REST
 database Pod as "Pods"
 LoMap-> API_REST: Envía solicitud ver lugares
 API_REST-> Pod: Solicita los lugares del usuario
-Pod-> API_REST: Envía lugares
-API_REST-> LoMap: Envía lugares
-LoMap-> Usuario: Muestra lugares
+Pod--> API_REST: Envía lugares
+API_REST--> LoMap: Envía lugares
+LoMap--> Usuario: Muestra lugares
 ----
 === Filtrar lugares
 [plantuml,"Sequence diagram7",png]
@@ -143,20 +143,20 @@ LoMap-> Usuario: Muestra lugares
 actor Usuario
 entity LoMap
 Usuario -> LoMap: Filtrar lugares
-LoMap-> Usuario: Envía ventana de filtros
+LoMap--> Usuario: Envía ventana de filtros
 Usuario -> LoMap: Introduce filtros
 entity API_REST
 database Pod as "Pods"
 LoMap-> API_REST: Enviar solicitud filtrada
-API_REST-> API_REST: Comprobar validez de filtros
+API_REST--> API_REST: Comprobar validez de filtros
 alt Filtros correctos
 API_REST-> Pod: Solicitar los lugares filtrados
-Pod-> API_REST: Devolver lugares filtrados
-API_REST-> LoMap: Enviar lugares
-LoMap-> Usuario: Mostrar lugares
+Pod--> API_REST: Devolver lugares filtrados
+API_REST--> LoMap: Enviar lugares
+LoMap--> Usuario: Mostrar lugares
 else Filtros incorrectos
-API_REST -> LoMap: Notifica sobre filtrado incorrecto
-LoMap-> Usuario: Reinicia ventana de filtros
+API_REST --> LoMap: Notifica sobre filtrado incorrecto
+LoMap--> Usuario: Reinicia ventana de filtros
 end
 ----
 === Añadir amigo
@@ -171,9 +171,9 @@ entity API_REST
 LoMap-> API_REST: Envía solicitud
 database Pod as "Pods"
 API_REST-> Pod: Añade un amigo
-Pod-> API_REST: Confirma operación
-API_REST-> LoMap: Confirma operación
-LoMap-> Usuario1: Muestra lista de amigos
+Pod--> API_REST: Confirma operación
+API_REST--> LoMap: Confirma operación
+LoMap--> Usuario1: Muestra lista de amigos
 ----
 === Listar lugares de amigos
 [plantuml,"Sequence diagram9",png]
@@ -185,7 +185,7 @@ entity API_REST
 database Pod as "Pods"
 LoMap-> API_REST: Enviar solicitud ver lugares
 API_REST-> Pod: Solicitar los lugares compartidos por amigos
-Pod-> API_REST: Devolver lugares de amigos
-API_REST-> LoMap: Enviar lugares
-LoMap-> Usuario: Mostrar lugares de amigos
+Pod--> API_REST: Devolver lugares de amigos
+API_REST--> LoMap: Enviar lugares
+LoMap--> Usuario: Mostrar lugares de amigos
 ----
