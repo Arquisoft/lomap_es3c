@@ -29,7 +29,7 @@ There are many notations for describing scenarios, e.g.
 * ...
 
 ****
-== Nivel 0
+=== Nivel 0
 [plantuml,"Sequence diagram01",png]
 ----
 actor Usuario
@@ -48,7 +48,7 @@ MongoDB--> LoMap: Informa sobre invalidez de datos
 LoMap--> Usuario: Notifica sobre registro incorrecto
 end
 ----
-=== Inicio de sesión
+==== Inicio de sesión
 [plantuml,"Sequence diagram02",png]
 ----
 actor Usuario
@@ -67,7 +67,7 @@ LoMap--> Usuario: Notifica sobre inicio de sesión incorrecto
 end
 ----
 
-=== Añadir lugar en mapa
+==== Añadir lugar en mapa
 [plantuml,"Sequence diagram03",png]
 ----
 actor Usuario
@@ -81,7 +81,7 @@ LoMap-> Pod: Añade lugar
 Pod--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra nuevo lugar en el mapa
 ----
-=== Compartir lugar
+==== Compartir lugar
 [plantuml,"Sequence diagram04",png]
 ----
 actor Usuario
@@ -93,7 +93,7 @@ LoMap-> Pod : Añade lugar
 Pod--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra nuevo lugar en los lugares compartidos
 ----
-=== Añadir información a lugar
+==== Añadir información a lugar
 [plantuml,"Sequence diagram05",png]
 ----
 actor Usuario
@@ -105,7 +105,7 @@ LoMap-> Pod: Actualiza información sobre el lugar
 Pod--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra lugar con información actualizada
 ----
-=== Visualizar lugares
+==== Visualizar lugares
 [plantuml,"Sequence diagram06",png]
 ----
 actor Usuario
@@ -116,7 +116,7 @@ LoMap-> Pod: Solicita los lugares del usuario
 Pod--> LoMap: Envía lugares
 LoMap--> Usuario: Muestra lugares
 ----
-=== Filtrar lugares
+==== Filtrar lugares
 [plantuml,"Sequence diagram07",png]
 ----
 actor Usuario
@@ -135,7 +135,7 @@ Pod --> LoMap: Notifica sobre error
 LoMap--> Usuario: Reinicia ventana de filtros
 end
 ----
-=== Añadir amigo
+==== Añadir amigo
 [plantuml,"Sequence diagram08",png]
 ----
 actor Usuario1
@@ -148,7 +148,7 @@ LoMap-> Pod: Añade un amigo
 Pod--> LoMap: Confirma operación
 LoMap--> Usuario1: Muestra lista de amigos
 ----
-=== Listar lugares de amigos
+==== Listar lugares de amigos
 [plantuml,"Sequence diagram09",png]
 ----
 actor Usuario
@@ -159,8 +159,8 @@ LoMap-> Pod: Solicitar los lugares compartidos por amigos
 Pod--> LoMap: Enviar lugares
 LoMap--> Usuario: Mostrar lugares de amigos
 ----
-== Nivel 1
-=== Registro de usuarios
+=== Nivel 1
+==== Registro de usuarios
 [plantuml,"Sequence diagram1",png]
 ----
 actor Usuario
@@ -183,7 +183,7 @@ API_REST--> LoMap: Notifica sobre registro incorrecto
 LoMap--> Usuario: Notifica sobre registro incorrecto
 end
 ----
-=== Inicio de sesión
+==== Inicio de sesión
 [plantuml,"Sequence diagram2",png]
 ----
 actor Usuario
@@ -206,7 +206,7 @@ LoMap--> Usuario: Notifica sobre inicio de sesión incorrecto
 end
 ----
 
-=== Añadir lugar en mapa
+==== Añadir lugar en mapa
 [plantuml,"Sequence diagram3",png]
 ----
 actor Usuario
@@ -223,7 +223,7 @@ Pod--> API_REST: Confirma operación
 API_REST--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra nuevo lugar en el mapa
 ----
-=== Compartir lugar
+==== Compartir lugar
 [plantuml,"Sequence diagram4",png]
 ----
 actor Usuario
@@ -238,7 +238,7 @@ Pod--> API_REST: Confirma operación
 API_REST--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra nuevo lugar en los lugares compartidos
 ----
-=== Añadir información a lugar
+==== Añadir información a lugar
 [plantuml,"Sequence diagram5",png]
 ----
 actor Usuario
@@ -253,7 +253,7 @@ Pod--> API_REST: Confirma operación
 API_REST--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra lugar con información actualizada
 ----
-=== Visualizar lugares
+==== Visualizar lugares
 [plantuml,"Sequence diagram6",png]
 ----
 actor Usuario
@@ -267,7 +267,7 @@ Pod--> API_REST: Envía lugares
 API_REST--> LoMap: Envía lugares
 LoMap--> Usuario: Muestra lugares
 ----
-=== Filtrar lugares
+==== Filtrar lugares
 [plantuml,"Sequence diagram7",png]
 ----
 actor Usuario
@@ -289,7 +289,7 @@ API_REST --> LoMap: Notifica sobre filtrado incorrecto
 LoMap--> Usuario: Reinicia ventana de filtros
 end
 ----
-=== Añadir amigo
+==== Añadir amigo
 [plantuml,"Sequence diagram8",png]
 ----
 actor Usuario1
@@ -305,7 +305,7 @@ Pod--> API_REST: Confirma operación
 API_REST--> LoMap: Confirma operación
 LoMap--> Usuario1: Muestra lista de amigos
 ----
-=== Listar lugares de amigos
+==== Listar lugares de amigos
 [plantuml,"Sequence diagram9",png]
 ----
 actor Usuario
