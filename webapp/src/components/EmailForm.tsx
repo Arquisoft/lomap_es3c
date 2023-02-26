@@ -58,6 +58,8 @@ function EmailForm(props: EmailFormProps): JSX.Element {
             onChange={e => setName(e.target.value)}
             sx={{ my: 2 }}
           />
+
+<input type = "email"></input>
         <TextField
           required
           name="email"
