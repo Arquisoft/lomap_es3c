@@ -88,7 +88,7 @@ image::Level2.png[]
 
 Motivación::
 
-La aplicación LoMap se ve dividida en 3 capas del MVC (Modelo Vista Controlador) que se especificarán en el siguiente nivel.
+La aplicación LoMap se ve dividida en 3 capas del MVC (Modelo Vista Controlador) que se especificarán en el siguiente nivel. Además se incorparan las API que complementarán la aplicación LoMap
 
 
 Bloques de construcción contenidos::
@@ -98,6 +98,7 @@ Bloques de construcción contenidos::
 | Model | Se comunica con los PODs para intercambiar información y con los controladores para que esta información pueda comunicarse con el resto de la aplicación
 | View | Encargada de la interacción con el usuario y se comunica con los controladores.
 | Controller | Encargado de interaccionar entre las distintas capas.
+| API | Se comunicará con la capa del controlador para proporcionar servicios.
 |===
 
 [role="arc42help"]
