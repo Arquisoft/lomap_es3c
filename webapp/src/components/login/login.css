@@ -1,0 +1,11 @@
+*{
+    background-color: rgb(70, 67, 67);
+}
+.select-text{
+    color: azure;
+}
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
