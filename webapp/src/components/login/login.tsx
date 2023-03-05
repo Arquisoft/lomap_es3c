@@ -12,7 +12,8 @@ import {
   fetch
 } from "@inrupt/solid-client-authn-browser";
 
-async function handleLogin(){
+const handleLogin =async function(e: React.FormEvent<HTMLFormElement>){
+  e.preventDefault();
   //Obtenemos el valor del Identity provider
   let selectedElement = (document.getElementById("select-idp")) as HTMLSelectElement;
   let selectedIdp = selectedElement.options[selectedElement.selectedIndex].value; //Obtenemos el valor de la opcion seleccionada mediante el indice seleccionado
@@ -36,20 +37,20 @@ async function handleRedirectAfterLogin() {
   }
 }
 
-function LogIn() {
+function logIn() {
   return (
     <div className='login-container'>
       <Row>
-        <Form>
+        <Form onSubmit={handleLogin}>
           <Form.Group controlId="formLogin" className="mb-3">
             <Form.Label className='select-text'>Selecciona un proveedor de identidad</Form.Label>
             <Form.Select defaultValue="Inrupt" id='select-idp'>
-              <option value="https://login.inrupt.com">Inrupt</option>
+              <option value="https://inrupt.net">Inrupt</option>
             </Form.Select>
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Button type="submit" onClick={ ()=> handleLogin()}>Iniciar sesión</Button>
+            <Button type="submit">Iniciar sesión</Button>
           </Form.Group>
 
         </Form>
@@ -58,4 +59,4 @@ function LogIn() {
   );
 }
 
-export default LogIn;
+export default logIn;
