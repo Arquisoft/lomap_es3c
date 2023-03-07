@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: 'rgba(25, 118, 210, 1)';
+  overflow-x:hidden; 
+  overflow-y:hidden;
+}
+
+#menu-appbar {
+  background-color: 'rgba(25, 118, 210, 1)';
+}

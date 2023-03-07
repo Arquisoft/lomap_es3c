@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from './Image';
 import Swal from 'sweetalert2';
-import Alert from '@mui/material/Alert';
+import { Button } from '@mui/material';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -33,6 +33,7 @@ function TopBar() {
 
   const miPerfil = () => {
     //TODO funcionalidad relativa al perfil del usuario
+    handleCloseUserMenu();
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -42,6 +43,7 @@ function TopBar() {
 
   const miCuenta = () => {
     //TODO funcionalidad relativa a la cuenta del usuario
+    handleCloseUserMenu();
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -51,6 +53,7 @@ function TopBar() {
 
   const cerrarSesion = () => {
     //TODO funcionalidad relativa a la sesión del usuario
+    handleCloseUserMenu();
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
@@ -58,39 +61,56 @@ function TopBar() {
     })
   };
 
-  return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <ImageComponent src="/barLogo.png" alt="Mi imagen" />
-          
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            > </Menu>
-          </Box>
+  const nuevoMapa = () => {
+    //TODO funcionalidad relativa a la creación de un mapa
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Pending New Map Function',
+    })
+  };
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} />
+  const añadirAmigo = () => {
+    //TODO funcionalidad relativa a la adición de un amigo
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Pending New Friend Function',
+    })
+  };
+
+  return (
+    <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
+      <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>
+        <Toolbar disableGutters sx={{width: "100%"}}>
+          <a href="/">
+            <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
+          </a>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:"right", marginRight: "5em" }}>
+
+              <Button
+                key={"Nuevo Mapa"}
+                onClick={nuevoMapa}
+                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+              >
+                {<strong>Nuevo Mapa</strong>}
+              </Button>
+              <Button
+                key={"Añadir Amigo"}
+                onClick={añadirAmigo}
+                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
+              >
+                {<strong>Añadir Amigo</strong>}
+              </Button>
+              
+          </Box>
           
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, marginRight: "2em" }}>
+            
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Account Propietary" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Account Propietary" src="userImageDefault.png" />
               </IconButton>
             </Tooltip>
 
@@ -110,7 +130,6 @@ function TopBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-
               <MenuItem key={settings[0]} onClick={miPerfil}>
                 <Typography textAlign="center">{settings[0]}</Typography>
               </MenuItem>
@@ -121,8 +140,8 @@ function TopBar() {
               <MenuItem key={settings[2]} onClick={cerrarSesion}>
                 <Typography textAlign="center">{settings[2]}</Typography>
               </MenuItem>
-
             </Menu>
+
           </Box>
         </Toolbar>
       </Container>

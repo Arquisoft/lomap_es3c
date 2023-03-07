@@ -6,43 +6,32 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Check from '@mui/icons-material/Check';
+import { Box } from '@mui/material';
+import VirtualizedList from './MapsList';
+import MapsList from './MapsList';
+import FriendsList from './FriendsList';
 
 export default function LateralMenu() {
 
 
   return (
-    <Paper sx={{ width: 320, position: 'fixed', right: 0 }}>
-      <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 0.35)' }}>
-        <MenuItem>
-          <ListItemText><strong>MIS MAPAS</strong></ListItemText>
-          <a href="home"><img src="cruz.png"/></a>
-        </MenuItem>
-        <Divider />
-        <MenuItem>
-          <ListItemText inset>Lisboa, Verano 2015</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemText inset>Ruta por Oviedo</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemText inset>Viaje a Extremadura</ListItemText>
-        </MenuItem>
-        <Divider sx={{ borderBottomWidth: 5 }} />
-        <MenuItem>
-          <ListItemText><strong>AMIGOS</strong></ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemText inset>Israel</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemText inset>Alex</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemText inset>Jorge</ListItemText>
-        </MenuItem>
-        <MenuItem>
-          <ListItemText inset>Enrique</ListItemText>
-        </MenuItem>
+    <Paper sx={{ width: "100%", position: 'inherit', height: "100%", borderLeft: "solid black 0.25em"}}>
+      <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "100%" }}>
+        <Box>
+          <MenuItem>
+            <ListItemText><strong>MIS MAPAS</strong></ListItemText>
+          </MenuItem>
+          <Divider sx={{opacity: 1}}/>
+          <MapsList></MapsList>
+        </Box>
+
+        <Box sx={{borderTop: "solid black 0.25em", paddingTop: "0.5em"}}>
+          <MenuItem>
+            <ListItemText><strong>MIS AMIGOS</strong></ListItemText>
+          </MenuItem>
+          <Divider sx={{opacity: 1}}/>
+          <FriendsList></FriendsList>
+        </Box>
       </MenuList>
     </Paper>
   );
