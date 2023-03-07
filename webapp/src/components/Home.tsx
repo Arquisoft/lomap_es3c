@@ -26,7 +26,7 @@ const IzqBox = styled(Box) ({
 export const Home = () => {
   return (
     <>
-    <TopBar></TopBar>
+      <TopBar></TopBar>
       <Content>
         <IzqBox>
           <SRoutes>
