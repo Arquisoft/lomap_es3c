@@ -6,18 +6,38 @@ import Alert from '@mui/material/Alert';
 import type { AlertColor } from '@mui/material/Alert';
 import ComboBoxCategoria from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
+import {MarkerInfo} from '../Map';
+import { DrawerInfo } from '../drawer/MapDrawer';
 
+interface onSubmit{
+  action:any;
+}
 
+function MapPlaceForm(props:onSubmit): JSX.Element {
 
-function MapPlaceForm(): JSX.Element {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Evita que el formulario se envíe automáticamente
+    // Aquí se debe crear el objeto a partir de los datos del formulario
+    const form = document.getElementById('formMarker') as HTMLFormElement;
+    const formData = new FormData(form);
+    var marker: MarkerInfo = {
+      name: formData.get('name') as string,
+      categoria:event.currentTarget[1].nodeValue ==null?'a':event.currentTarget[1].nodeValue,
+      comments:formData.get('comments') as string,
+      score:2,
+      coords:[0,0]
+      // Aquí se deben agregar las propiedades del objeto nuevo
+    };
+    props.action(marker); // Añade el objeto a la lista
+  }
 
   return (
     <>
       <h2 className='text-center mb-5'>Añade un lugar</h2>
-      <form name="addPlace">
+      <form name="addPlace" id='formMarker' onSubmit={handleSubmit}>
         <div className='d-flex flex-column justify-content-center'>
           <label htmlFor='place-name' className='text-center'>Nombre</label>
-          <TextField id="place-name" className='m-2' label="Nombre" variant="outlined" />
+          <TextField id="place-name" name='name' className='m-2' label="Nombre" variant="outlined" />
         </div>
         <div className='d-flex flex-column justify-content-center'>
           <label htmlFor='combobox-category' className='text-center'>Categoria</label>
@@ -26,6 +46,7 @@ function MapPlaceForm(): JSX.Element {
         <div className='d-flex flex-column justify-content-center'>
           <label htmlFor='comments' className='text-center'>Comentarios</label>
           <TextField
+            name='comments'
             id="comments"
             label="Comentarios"
             className='m-2'
