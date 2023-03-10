@@ -1,7 +1,7 @@
-import '../App.css';
+import '../../App.css';
 import TopBar from './TopBar';
 import LateralMenu from './LateralMenu';
-import Map from './map/Map';
+import Map from '../map/Map';
 import { Box, styled } from '@mui/material';
 import { Route, Routes } from "react-router-dom";
 

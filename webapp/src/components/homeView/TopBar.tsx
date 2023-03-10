@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import ImageComponent from './Image';
+import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
 import { Button } from '@mui/material';
 
@@ -83,7 +83,7 @@ function TopBar() {
     <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
       <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>
         <Toolbar disableGutters sx={{width: "100%"}}>
-          <a href="/">
+          <a href="/home">
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
