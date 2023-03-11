@@ -6,6 +6,21 @@ import L, { Icon } from 'leaflet';
 import MapDrawer from './drawer/MapDrawer';
 import AddPlaceDrawer from './drawer/MapDrawer';
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import {
+    addUrl,
+    addInteger,
+    addStringNoLocale,
+    createSolidDataset,
+    createThing,
+    getPodUrlAll,
+    getSolidDataset,
+    getThingAll,
+    getStringNoLocale,
+    removeThing,
+    saveSolidDatasetAt,
+    setThing,
+    SolidDataset
+} from "@inrupt/solid-client";
 
 
 export interface MarkerInfo {
@@ -14,6 +29,61 @@ export interface MarkerInfo {
     score: number;
     categoria: string;
     coords: [number, number];
+}
+
+
+let myReadingList: SolidDataset;
+
+async function getMarkers() {
+    const allThings = getThingAll(myReadingList);
+
+    return (allThings.map((position, idx) =>
+        <Marker key={`marker-${idx}`} position={[0, 0]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
+            <Popup>
+                <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
+            </Popup>
+        </Marker>
+    ));
+
+}
+
+async function crearMarcadores() {
+
+    try {
+        // Attempt to retrieve the reading list in case it already exists.
+        myReadingList = await getSolidDataset("https://storage.inrupt.com/c19e5e92-842f-44de-a1c2-4ee6b4b5bc77/", { fetch: fetch });
+        // Clear the list to override the whole list
+        const items = getThingAll(myReadingList);
+        items.forEach((item) => {
+            myReadingList = removeThing(myReadingList, item);
+        });
+    } catch (error: any) {
+        if (typeof error.statusCode === "number" && error.statusCode === 404) {
+            // if not found, create a new SolidDataset (i.e., the reading list)
+            myReadingList = createSolidDataset();
+        } else {
+            console.error(error.message);
+        }
+    }
+    return myReadingList;
+}
+
+async function addMarkerr(marker: MarkerInfo) {
+    myReadingList = await crearMarcadores();
+    const newThing = createThing({ name: marker.name });
+
+    // Añadir propiedades al objeto Thing
+    addStringNoLocale(newThing, "https://schema.org/name", marker.name);
+    addStringNoLocale(newThing, "https://schema.org/comments", marker.comments);
+    addInteger(newThing, "https://schema.org/score", marker.score);
+    addStringNoLocale(newThing, "https://schema.org/categoria", marker.categoria);
+
+    // Añadir el objeto Thing al SolidDataset
+
+    const updatedDataset = setThing(myReadingList, newThing);
+
+    // Guardar los cambios en el pod
+    await saveSolidDatasetAt("https://storage.inrupt.com/c19e5e92-842f-44de-a1c2-4ee6b4b5bc77/", updatedDataset);
 }
 
 function Map() {
@@ -27,13 +97,27 @@ function Map() {
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
         setMarkers([...markers, marker]);
+        addMarkerr(marker);
     }
 
     const Markers = () => {
+        /*
+        const allThings = getThingAll(myReadingList);
+
+        return (<div>
+            {allThings.map((position, idx) =>
+            <Marker key={`marker-${idx}`} position={[0, 0]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
+                <Popup>
+                    <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
+                </Popup>
+            </Marker>
+            )}
+        </div>);
+        */
         return (
             <div>
                 {markers.map((position, idx) =>
-                    <Marker key={`marker-${idx}`} position={position.coords} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
+                    <Marker key={`marker-${idx}`} position={position.coords} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
                         <Popup>
                             <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
                         </Popup>
@@ -41,6 +125,7 @@ function Map() {
                 )}
             </div>
         )
+        
     }
 
     const Drawer = () => {
