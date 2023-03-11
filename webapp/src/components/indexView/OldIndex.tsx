@@ -2,7 +2,7 @@ import React from 'react'
 import { NavFragment } from '../Fragments/NavFragment'
 import Carousel from 'react-bootstrap/Carousel';
 
-export const HomePage = () => {
+export const OldIndex = () => {
   return (
     <div>
       <NavFragment />
