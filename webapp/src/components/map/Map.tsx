@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import L from 'leaflet';
+import L, { Icon } from 'leaflet';
 import MapDrawer from './drawer/MapDrawer';
 import AddPlaceDrawer from './drawer/MapDrawer';
+import markerIconPng from "leaflet/dist/images/marker-icon.png";
 
 
 export interface MarkerInfo {
@@ -32,7 +33,7 @@ function Map() {
         return (
             <div>
                 {markers.map((position, idx) =>
-                    <Marker key={`marker-${idx}`} position={position.coords}>
+                    <Marker key={`marker-${idx}`} position={position.coords} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
                         <Popup>
                             <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
                         </Popup>
