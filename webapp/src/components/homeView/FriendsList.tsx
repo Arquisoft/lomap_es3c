@@ -6,34 +6,41 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import path from 'path';
 
 const height = window.innerHeight * 0.37;
 const friends = ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
 
-const clickFriend = (friend: string) => {
-  //TODO funcionalidad relativa a amigos
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Pending Friend Function (' + friend + ')',
-  })
-};
-
-function renderRow(props: ListChildComponentProps) {
-  const { index, style } = props;
-  const friend = friends[index];
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton onClick={() => clickFriend(friend)}>
-        <ListItemText primary={friend} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
 
 export default function FriendsList() {
 
+  const navigate = useNavigate();
+
+  const clickFriend = (friend: string) => {
+    //TODO funcionalidad relativa a amigos
+  
+    navigate(`/amigo/${friend}`);
+  
+    // Swal.fire({
+    //   icon: 'error',
+    //   title: 'Oops...',
+    //   text: 'Pending Friend Function (' + friend + ')',
+    // })
+  };
+
+  function renderRow(props: ListChildComponentProps) {
+    const { index, style } = props;
+    const friend = friends[index];
+
+    return (
+      <ListItem style={style} key={index} component="div" disablePadding>
+        <ListItemButton onClick={() => clickFriend(friend)}>
+          <ListItemText primary={friend} />
+        </ListItemButton>
+      </ListItem>
+    );
+  }
 
   return (
     <Box

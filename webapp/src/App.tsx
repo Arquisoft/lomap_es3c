@@ -6,6 +6,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import LogIn from './components/login/login';
 import Map from './components/map/Map';
 import { OldIndex } from './components/indexView/OldIndex';
+import MapasAmigo from './components/Amigos/mapasAmigo';
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route path='/home' element={<Home/>} />
         <Route path='/login' element={<LogIn/>} />
         <Route path='/map' element={<Map/>} />
+        <Route path='/amigo/:id' element={<MapasAmigo/>} />
       </Routes>
     </div>
   );
