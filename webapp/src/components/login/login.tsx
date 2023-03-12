@@ -11,6 +11,7 @@ import {
   getDefaultSession,
   fetch
 } from "@inrupt/solid-client-authn-browser";
+import { redirect } from 'react-router-dom';
 
 const handleLogin =async function(e: React.FormEvent<HTMLFormElement>){
   e.preventDefault();

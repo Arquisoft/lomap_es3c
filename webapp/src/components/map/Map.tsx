@@ -50,8 +50,10 @@ async function getMarkers() {
 async function crearMarcadores() {
 
     try {
+        myReadingList = createSolidDataset();
+
+        const mypods = await getPodUrlAll("https://israel11.inrupt.net/", { fetch: fetch });
         // Attempt to retrieve the reading list in case it already exists.
-        myReadingList = await getSolidDataset("https://storage.inrupt.com/c19e5e92-842f-44de-a1c2-4ee6b4b5bc77/", { fetch: fetch });
         // Clear the list to override the whole list
         const items = getThingAll(myReadingList);
         items.forEach((item) => {
@@ -72,6 +74,9 @@ async function addMarkerr(marker: MarkerInfo) {
     myReadingList = await crearMarcadores();
     const newThing = createThing({ name: marker.name });
 
+    //const mypods = await getPodUrlAll("https://israel11.inrupt.net/public", { fetch: fetch });
+    //alert(mypods);
+
     // Añadir propiedades al objeto Thing
     addStringNoLocale(newThing, "https://schema.org/name", marker.name);
     addStringNoLocale(newThing, "https://schema.org/comments", marker.comments);
@@ -83,7 +88,11 @@ async function addMarkerr(marker: MarkerInfo) {
     const updatedDataset = setThing(myReadingList, newThing);
 
     // Guardar los cambios en el pod
-    await saveSolidDatasetAt("https://storage.inrupt.com/c19e5e92-842f-44de-a1c2-4ee6b4b5bc77/", updatedDataset);
+    let savedReadingList = await saveSolidDatasetAt(
+        "https://israel11.inrupt.net/public",
+        updatedDataset
+      );
+    alert(savedReadingList);
 }
 
 function Map() {
