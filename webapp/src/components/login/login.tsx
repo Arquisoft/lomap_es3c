@@ -20,22 +20,9 @@ const handleLogin =async function(e: React.FormEvent<HTMLFormElement>){
   let selectedIdp = selectedElement.options[selectedElement.selectedIndex].value; //Obtenemos el valor de la opcion seleccionada mediante el indice seleccionado
   await login({
     oidcIssuer: selectedIdp,
-    redirectUrl: window.location.href, //Url a la que nos llevara una vez logeado
+    redirectUrl: "http://localhost:3000/home", //Url a la que nos llevara una vez logeado
     clientName: "LoMap_es3c"
   });
-}
-
-handleRedirectAfterLogin();
-
-/*
-Funcion que procesa la informacion de inicio de sesion 
-*/
-async function handleRedirectAfterLogin() {
-  await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
-  const session = getDefaultSession();
-  if (session.info.isLoggedIn) {
-    alert("Logeado con exito: " + session.info.webId);
-  }
 }
 
 function logIn() {

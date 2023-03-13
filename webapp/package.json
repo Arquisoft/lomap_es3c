@@ -5,6 +5,7 @@
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@inrupt/solid-client-authn-browser": "^1.13.2",
+    "@inrupt/solid-ui-react": "^2.8.2",
     "@mui/icons-material": "^5.2.5",
     "@mui/material": "^5.11.12",
     "@mui/styled-engine-sc": "^5.11.11",
