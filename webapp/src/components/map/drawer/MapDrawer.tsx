@@ -12,8 +12,9 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import MapPlaceForm from '../formPlace/MapPlaceForm';
 
-interface DrawerInfo {
-    opened : boolean;
+export interface DrawerInfo {
+  opened : boolean;
+  onSubmit:any;
 }
 
 export default function AddPlaceDrawer(props:DrawerInfo) {
@@ -41,7 +42,7 @@ export default function AddPlaceDrawer(props:DrawerInfo) {
       sx={{ width: 350 }}
       role="presentation"
     >
-      <MapPlaceForm></MapPlaceForm>
+      <MapPlaceForm action={props.onSubmit}></MapPlaceForm>
     </Box>
   );
 
