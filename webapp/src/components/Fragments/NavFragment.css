@@ -1,6 +1,6 @@
 .NavFrag {
     display: flex;
-    background-color: #252525;
+    background-color: rgb(37, 37, 37);
     padding: 0, 2em;
     gap: 3rem;
     align-items: stretch;

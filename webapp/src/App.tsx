@@ -7,6 +7,7 @@ import LogIn from './components/login/login';
 import Map from './components/map/Map';
 import { OldIndex } from './components/indexView/OldIndex';
 import MapasAmigo from './components/Amigos/mapasAmigo';
+import FileNotFound from './components/Error404/FileNotFound';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
         <Route path='/login' element={<LogIn/>} />
         <Route path='/map' element={<Map/>} />
         <Route path='/amigo/:id' element={<MapasAmigo/>} />
+        <Route path='*' element={<FileNotFound/>} />
       </Routes>
     </div>
   );
