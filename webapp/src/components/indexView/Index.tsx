@@ -1,10 +1,10 @@
-import { Box, styled } from '@mui/material'
-import React from 'react'
+import { Box } from '@mui/material'
 import { ExtraInfo } from './ExtraInfo'
 import { Forms } from './Forms'
 import InitTopBar from './InitTopBar'
 
 export const Index = () => {
+  const x = true;
   return (
     <Box>
       <InitTopBar></InitTopBar>
