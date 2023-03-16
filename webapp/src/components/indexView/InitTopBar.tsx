@@ -1,34 +1,23 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import ImageComponent from '../Image';
 import Container from '@mui/material/Container';
-import Swal from 'sweetalert2';
 
-const goLogin = () => {
-  //TODO redirigir a ventana de login
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Pending Login Redirection Function',
-  })
-};
+interface Props {
+  setIndex: (index: number) => void;
+}
 
-const goRegister = () => {
-  //TODO redirigir a ventana de registro
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Pending Register Redirection Function',
-  })
-};
+export default function InitTopBar({ setIndex }: Props) {
 
-export default function InitTopBar() {
+  const goLogin = () => {
+    setIndex(0);
+  };
+  
+  const goRegister = () => {
+    setIndex(1);
+  };
   return (
     <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
       <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>

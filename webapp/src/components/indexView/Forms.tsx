@@ -1,4 +1,4 @@
-import {  Box, Button, TextField } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Carousel from 'react-bootstrap/Carousel';
@@ -7,10 +7,16 @@ import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-
 import { RegisterProvider } from './RegisterProvider'
 import { RegisterApp } from './RegisterApp'
 
-export const Forms = () => {
+interface Props {
+    index: number;
+    setIndex: (index: number) => void;
+  }
+
+
+export const Forms = ({ index, setIndex }: Props) => {
     //Carousel
-    const [carouselAutoplay, setCarouselAutoplay] = useState(5000);
-    const handleFocus = () => { setCarouselAutoplay(999999999); }
+    const [carouselAutoplay, setCarouselAutoplay] = useState<number | null>(5000);
+    const handleFocus = () => { setCarouselAutoplay(null); }
     const handleBlur = () => { setCarouselAutoplay(5000); }
 
     //Funcion para obtener los datos de sesión tras registro
@@ -51,7 +57,8 @@ export const Forms = () => {
         await handleIncomingRedirect();
         const session = getDefaultSession();
         if (session.info.isLoggedIn) {
-            if (session.info.webId === undefined) { session.info.webId = "";}
+            if (session.info.webId === undefined) { session.info.webId = ""; }
+            setIndex(1);
             const userWebId = session.info.webId?.replace('/profile/card#me', '');
             setPodReg(true);
             setWebId(userWebId);
@@ -60,16 +67,16 @@ export const Forms = () => {
                 icon: 'success',
                 title: 'Registro POD completado',
                 text: 'Ahora registrese y nosotros gestionaremos su POD',
-            });
+            })
             session.logout();
         }
     }
 
     return (
         <Box sx={{ width: "100%", height: "80vh", backgroundColor: 'rgba(25, 118, 210, 0.5)', paddingTop: "6.6vh" }}>
-            <Carousel variant='dark' interval={carouselAutoplay}>
+            <Carousel variant='dark' activeIndex={index} onSelect={setIndex} interval={carouselAutoplay} >
                 <Carousel.Item>
-                    <Form onSubmit={handleLogin}>
+                    <Form onSubmit={handleLogin} >
                         <Box sx={{
                             marginLeft: "25%", marginRight: "25%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
                             paddingTop: "3em", display: "flex", flexDirection: "column"
@@ -104,9 +111,9 @@ export const Forms = () => {
                 </Carousel.Item>
 
                 <Carousel.Item>
-                    {podReg ? <RegisterApp webId={webId}/> : <RegisterProvider/>}
+                    {podReg ? <RegisterApp webId={webId} /> : <RegisterProvider />}
                 </Carousel.Item>
             </Carousel>
         </Box>
-    )
-}
+    );
+};

@@ -2,9 +2,11 @@ import { Box, Button, TextField } from '@mui/material'
 import { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Swal from 'sweetalert2';
+
 type WebIdProps = {
-    webId: string; // Aquí se especifica que webId es de tipo string
+    webId: string; 
 }
+
 export const RegisterApp = ({ webId }: WebIdProps) => {
     //Carousel
     const [carouselAutoplay, setCarouselAutoplay] = useState(5000);
