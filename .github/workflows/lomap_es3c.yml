@@ -3,8 +3,6 @@ name: CI for LOMAP ES3C
 on: 
   push:
     branches: [ develop ]
-  pull:
-    branches: [ develop ]
   pull_request:
     branches: [ develop ]
 
