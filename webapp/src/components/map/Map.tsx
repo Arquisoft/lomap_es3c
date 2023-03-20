@@ -16,6 +16,7 @@ import {
 } from "@inrupt/solid-client";
 import { getDefaultSession, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
+import { createGeoJSONPoint } from './markUtils/MarkUtils';
 
 
 export interface MarkerInfo {
@@ -28,6 +29,13 @@ export interface MarkerInfo {
 
 function Map() {
     const session = useSession();
+
+    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
+
+    const [isSelected, setIsSelected] = useState(false);
+
+    const [markers, setMarkers] = useState<MarkerInfo[]>([]);
+
     let myReadingList: SolidDataset;
 
     async function getMarkers() {
@@ -43,40 +51,14 @@ function Map() {
 
     }
 
-    async function crearMarcadores() {
-
-        try {
-            myReadingList = createSolidDataset();
-
-            const mypods = await getPodUrlAll("https://israel11.inrupt.net/", { fetch: fetch });
-            // Attempt to retrieve the reading list in case it already exists.
-            // Clear the list to override the whole list
-            const items = getThingAll(myReadingList);
-            items.forEach((item) => {
-                myReadingList = removeThing(myReadingList, item);
-            });
-        } catch (error: any) {
-            if (typeof error.statusCode === "number" && error.statusCode === 404) {
-                // if not found, create a new SolidDataset (i.e., the reading list)
-                myReadingList = createSolidDataset();
-            } else {
-                console.error(error.message);
-            }
-        }
-        return myReadingList;
-    }
-
-    async function addMarkerr(marker: MarkerInfo) {
-        myReadingList = await crearMarcadores();
-        // Añadir el objeto Thing al SolidDataset
-
-        var json = new File([""], "filename.json", { type: "application/json" });
+    async function addMarkerToPod(marker: MarkerInfo) {
+        var markerFile = new File([createGeoJSONPoint(marker)], "filename.geojson", { type: "application/geo+json" });
 
         // Guardar los cambios en el pod
         let savedReadingList = await saveFileInContainer(
             "https://israel11.inrupt.net/public",
-            json,
-            { slug: json.name, contentType: json.type, fetch: session.fetch }
+            markerFile,
+            { slug: markerFile.name, contentType: markerFile.type, fetch: session.fetch }
         );
         alert(savedReadingList);
     }
@@ -88,24 +70,12 @@ function Map() {
     */
     async function handleRedirectAfterLogin() {
         await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
-        const session = getDefaultSession();
-        if (session.info.isLoggedIn) {
-            //alert("Logeado con exito: " + session.info.webId);
-        }
     }
-
-
-
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
-
-    const [isSelected, setIsSelected] = useState(false);
-
-    const [markers, setMarkers] = useState<MarkerInfo[]>([]);
 
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
         setMarkers([...markers, marker]);
-        addMarkerr(marker);
+        addMarkerToPod(marker);
     }
 
     const Markers = () => {
