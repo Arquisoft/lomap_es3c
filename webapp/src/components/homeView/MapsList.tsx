@@ -34,20 +34,19 @@ function renderRow(props: ListChildComponentProps) {
 
 export default function MapsList() {
 
-
   return (
     <Box
       sx={{ width: '100%', bgcolor: 'rgba(25, 118, 210, 1)' }}
     >
-      <FixedSizeList
-        height={height}
-        width={1000} //360
-        itemSize={46}
-        itemCount={sites.length}
-        overscanCount={5}
-      >
-        {renderRow}
-      </FixedSizeList>
+        <FixedSizeList
+          height={height}
+          width={1000} //360
+          itemSize={46}
+          itemCount={sites.length}
+          overscanCount={5}
+        >
+          {renderRow}
+        </FixedSizeList>
     </Box>
   );
 }
