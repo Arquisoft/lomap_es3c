@@ -1,16 +1,12 @@
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Avatar, Typography } from '@mui/material'
 import { useState } from 'react'
-import Form from 'react-bootstrap/Form';
 import Carousel from 'react-bootstrap/Carousel';
-import Swal from 'sweetalert2';
-import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-authn-browser";
 import { RegisterProvider } from './RegisterProvider'
-import { RegisterApp } from './RegisterApp'
 
 interface Props {
     index: number;
     setIndex: (index: number) => void;
-  }
+}
 
 
 export const Forms = ({ index, setIndex }: Props) => {
@@ -19,99 +15,43 @@ export const Forms = ({ index, setIndex }: Props) => {
     const handleFocus = () => { setCarouselAutoplay(null); }
     const handleBlur = () => { setCarouselAutoplay(5000); }
 
-    //Funcion para obtener los datos de sesión tras registro
-    handleRedirectAfterRegister();
-    const [podReg, setPodReg] = useState(false);
-    const [webId, setWebId] = useState('');
-
-    //Form Login
-    const [userLogin, setUserLogin] = useState('');
-    const [passLogin, setPassLogin] = useState('');
-
-    //Checks
-    const isBlank = (text: string) => {
-        return (text.length === 0);
-    }
-
-    //Login
-    const handleLogin = async function (e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        // TODO funcionalidad de login
-
-        if (isBlank(userLogin) || isBlank(passLogin)) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Algún campo vacío',
-                text: 'Revisa tus campos de nombre y contraseña',
-            });
-        }
-
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Pending Login Function',
-        })
-    }
-    //Manejar la sesion del proveedor
-    async function handleRedirectAfterRegister() {
-        await handleIncomingRedirect();
-        const session = getDefaultSession();
-        if (session.info.isLoggedIn) {
-            if (session.info.webId === undefined) { session.info.webId = ""; }
-            setIndex(1);
-            const userWebId = session.info.webId?.replace('/profile/card#me', '');
-            setPodReg(true);
-            setWebId(userWebId);
-            console.log(session.info.webId);
-            Swal.fire({
-                icon: 'success',
-                title: 'Registro POD completado',
-                text: 'Ahora registrese y nosotros gestionaremos su POD',
-            })
-            session.logout();
-        }
-    }
-
     return (
         <Box sx={{ width: "100%", height: "80vh", backgroundColor: 'rgba(25, 118, 210, 0.5)', paddingTop: "6.6vh" }}>
             <Carousel variant='dark' activeIndex={index} onSelect={setIndex} interval={carouselAutoplay} >
                 <Carousel.Item>
-                    <Form onSubmit={handleLogin} >
-                        <Box sx={{
-                            marginLeft: "25%", marginRight: "25%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
-                            paddingTop: "3em", display: "flex", flexDirection: "column"
-                        }}>
-
-                            <Box sx={{ fontSize: "1.3em", color: "black" }}><strong> INICIAR SESIÓN </strong></Box>
-
-                            <Box sx={{ height: "7vh" }}></Box>
-
-                            <Box sx={{ marginLeft: "35%", marginRight: "35%", width: "30%" }}>
-                                <TextField id="userLogin" label="Usuario" type="text" autoComplete="current-user" variant="filled" required
-                                    InputLabelProps={{ style: { color: 'black' }, focused: true }} onFocus={handleFocus} onBlur={handleBlur} onChange={(event) => setUserLogin(event.target.value)} />
-                            </Box>
-
-                            <Box sx={{ height: "5vh" }}></Box>
-
-                            <Box sx={{ marginLeft: "35%", marginRight: "35%", width: "30%" }}>
-                                <TextField id="passLogin" label="Contraseña" type="password" autoComplete="current-password" variant="filled" required
-                                    InputLabelProps={{ style: { color: 'black' }, focused: true }} onFocus={handleFocus} onBlur={handleBlur} onChange={(event) => setPassLogin(event.target.value)} />
-                            </Box>
-
-                            <Box sx={{ height: "10vh" }}></Box>
-
-                            <Box>
-                                <Button variant="outlined" sx={{ color: "black", border: "solid black 0.1em" }} type="submit">
-                                    Entrar
-                                </Button>
-                            </Box>
-
-                        </Box>
-                    </Form>
+                    <RegisterProvider />
                 </Carousel.Item>
-
                 <Carousel.Item>
-                    {podReg ? <RegisterApp webId={webId} /> : <RegisterProvider />}
+                    <Box sx={{ marginLeft: "10%", marginRight: "10%",display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', p: 4, backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em" }} onFocus={handleFocus} onBlur={handleBlur}>
+                        <Typography variant="h5" sx={{ mb: 2 }}>Proyecto LOMAP_ES3C</Typography>
+                        <Typography variant="body1" sx={{ mb: 4 }}>Aplicación de mapas personalizados sobre lugares y negocios locales de la ciudad de Bruselas </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Avatar alt="Participante 1" src="/uo282294.jpg" sx={{ width: 80, height: 80, mb: 1 }} />
+                                <Typography variant="subtitle1">Jorge Casatejada Santamarta</Typography>
+                                <Typography variant="body2">UO282294</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Avatar alt="Participante 2" src="/uo282936.jpg" sx={{ width: 80, height: 80, mb: 1 }} />
+                                <Typography variant="subtitle1">Alex Rodríguez Valdés</Typography>
+                                <Typography variant="body2">UO282936</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Avatar alt="Participante 3" src="/uo282162.jpg" sx={{ width: 80, height: 80, mb: 1 }} />
+                                <Typography variant="subtitle1">Israel Solís Iglesias</Typography>
+                                <Typography variant="body2">UO282162</Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Avatar alt="Participante 4" src="/uo282867.jpg" sx={{ width: 80, height: 80, mb: 1 }} />
+                                <Typography variant="subtitle1">Enrique Hilanderas Corbillón</Typography>
+                                <Typography variant="body2">UO282867</Typography>
+                            </Box>
+                        </Box>
+                        <Typography variant="body1" sx={{ mt: 4 }}>Información extra:</Typography>
+                        <Typography variant="body2">Proyecto realizado para Arquitectura del Software, UniOvi</Typography>
+
+                        <Box sx={{ height: "3vh" }}></Box>
+                    </Box>
                 </Carousel.Item>
             </Carousel>
         </Box>
