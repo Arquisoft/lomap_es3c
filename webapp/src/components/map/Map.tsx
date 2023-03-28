@@ -79,23 +79,14 @@ function Map() {
     }
 
     const Markers = () => {
-        /*
-        const allThings = getThingAll(myReadingList);
-
-        return (<div>
-            {allThings.map((position, idx) =>
-            <Marker key={`marker-${idx}`} position={[0, 0]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                <Popup>
-                    <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-                </Popup>
-            </Marker>
-            )}
-        </div>);
-        */
         return (
             <div>
                 {markers.map((position, idx) =>
-                    <Marker key={`marker-${idx}`} position={position.coords} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
+                    <Marker key={`marker-${idx}`} position={position.coords} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] }) } eventHandlers={{
+                        click: (e) => {
+                          alert('marker clicked')
+                        },
+                      }}>
                         <Popup>
                             <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
                         </Popup>
