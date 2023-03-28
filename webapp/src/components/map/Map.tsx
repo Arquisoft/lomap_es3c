@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import './Map.css';
 import L, { Icon } from 'leaflet';
 import MapDrawer from './drawer/MapDrawer';
-import AddPlaceDrawer from './drawer/MapDrawer';
+import PlaceDrawer from './drawer/MapDrawer';
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import {
     createSolidDataset,
@@ -12,7 +12,8 @@ import {
     saveFileInContainer,
     getThingAll,
     removeThing,
-    SolidDataset
+    SolidDataset,
+    getFile
 } from "@inrupt/solid-client";
 import { getDefaultSession, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
@@ -52,7 +53,7 @@ function Map() {
     }
 
     async function addMarkerToPod(marker: MarkerInfo) {
-        var markerFile = new File([createGeoJSONPoint(marker)], "filename.geojson", { type: "application/geo+json" });
+        var markerFile = new File([createGeoJSONPoint(marker)], "filenameprueba.geojson", { type: "application/geo+json" });
 
         // Guardar los cambios en el pod
         let savedReadingList = await saveFileInContainer(
@@ -61,6 +62,13 @@ function Map() {
             { slug: markerFile.name, contentType: markerFile.type, fetch: session.fetch }
         );
         alert(savedReadingList);
+
+        getMarkersFromPod();
+    }
+
+    async function getMarkersFromPod(){
+        const file = await getFile("https://israel11.inrupt.net/public/filenameprueba.geojson", { fetch: session.fetch });
+        alert(file);
     }
 
     handleRedirectAfterLogin();
@@ -98,8 +106,7 @@ function Map() {
     }
 
     const Drawer = () => {
-
-        const map = useMapEvents({
+        useMapEvents({
             click(e: { latlng: { lat: number; lng: number; }; }) {
                 setSelectedPosition([
                     e.latlng.lat,
@@ -114,7 +121,7 @@ function Map() {
         return (
             selectedPosition ?
                 <div>
-                    <AddPlaceDrawer opened={isSelected} onSubmit={addMarker}></AddPlaceDrawer>
+                    <PlaceDrawer opened={isSelected} onSubmit={addMarker}></PlaceDrawer>
                 </div>
                 : null
         )

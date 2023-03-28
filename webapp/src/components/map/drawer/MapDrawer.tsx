@@ -17,7 +17,7 @@ export interface DrawerInfo {
   onSubmit:any;
 }
 
-export default function AddPlaceDrawer(props:DrawerInfo) {
+export default function PlaceDrawer(props:DrawerInfo) {
 
   const [state, setState] = React.useState(props.opened);
 
