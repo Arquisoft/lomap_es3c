@@ -14,7 +14,7 @@ import {
 } from "@inrupt/solid-client";
 import {handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
-import { createGeoJSONPoint } from './markUtils/MarkUtils';
+import { addMarkerToPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 
 
@@ -27,6 +27,7 @@ export interface MarkerInfo {
 }
 
 function Map() {
+
     const session = useSession();
 
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
@@ -50,25 +51,6 @@ function Map() {
 
     }
 
-    async function addMarkerToPod(marker: MarkerInfo) {
-        let markerFile = new File([createGeoJSONPoint(marker)], "filenameprueba.geojson", { type: "application/geo+json" });
-
-        // Guardar los cambios en el pod
-        let savedReadingList = await saveFileInContainer(
-            "https://israel11.inrupt.net/public",
-            markerFile,
-            { slug: markerFile.name, contentType: markerFile.type, fetch: session.fetch }
-        );
-        alert(savedReadingList);
-
-        getMarkersFromPod();
-    }
-
-    async function getMarkersFromPod(){
-        const file = await getFile("https://israel11.inrupt.net/public/filenameprueba.geojson", { fetch: session.fetch });
-        alert(file);
-    }
-
     handleRedirectAfterLogin();
 
     /*
@@ -81,7 +63,7 @@ function Map() {
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
         setMarkers([...markers, marker]);
-        addMarkerToPod(marker);
+        addMarkerToPod(marker,session);
     }
 
     const Markers = () => {
