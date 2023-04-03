@@ -24,6 +24,7 @@ const Content = styled(Box)({
   flexDirection: "row"
 })
 
+
 //Manejar la sesion del proveedor
 async function handleRedirectAfterIdentification() {
   await handleIncomingRedirect();
@@ -37,11 +38,11 @@ async function handleRedirectAfterIdentification() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-          provider: provider,
-          userName: userName,
-          webId: userWebId
+        provider: provider,
+        userName: userName,
+        webId: userWebId
       })
-  });
+    });
   }
 }
 

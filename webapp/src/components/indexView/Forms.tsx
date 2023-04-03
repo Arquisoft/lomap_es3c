@@ -8,7 +8,6 @@ interface Props {
     setIndex: (index: number) => void;
 }
 
-
 export const Forms = ({ index, setIndex }: Props) => {
     //Carousel
     const [carouselAutoplay, setCarouselAutoplay] = useState<number | null>(5000);
@@ -23,7 +22,7 @@ export const Forms = ({ index, setIndex }: Props) => {
                 </Carousel.Item>
                 <Carousel.Item>
                     <Box sx={{ marginLeft: "10%", marginRight: "10%",display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', p: 4, backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em" }} onFocus={handleFocus} onBlur={handleBlur}>
-                        <Typography variant="h5" sx={{ mb: 2 }}>Proyecto LOMAP_ES3C</Typography>
+                        <Typography variant="h4" sx={{ mb: 2, color: "white", fontWeight: "bold", textShadow: "2px 2px black" }}>Proyecto LOMAP_ES3C</Typography>
                         <Typography variant="body1" sx={{ mb: 4 }}>Aplicación de mapas personalizados sobre lugares y negocios locales de la ciudad de Bruselas </Typography>
                         <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

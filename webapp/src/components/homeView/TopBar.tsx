@@ -12,6 +12,8 @@ import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
 import { Button } from '@mui/material';
+import { logout } from "@inrupt/solid-client-authn-browser";
+import { useNavigate } from 'react-router-dom';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -30,6 +32,8 @@ function TopBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const navigate = useNavigate();
 
   const miPerfil = () => {
     //TODO funcionalidad relativa al perfil del usuario
@@ -51,14 +55,17 @@ function TopBar() {
     })
   };
 
-  const cerrarSesion = () => {
+  const cerrarSesion = async () => {
     //TODO funcionalidad relativa a la sesión del usuario
     handleCloseUserMenu();
-    Swal.fire({
+
+    await logout();
+    navigate(`/`);
+    /* Swal.fire({
       icon: 'error',
       title: 'Oops...',
       text: 'Pending Session Function',
-    })
+    }) */
   };
 
   const nuevoMapa = () => {

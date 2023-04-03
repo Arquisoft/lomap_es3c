@@ -18,6 +18,7 @@ export default function InitTopBar({ setIndex }: Props) {
   const goInfo = () => {
     setIndex(1);
   };
+  
   return (
     <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
       <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>
