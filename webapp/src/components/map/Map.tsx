@@ -2,22 +2,20 @@ import { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import L, { Icon } from 'leaflet';
+import L, { Icon, LatLng } from 'leaflet';
 import MapDrawer from './drawer/MapDrawer';
 import PlaceDrawer from './drawer/MapDrawer';
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import {
-    createSolidDataset,
-    getPodUrlAll,
     saveFileInContainer,
     getThingAll,
-    removeThing,
     SolidDataset,
     getFile
 } from "@inrupt/solid-client";
-import { getDefaultSession, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
+import {handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
 import { createGeoJSONPoint } from './markUtils/MarkUtils';
+import MapEventHandler from './MapEventHandler';
 
 
 export interface MarkerInfo {
@@ -53,7 +51,7 @@ function Map() {
     }
 
     async function addMarkerToPod(marker: MarkerInfo) {
-        var markerFile = new File([createGeoJSONPoint(marker)], "filenameprueba.geojson", { type: "application/geo+json" });
+        let markerFile = new File([createGeoJSONPoint(marker)], "filenameprueba.geojson", { type: "application/geo+json" });
 
         // Guardar los cambios en el pod
         let savedReadingList = await saveFileInContainer(
@@ -105,26 +103,17 @@ function Map() {
 
     }
 
-    const Drawer = () => {
-        useMapEvents({
-            click(e: { latlng: { lat: number; lng: number; }; }) {
-                setSelectedPosition([
-                    e.latlng.lat,
-                    e.latlng.lng
-                ]);
-                //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
-                setIsSelected(true);
-            },
-        })
+    const mapOnClick = (e :LatLng) =>{
+        setSelectedPosition([
+            e.lat,
+            e.lng
+        ]);
+        //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
+        setIsSelected(true);
+    }
 
-        //Retornamos el menú lateral si hay una posición seleccionada
-        return (
-            selectedPosition ?
-                <div>
-                    <PlaceDrawer opened={isSelected} onSubmit={addMarker}></PlaceDrawer>
-                </div>
-                : null
-        )
+    const toggleDrawer = (isSelected:boolean) =>{
+        setIsSelected(isSelected);
     }
 
     return (
@@ -134,8 +123,9 @@ function Map() {
             zoom={4}
             maxZoom={18}
         >
+            <MapEventHandler onClick={mapOnClick} />
             <Markers></Markers>
-            <Drawer />
+            <PlaceDrawer opened={isSelected} onSubmit={addMarker}  toggleDrawer={toggleDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

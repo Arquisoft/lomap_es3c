@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-import type { AlertColor } from '@mui/material/Alert';
 import ComboBoxCategoria from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
 import {MarkerInfo} from '../Map';
-import { DrawerInfo } from '../drawer/MapDrawer';
 
-interface onSubmit{
+interface FormProps{
   action:any;
+  isReadOnly:boolean;
 }
 
-function MapPlaceForm(props:onSubmit): JSX.Element {
+function MapPlaceForm(props:FormProps): JSX.Element {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Evita que el formulario se envíe automáticamente
     // Aquí se debe crear el objeto a partir de los datos del formulario
     const form = document.getElementById('formMarker') as HTMLFormElement;
     const formData = new FormData(form);
-    var marker: MarkerInfo = {
+    let marker: MarkerInfo = {
       name: formData.get('name') as string,
       categoria:event.currentTarget[1].nodeValue ==null?'a':event.currentTarget[1].nodeValue,
       comments:formData.get('comments') as string,
