@@ -14,7 +14,7 @@ import {
 } from "@inrupt/solid-client";
 import {handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
-import { addMarkerToPod} from './markUtils/MarkUtils';
+import { addMarkerToPod, getMarkersFromPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 
 
@@ -97,6 +97,8 @@ function Map() {
     const toggleDrawer = (isSelected:boolean) =>{
         setIsSelected(isSelected);
     }
+
+    getMarkersFromPod(session);
 
     return (
         <MapContainer
