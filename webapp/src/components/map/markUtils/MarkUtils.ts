@@ -1,6 +1,6 @@
 import { getFile, overwriteFile } from "@inrupt/solid-client";
 import { SessionInfo } from "@inrupt/solid-ui-react/dist/src/hooks/useSession";
-import { JsonLdDocument } from "jsonld";
+import { JsonLdDocument,fromRDF } from "jsonld";
 import { MarkerInfo } from "../Map";
 
 export function createJSONLDPoint(marker: MarkerInfo): File {
@@ -28,7 +28,7 @@ export async function addMarkerToPod(marker: MarkerInfo,session:SessionInfo) {
   // Guardar los cambios en el pod
   try{
     await overwriteFile(
-      "https://israel11.inrupt.net/private/locations.jsonld",
+      "https://israel11.inrupt.net/private/locations",
       markerFile,
       { contentType: markerFile.type, fetch: session.fetch }
     );
@@ -40,10 +40,18 @@ export async function addMarkerToPod(marker: MarkerInfo,session:SessionInfo) {
 export async function getMarkersFromPod(session:SessionInfo){
   let file;
   try{
-    file = await getFile("https://israel11.inrupt.net/private/locations.jsonld", { fetch: session.fetch });
+    file = await getFile("https://israel11.inrupt.net/private/locations", { fetch: session.fetch });
   }catch(e){
     let blob = new Blob([], { type: "application/ld+json" });
     file =  new File([blob], "locations.jsonld", { type: blob.type });
   }
-  alert(file)
+  const reader = new FileReader();
+reader.readAsText(file);
+
+reader.onload = async () => {
+  const content = reader.result as string;
+  const jsonld = JSON.parse(content);
+  alert(jsonld.category)
+};
 }
+

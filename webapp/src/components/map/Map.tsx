@@ -58,6 +58,7 @@ function Map() {
     */
     async function handleRedirectAfterLogin() {
         await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
+        getMarkersFromPod(session);
     }
 
     const addMarker = (marker: MarkerInfo) => {
@@ -97,9 +98,7 @@ function Map() {
     const toggleDrawer = (isSelected:boolean) =>{
         setIsSelected(isSelected);
     }
-
-    getMarkersFromPod(session);
-
+    
     return (
         <MapContainer
             className="map"
