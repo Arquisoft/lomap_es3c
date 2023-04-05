@@ -21,11 +21,10 @@ function App() {
         <Route path='/home' element={<Home/>} />
         <Route path='/login' element={<LogIn/>} />
         <Route path='/map' element={<Map/>} />
-        <Route path='/amigo/:id' element={<MapasAmigo/>} />
         <Route path='*' element={<FileNotFound/>} />
       </Routes>
     </div>
   );
 }
-
+//<Route path='/amigo/:id' element={<MapasAmigo/>} />
 export default App;

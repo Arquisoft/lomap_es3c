@@ -9,24 +9,27 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import path from 'path';
 
+import { useFriendsList } from '../Amigos/podsFriends';
+
+
 const height = window.innerHeight * 0.37;
 const friends = ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
 
 
-export default function FriendsList() {
-
+export default function FriendsList() {  
+  
+  const friendsList = useFriendsList();
+  
   const navigate = useNavigate();
 
   const clickFriend = (friend: string) => {
     //TODO funcionalidad relativa a amigos
-  
-    navigate(`/amigo/${friend}`);
-  
-    // Swal.fire({
-    //   icon: 'error',
-    //   title: 'Oops...',
-    //   text: 'Pending Friend Function (' + friend + ')',
-    // })
+   
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Pending Friend Function (' + friend + ')',
+    })
   };
 
   function renderRow(props: ListChildComponentProps) {
