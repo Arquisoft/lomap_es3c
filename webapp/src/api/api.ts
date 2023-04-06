@@ -19,3 +19,18 @@ export async function getUsers():Promise<User[]>{
     //The objects returned by the api are directly convertible to User objects
     return response.json()
 }
+
+// BBDD Conf 4/6 - Invocación a la RestAPI
+/*
+export async function pruebaBBDD(data:String){
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint+'/prueba/bbdd', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({'data':data})
+  });
+  switch (response.status) {
+    case 200: return response.json();
+  }
+}
+*/

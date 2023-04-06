@@ -1,5 +1,8 @@
 import express, { Request, Response, Router } from 'express';
 import {check} from 'express-validator';
+import Prueba from './src/pruebaSchema';
+
+const mongoose = require('mongoose');
 
 const api:Router = express.Router()
 
@@ -32,5 +35,18 @@ api.post(
     return res.sendStatus(200);
   }
 );
+
+// BBDD Conf 5/6 - Método que implementa el GET/POST
+/*
+api.post(
+  "/prueba/bbdd",
+  async (req: Request, res: Response): Promise<Response> => {
+    let data = req.body.data;
+    const pruebaData = new Prueba({data : data});
+    pruebaData.save();
+    return res.status(200).send({back: "Prueba Hecha"});
+  }
+)
+*/
 
 export default api;
