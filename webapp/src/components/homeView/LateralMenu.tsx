@@ -10,8 +10,9 @@ import { Box } from '@mui/material';
 import VirtualizedList from './MapsList';
 import MapsList from './MapsList';
 import FriendsList from './FriendsList';
+import { MapMarkersState } from '../map/Map';
 
-export default function LateralMenu() {
+export default function LateralMenu(props:MapMarkersState) {
 
 
   return (
@@ -22,7 +23,7 @@ export default function LateralMenu() {
             <ListItemText><strong>MIS MAPAS</strong></ListItemText>
           </MenuItem>
           <Divider sx={{opacity: 1}}/>
-          <MapsList></MapsList>
+          <MapsList markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap}></MapsList>
         </Box>
 
         <Box sx={{borderTop: "solid black 0.25em", paddingTop: "0.5em"}}>

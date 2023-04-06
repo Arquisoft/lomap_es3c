@@ -5,7 +5,7 @@ import { MarkerInfo } from "../Map";
 
 let file: any;
 
-export async function createJSONLDPoint(marker: MarkerInfo) {
+export async function createJSONLDPoint(selectedMap: string, marker: MarkerInfo) {
   const { name, comments, score, categoria, coords } = marker;
 
   let place: JsonLdDocument = {
@@ -25,7 +25,9 @@ export async function createJSONLDPoint(marker: MarkerInfo) {
   // Parsea el contenido JSON-LD en un objeto JavaScript
   const jsonld = JSON.parse(content);
 
-  jsonld.push(place);
+  const actualMap = jsonld.find((map: { name: string; }) => map.name === selectedMap);
+
+  actualMap.locations.push(place);
 
   // Crea un nuevo archivo JSON-LD con el objeto actualizado
   const updatedContent = JSON.stringify(jsonld);
@@ -35,14 +37,16 @@ export async function createJSONLDPoint(marker: MarkerInfo) {
   return updatedFile;
 }
 
-export async function addMarkerToPod(marker: MarkerInfo, session: SessionInfo) {
+export async function addMarkerToPod(selectedMap: string, marker: MarkerInfo, session: SessionInfo) {
 
-  let markerFile = await createJSONLDPoint(marker);
+  await getFileFromPod(session);
+
+  let markerFile = await createJSONLDPoint(selectedMap, marker);
 
   // Guardar los cambios en el pod
   try {
     await overwriteFile(
-      "https://israel11.inrupt.net/private/locations",
+      "https://israel11.inrupt.net/private/maps",
       markerFile,
       { contentType: markerFile.type, fetch: session.fetch }
     );
@@ -51,25 +55,63 @@ export async function addMarkerToPod(marker: MarkerInfo, session: SessionInfo) {
   }
 }
 
-export async function getMarkersFromPod(session: SessionInfo) {
+export async function getMarkersOfMapFromPod(session: SessionInfo, mapName: string) {
+  await getFileFromPod(session);
   try {
-    file = await getFile("https://israel11.inrupt.net/private/locations", { fetch: session.fetch });
+    // Lee el contenido del archivo JSON-LD como una cadena
+    const content = await file.text();
+    // Parsea el contenido JSON-LD en un objeto JavaScript
+    const parsedContent = JSON.parse(content);
+
+    const map = parsedContent.maps.find((map: { name: string; }) => map.name === mapName);
+
+    const markers: MarkerInfo[] = map.spatialCoverage.map((marker: any) => ({
+      name: marker.name,
+      comments: marker.comments,
+      score: marker.score,
+      categoria: marker.categoria,
+      coords: [marker.latitude, marker.longitude]
+    }));
+
+    return markers;
   } catch (e) {
-    let blob = new Blob([], { type: "application/ld+json" });
-    file = new File([blob], "locations.jsonld", { type: blob.type });
+    console.error(e)
   }
-  // Lee el contenido del archivo JSON-LD como una cadena
-  const content = await file.text();
-  // Parsea el contenido JSON-LD en un objeto JavaScript
-  const parsedContent = JSON.parse(content);
+}
 
-  const markers:MarkerInfo[] = parsedContent.map((marker: any) => ({
-    name: marker.name,
-    comments: marker.comments,
-    score: marker.score,
-    categoria: marker.categoria,
-    coords: [marker.latitude, marker.longitude]
-  }));
+export async function getMapsFromPod(session: SessionInfo) {
+  await getFileFromPod(session);
+  try {
+    // Lee el contenido del archivo JSON-LD como una cadena
+    const content = await file.text();
+    // Parsea el contenido JSON-LD en un objeto JavaScript
+    const parsedContent = JSON.parse(content);
+    return parsedContent.maps.map((map: { name: string; }) => map.name);
+  } catch (e) {
+    console.error(e);
+  }
+}
 
-  return markers;
+export async function getFileFromPod(session: SessionInfo) {
+  try {
+    file = await getFile("https://israel11.inrupt.net/private/maps", { fetch: session.fetch });
+  } catch (e) {
+    let maps: JsonLdDocument = {
+      "maps": []
+    };
+    let jsonString = JSON.stringify(maps);
+    let blob = new Blob([jsonString], { type: "application/ld+json" });
+    file = new File([blob], "maps.jsonld", { type: blob.type });
+    // Guardar los cambios en el pod
+    try {
+      await overwriteFile(
+        "https://israel11.inrupt.net/private/maps",
+        file,
+        { contentType: file.type, fetch: session.fetch }
+      );
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
 }

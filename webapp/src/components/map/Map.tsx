@@ -14,9 +14,10 @@ import {
 } from "@inrupt/solid-client";
 import {handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
-import { addMarkerToPod, getMarkersFromPod} from './markUtils/MarkUtils';
+import { addMarkerToPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
+import e from 'express';
 
 
 export interface MarkerInfo {
@@ -27,30 +28,24 @@ export interface MarkerInfo {
     coords: [number, number];
 }
 
-function Map() {
+export interface MapMarkersState{
+    markers:any;
+    setMarkers:any;
+    selectedMap:any;
+    setSelectedMap:any;
+}
+
+function Map(props:MapMarkersState) {
 
     const session = useSession();
-
+    
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
     const [isSelected, setIsSelected] = useState(false);
 
-    const [markers, setMarkers] = useState<MarkerInfo[]>([]);
-
-    handleRedirectAfterLogin();
-
-    /*
-    Funcion que procesa la informacion de inicio de sesion 
-    */
-    async function handleRedirectAfterLogin() {
-        await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
-        let markersFromPod = await getMarkersFromPod(session);
-        setMarkers(markersFromPod);
-    }
-
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
-        addMarkerToPod(marker,session);
+        addMarkerToPod(props.selectedMap,marker,session);
     }
 
     const mapOnClick = (e :LatLng) =>{
@@ -74,7 +69,7 @@ function Map() {
             maxZoom={18}
         >
             <MapEventHandler onClick={mapOnClick} />
-            <Markers marker={markers}></Markers>
+            <Markers marker={props.markers}></Markers>
             <PlaceDrawer opened={isSelected} onSubmit={addMarker}  toggleDrawer={toggleDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
