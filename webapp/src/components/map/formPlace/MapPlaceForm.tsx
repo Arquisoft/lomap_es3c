@@ -8,6 +8,8 @@ import ComboBoxCategoria from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
 import {MarkerInfo} from '../Map';
 import { DrawerInfo } from '../drawer/MapDrawer';
+import { Box } from '@mui/material';
+import Swal from 'sweetalert2';
 
 interface onSubmit{
   action:any;
@@ -29,22 +31,33 @@ function MapPlaceForm(props:onSubmit): JSX.Element {
       // Aquí se deben agregar las propiedades del objeto nuevo
     };
     props.action(marker); // Añade el objeto a la lista
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Marcador añadido correctamente',
+      showConfirmButton: false,
+      timer: 2000
+    })
   }
 
   return (
-    <>
-      <h2 className='text-center mb-5'>Añade un lugar</h2>
+    <Box sx={{backgroundColor:"rgba(25, 118, 210, 0.8)", paddingRight: "1em"}}>
+      <Box sx={{height:"1em"}}/>
+      <h2 className='text-center mb-5'><i>Añade un lugar</i></h2>
       <form name="addPlace" id='formMarker' onSubmit={handleSubmit}>
         <div className='d-flex flex-column justify-content-center'>
-          <label htmlFor='place-name' className='text-center'>Nombre</label>
-          <TextField id="place-name" name='name' className='m-2' label="Nombre" variant="outlined" />
+          <label htmlFor='place-name' className='text-center'><strong>Nombre</strong></label>
+          <TextField 
+                InputLabelProps={{ style: { color: 'black' }, focused: true}} id="place-name" name='name' className='m-2' label="Nombre" variant="outlined" />
         </div>
+      <Box sx={{height:"1em"}}/>
         <div className='d-flex flex-column justify-content-center'>
-          <label htmlFor='combobox-category' className='text-center'>Categoria</label>
+          <label htmlFor='combobox-category' className='text-center'><strong>Categoria</strong></label>
           <ComboBoxCategoria id='combobox-category'></ComboBoxCategoria>
         </div>
+      <Box sx={{height:"1em"}}/>
         <div className='d-flex flex-column justify-content-center'>
-          <label htmlFor='comments' className='text-center'>Comentarios</label>
+          <label htmlFor='comments' className='text-center'><strong>Comentarios</strong></label>
           <TextField
             name='comments'
             id="comments"
@@ -52,18 +65,28 @@ function MapPlaceForm(props:onSubmit): JSX.Element {
             className='m-2'
             multiline
             maxRows={4}
+            InputLabelProps={{ style: { color: 'black' }, focused: true}}
           />
         </div>
+      <Box sx={{height:"1em"}}/>
         <div className='d-flex flex-column justify-content-center m-2'>
-          <label htmlFor='score' className='text-center'>Puntuación</label>
+          <label htmlFor='score' className='text-center'><strong>Puntuación</strong></label>
           <SliderMapPlace id='score'></SliderMapPlace>
         </div>
+      <Box sx={{height:"3em"}}/>
         <div className='text-center'>
-          <Button variant="contained" type="submit" sx={{ my: 2 }}>Añadir lugar</Button>
+          <Button variant="contained" type="submit" sx={{ 
+                                                          my: 2, 
+                                                          backgroundColor: "black", 
+                                                          '&:hover': {
+                                                            bgcolor: 'black',
+                                                            color: 'white',
+                                                          } 
+          }}>Añadir lugar</Button>
         </div>
-
+      <Box sx={{height:"3.4em"}}/>
       </form>
-    </>
+    </Box>
   );
 }
 

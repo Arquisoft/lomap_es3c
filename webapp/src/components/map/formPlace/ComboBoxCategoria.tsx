@@ -13,7 +13,7 @@ export default function ComboBoxCategoria(props:Identity) {
       options={categories}
       className='m-2'
       sx={{ width: 'auto' }}
-      renderInput={(params) => <TextField {...params} label="Categoría" />}
+      renderInput={(params) => <TextField {...params} label="Categoría" InputLabelProps={{ style: { color: 'black' } }}/>}
     />
   );
 }
