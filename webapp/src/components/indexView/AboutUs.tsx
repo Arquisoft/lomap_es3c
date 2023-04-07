@@ -10,11 +10,11 @@ export const AboutUs = () => {
     return (
         <Box sx={{ 
             marginLeft: "25%", marginRight: "25%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
-            paddingTop: "3em", display: 'flex', flexDirection: 'column', alignItems: 'center'
+            paddingTop: "1.3em", display: 'flex', flexDirection: 'column', alignItems: 'center'
         }} >
             <Typography variant="h4" sx={{ mb: 2, color: "white", fontWeight: "bold", textShadow: "2px 2px black" }}>Sobre el proyecto</Typography>
             <Typography variant="body1" sx={{ mb: 4, marginBottom: "0.25em" }}>La empresa HappySw se ha propuesto desarrollar un sistema de mapas personalizados. </Typography>
-            <Typography variant="body1" sx={{ mb: 4 }}>La entidad solicitante ha sido el ayuntamiento de Bruselas.  </Typography>
+            <Typography variant="body1" sx={{ mb: 4, marginBottom: "0.25em" }}>La entidad solicitante ha sido el ayuntamiento de Bruselas.  </Typography>
             <Typography variant="body1" sx={{ mb: 4 }}>El equido de desarrollo está constituido por:  </Typography>
             <Box sx={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', width: '100%' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
