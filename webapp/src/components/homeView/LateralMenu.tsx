@@ -10,11 +10,11 @@ import { Box, Collapse } from '@mui/material';
 import VirtualizedList from './MapsList';
 import MapsList from './MapsList';
 import FriendsList from './FriendsList';
-import {LateralMenuInfo, MapListInfo, MapMarkersState } from '../map/Map';
+import {MapInfo } from '../map/Map';
 import { useState } from 'react';
 import MapListAux from './MapListAux';
 
-export default function LateralMenu(props:LateralMenuInfo) {
+export default function LateralMenu(props:MapInfo) {
 
   const [openMaps, setOpenMaps] = useState(false);
 
