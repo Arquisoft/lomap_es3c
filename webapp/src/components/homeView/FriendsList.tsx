@@ -18,23 +18,48 @@ export default function FriendsList() {
   //}
 
   const loadFriends = () => {
-    // CARGA DE AMIGOS DEL USUARIO REGISTRADO
+    // TODO: CARGA DE AMIGOS DEL USUARIO REGISTRADO
 
     return ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
+  }
+
+  const loadMapsForFriend = (friend: string) => {
+    // TODO: CARGA DE MAPAS DEL AMIGOS PULSADO
+
+    return ['Mapa1', 'Mapa2', 'Mapa3'];
   }
 
   const height = window.innerHeight * 0.37;
   const friends =  loadFriends();
 
   const clickFriend = (friend: string) => {
-    //pruebaBBDD(friend).then(back => console.log(back.back));
+    const maps = loadMapsForFriend(friend);
 
-    // CARGA DE LA VENTANA DEL AMIGO AL PULSAR SOBRE ÉL
+    const mapsObj: {[key: string]: string} = {};
+    maps.forEach((m) => {
+      mapsObj[m] = m;
+    });
 
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Friend Function (' + friend + ')',
+      title: 'Mapas de ' + friend,
+      input: 'select',
+      inputOptions: {
+        'Mapas': mapsObj
+      },
+      inputPlaceholder: 'Seleciona un mapa',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          console.log(value);
+          if (value === '') {
+            resolve('Debes seleccionar un mapa')
+          } else {
+            // TODO: SE MUESTRA EL MAPA SELECCIONADO
+
+            Swal.close();
+          }
+        })
+      }
     })
   };
 
