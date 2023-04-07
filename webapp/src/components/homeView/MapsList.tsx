@@ -8,13 +8,33 @@ import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapMarkersState } from '../map/Map';
+import { useState } from 'react';
+import { getMapsFromPod } from '../map/markUtils/MarkUtils';
 
 const height = window.innerHeight * 0.37;
 const sites = ['Portugal, 2016', 'Ruta por San Vicente', 'Navidad Gijón', 'Almería', 'Viaje a Canarias', 'La Palma', 'La Palma II', '<3', 'Tetuán', 'Aubameyang'];
 
 export default function MapsList(props:MapMarkersState) {
 
+  const [sites, setSites] = useState<string[]>([]);
+
+  const {session} = useSession();
+
+  React.useEffect(() => {
+    const loadSites = async () => {
+      // Simula una función asincrónica para cargar los sitios
+      let maps = await getMapsFromPod(props.session);
+      setSites(maps);
+    }
+    if (session.info.isLoggedIn) {
+      loadSites();
+    }else{
+      setSites([]); 
+    }
+}, []);
+
   const clickMap = (map: string) => {
+    alert(session.info.isLoggedIn)
     //TODO funcionalidad relativa a mapas
     Swal.fire({
       icon: 'error',

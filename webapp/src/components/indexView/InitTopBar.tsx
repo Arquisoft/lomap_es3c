@@ -25,6 +25,10 @@ export default function InitTopBar({ setIndex }: Props) {
           <a href="/">
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
+
+          <a href="/home">
+            home
+          </a>
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:"right", marginRight: "5em" }}>
 

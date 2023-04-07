@@ -34,8 +34,6 @@ export const Home = () => {
 
   const {session} = useSession();
 
-  handleRedirectAfterLogin();
-
   /*
   Funcion que procesa la informacion de inicio de sesion 
   */
@@ -43,7 +41,7 @@ export const Home = () => {
       await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
   }
 
-
+  handleRedirectAfterLogin();
 
   return (
     <>
