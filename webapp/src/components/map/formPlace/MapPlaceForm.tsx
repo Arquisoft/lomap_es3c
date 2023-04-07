@@ -4,12 +4,9 @@ import TextField from '@mui/material/TextField';
 import ComboBoxCategoria from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
 import {MarkerInfo} from '../Map';
-<<<<<<< HEAD
-=======
 import { DrawerInfo } from '../drawer/MapDrawer';
 import { Box } from '@mui/material';
 import Swal from 'sweetalert2';
->>>>>>> develop
 
 interface FormProps{
   action:any;
