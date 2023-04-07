@@ -15,10 +15,16 @@ import { Button } from '@mui/material';
 import { logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
+import { createMap } from '../map/markUtils/MarkUtils';
+import { useSession } from '@inrupt/solid-ui-react';
+import { MapListInfo } from '../map/Map';
+import createMapWindow from './CreateMap';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar() {
+function TopBar(mapLists:MapListInfo) {
+  const {session} = useSession();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -70,34 +76,7 @@ function TopBar() {
   };
 
   const nuevoMapa = () => {
-    //TODO funcionalidad relativa a la creación de un mapa
-    Swal.fire({
-      title: 'Introduzca el nombre del mapa',
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Crear',
-      showLoaderOnConfirm: true,
-      preConfirm: (mapName) => {
-          if (mapName === "") {
-            Swal.showValidationMessage(
-              `ERROR: Nombre de mapa vacío`
-            )
-          } else {
-            // AÑADIR EL MAPA
-            
-            Swal.fire({
-              icon: 'success',
-              text: 'Mapa "' + mapName + '" creado',
-              showConfirmButton: false,
-              timer: 2000
-            })
-          }
-      },
-      allowOutsideClick: () => !Swal.isLoading()
-    })
+    createMapWindow(session);
   };
 
   const nuevoAmigo = () => {

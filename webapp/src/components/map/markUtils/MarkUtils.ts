@@ -26,9 +26,9 @@ export async function createJSONLDPoint(selectedMap: string, marker: MarkerInfo)
   // Parsea el contenido JSON-LD en un objeto JavaScript
   const jsonld = JSON.parse(content);
 
-  const actualMap = jsonld.find((map: { name: string; }) => map.name === selectedMap);
+  const actualMap = jsonld.maps.find((map: { name: string; }) => map.name == selectedMap);
 
-  actualMap.locations.push(place);
+  actualMap.spatialCoverage.push(place);
 
   // Crea un nuevo archivo JSON-LD con el objeto actualizado
   const updatedContent = JSON.stringify(jsonld);
@@ -90,6 +90,41 @@ export async function getMapsFromPod(session: Session) {
   } catch (e) {
     console.error(e);
   }
+}
+
+export async function createMap(session:Session,mapName:string){
+  await getFileFromPod(session);
+
+  let map: JsonLdDocument = {
+    "@context": "https://schema.org/",
+    "@type": "Map",
+    "name": mapName,
+    "spatialCoverage": []
+  };
+
+  // Lee el contenido del archivo JSON-LD como una cadena
+  const content = await file.text();
+
+  // Parsea el contenido JSON-LD en un objeto JavaScript
+  const jsonld = JSON.parse(content);
+
+  jsonld.maps.push(map);
+
+  const updatedContent = JSON.stringify(jsonld);
+  const updatedFile = new File([updatedContent], file.name, { type: file.type });
+
+  // Guardar los cambios en el pod
+  try {
+    await overwriteFile(
+      "https://israel11.inrupt.net/private/maps",
+      updatedFile,
+      { contentType: updatedFile.type, fetch: session.fetch }
+    );
+  } catch (e) {
+    console.error(e);
+  }
+
+  return jsonld.maps.map((map: { name: string; }) => map.name);
 }
 
 export async function getFileFromPod(session: Session) {

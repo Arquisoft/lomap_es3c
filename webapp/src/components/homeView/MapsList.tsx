@@ -7,46 +7,40 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useSession } from '@inrupt/solid-ui-react';
-import { MapMarkersState } from '../map/Map';
+import { LateralMenuInfo, MapListInfo, MapMarkersState } from '../map/Map';
 import { useState } from 'react';
-import { getMapsFromPod } from '../map/markUtils/MarkUtils';
+import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 
 const height = window.innerHeight * 0.37;
-const sites = ['Portugal, 2016', 'Ruta por San Vicente', 'Navidad Gijón', 'Almería', 'Viaje a Canarias', 'La Palma', 'La Palma II', '<3', 'Tetuán', 'Aubameyang'];
 
-export default function MapsList(props:MapMarkersState) {
 
-  const [sites, setSites] = useState<string[]>([]);
+export default function MapsList(mapLists:LateralMenuInfo) {
 
   const {session} = useSession();
 
   React.useEffect(() => {
     const loadSites = async () => {
       // Simula una función asincrónica para cargar los sitios
-      let maps = await getMapsFromPod(props.session);
-      setSites(maps);
+      let maps = await getMapsFromPod(mapLists.session);
+      mapLists.setSites(maps);
     }
     if (session.info.isLoggedIn) {
       loadSites();
     }else{
-      setSites([]); 
+      mapLists.setSites([]); 
     }
-}, []);
+}, [mapLists.sites]);
 
-  const clickMap = (map: string) => {
-    alert(session.info.isLoggedIn)
-    //TODO funcionalidad relativa a mapas
-    Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Map Function (' + map + ')',
-    })
+  const clickMap = async (map: string) => {
+    let markers = await getMarkersOfMapFromPod(session,map);
+    mapLists.setMarkers(markers);
+    mapLists.setSelectedMap(map);
   };
   
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-    const site = sites[index];
+    const site = mapLists.sites[index];
   
     return (
       <ListItem style={style} key={index} component="div" disablePadding>
@@ -65,7 +59,7 @@ export default function MapsList(props:MapMarkersState) {
           height={height}
           width={1000} //360
           itemSize={46}
-          itemCount={sites.length}
+          itemCount={mapLists.sites.length}
           overscanCount={5}
         >
           {renderRow}

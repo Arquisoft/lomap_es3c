@@ -10,11 +10,11 @@ import { Box, Collapse } from '@mui/material';
 import VirtualizedList from './MapsList';
 import MapsList from './MapsList';
 import FriendsList from './FriendsList';
-import { MapMarkersState } from '../map/Map';
+import {LateralMenuInfo, MapListInfo, MapMarkersState } from '../map/Map';
 import { useState } from 'react';
 import MapListAux from './MapListAux';
 
-export default function LateralMenu(props: MapMarkersState) {
+export default function LateralMenu(props:LateralMenuInfo) {
 
   const [openMaps, setOpenMaps] = useState(false);
 
@@ -37,7 +37,7 @@ export default function LateralMenu(props: MapMarkersState) {
           </MenuItem>
           <Divider sx={{ opacity: 1 }} />
           <Collapse in={openMaps} timeout="auto" unmountOnExit>
-            <MapListAux open={openMaps} session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap}></MapListAux>
+            <MapListAux open={openMaps} session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites}></MapListAux>
           </Collapse>
         </Box>
 
