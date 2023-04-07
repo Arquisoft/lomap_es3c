@@ -24,13 +24,44 @@ export async function getUsers():Promise<User[]>{
 /*
 export async function pruebaBBDD(data:String){
   const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  // Hacer la llamada
   let response = await fetch(apiEndPoint+'/prueba/bbdd', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({'data':data})
   });
+  // Manejar el retorno
   switch (response.status) {
     case 200: return response.json();
   }
 }
 */
+
+// IMPLEMENTAR RESTO DE MÉTODOS
+
+export async function checkRegister(userName:String, userWebId:String, provider:String):Promise<Boolean>{
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint+'/user/isRegistered?userName=' + userName + '&userWebId=' + userWebId + '&provider=' + provider);
+
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: 
+        const { isRegistered } = await response.json();  
+        return isRegistered;
+    default: return true;
+  }
+}
+
+export async function registerUser(userName:String, userWebId:String, provider:String){
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  // Hacer la llamada
+  let response = await fetch(apiEndPoint+'/user/add', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({'userName':userName, 'userWebId':userWebId, 'provider':provider})
+  });
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: return response.json();
+  }
+}

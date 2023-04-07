@@ -5,6 +5,7 @@ import Map from '../map/Map';
 import { Box, styled } from '@mui/material';
 import { Route, Routes } from "react-router-dom";
 import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-authn-browser";
+import { checkRegister, registerUser } from '../../api/api';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -33,17 +34,15 @@ async function handleRedirectAfterIdentification() {
     const userWebId = session.info.webId?.split('/profile')[0];
     const userName = userWebId?.split('//')[1].split('.')[0];
     const provider = userWebId?.split('//')[1].split('.')[1];
-    //Realizar el POST
-    await fetch("/mi-endpoint", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        provider: provider,
-        userName: userName,
-        webId: userWebId
+
+    if (userName && userWebId && provider) {
+      checkRegister(userName, userWebId, provider).then((register) => {
+        if(!register)
+          registerUser(userName, userWebId, provider);
       })
-    });
+    }
   }
+
 }
 
 export const Home = () => {

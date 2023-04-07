@@ -27,6 +27,8 @@ export default function FriendsList() {
   const friends =  loadFriends();
 
   const clickFriend = (friend: string) => {
+    //pruebaBBDD(friend).then(back => console.log(back.back));
+
     // CARGA DE LA VENTANA DEL AMIGO AL PULSAR SOBRE ÉL
 
     Swal.fire({
