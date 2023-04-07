@@ -15,15 +15,15 @@ import { Button } from '@mui/material';
 import { logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
-import { createMap } from '../map/markUtils/MarkUtils';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
+import { existsSolicitude, existsUser } from '../../api/api';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar(mapLists:MapListInfo) {
-  const {session} = useSession();
+function TopBar(mapLists: MapListInfo) {
+  const { session } = useSession();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -79,16 +79,18 @@ function TopBar(mapLists:MapListInfo) {
     createMapWindow(session);
   };
 
+  
+
   const nuevoAmigo = () => {
     //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
       html: `
             <select id="provider" class="swal2-input">
-              <option value="https://inrupt.net"> Inrupt </option >
-              <option value="https://solidcommunity.net/"> Solid Project </option >
-              <option value="https://solidweb.org/"> Solid Grassroots </option >
-              <option value="https://datapod.igrant.io/"> iGrant.io </option >
+              <option value="inrupt"> Inrupt </option >
+              <option value="solidcommunity"> Solid Project </option >
+              <option value="solidweb"> Solid Grassroots </option >
+              <option value="datapod.igrant.io"> iGrant.io </option >
             </select>
             <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
             `,
@@ -96,32 +98,55 @@ function TopBar(mapLists:MapListInfo) {
       confirmButtonText: 'Enviar solicitud',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-          const provider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
-          const userName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
+        const provider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
+        const userName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
 
-          if (userName === "" || provider === "") {
-            Swal.showValidationMessage(
-              `ERROR: Usuario o proveedor vacío`
-            )
-          } else {
-            // COMPROBAR EXISTENCIA DEL USUARIO
-            if(true) {
-              // ENVIAR LA SOLICITUD AL USUARIO
-                          
+        if (userName === "" || provider === "") {
+          Swal.showValidationMessage(
+            `ERROR: Usuario o proveedor vacío`
+          )
+        } else {
+          existsUser(userName, provider).then((register) => {
+            if (register) {
+              const sender = session.info.webId;
+              if (sender) {
+                const senderName = sender.split('//')[1].split('.')[0];
+                const senderProvider = sender.split('//')[1].split('.')[1];
+                existsSolicitude(userName, provider, senderName, senderProvider).then((exists) => {
+                  if (exists) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: "La solicitud ya existe",
+                      showConfirmButton: false,
+                      timer: 2000
+                    })
+                  } else {
+                    const esAmigo = true;
+                    //mirar que no sean ya amigos
+                    Swal.fire({
+                      icon: 'success',
+                      text: 'Solicitud enviada a ' + userName + " (" + provider + ")",
+                      showConfirmButton: false,
+                      timer: 2000
+                    })
+                  }
+                });
+              }
+            } else {
               Swal.fire({
-                icon: 'success',
-                text: 'Solicitud enviada a ' + userName + " (" + provider + ")",
+                icon: 'error',
+                text: "La solicitud no se ha podido enviar",
                 showConfirmButton: false,
                 timer: 2000
               })
-            } else {
-              // MOSTRAR ERROR
             }
-          }
+          })
+        }
       },
       allowOutsideClick: () => !Swal.isLoading()
     })
   };
+
 
   const verSolicitudes = () => {
     //TODO funcionalidad relativa a las solicitudes de amistad entrantes
@@ -134,44 +159,44 @@ function TopBar(mapLists:MapListInfo) {
   };
 
   return (
-    <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
-      <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>
-        <Toolbar disableGutters sx={{width: "100%"}}>
+    <AppBar position="static" sx={{ borderBottom: "solid black 0.25em", width: "100%" }}>
+      <Container sx={{ marginLeft: "1em", width: "100%", minWidth: "100%" }}>
+        <Toolbar disableGutters sx={{ width: "100%" }}>
           <a href="/home">
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:"right", marginRight: "5em" }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 
-              <Button
-                key={"Nuevo Mapa"}
-                onClick={nuevoMapa}
-                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
-                focusRipple={false}
-              >
-                {<strong>Nuevo Mapa</strong>}
-              </Button>
-              <Button
-                key={"Nuevo Amigo"}
-                onClick={nuevoAmigo}
-                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em"  }}
-                focusRipple={false}
-              >
-                {<strong>Nuevo Amigo</strong>}
-              </Button>
-              <Button
-                key={"Solicitudes"}
-                onClick={verSolicitudes}
-                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
-                focusRipple={false}
-              >
-                  <DraftsIcon fontSize="small" />
-              </Button>
-              
+            <Button
+              key={"Nuevo Mapa"}
+              onClick={nuevoMapa}
+              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+              focusRipple={false}
+            >
+              {<strong>Nuevo Mapa</strong>}
+            </Button>
+            <Button
+              key={"Nuevo Amigo"}
+              onClick={nuevoAmigo}
+              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+              focusRipple={false}
+            >
+              {<strong>Nuevo Amigo</strong>}
+            </Button>
+            <Button
+              key={"Solicitudes"}
+              onClick={verSolicitudes}
+              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
+              focusRipple={false}
+            >
+              <DraftsIcon fontSize="small" />
+            </Button>
+
           </Box>
-          
+
           <Box sx={{ flexGrow: 0, marginRight: "2em" }}>
-            
+
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Account Propietary" src="userImageDefault.png" />
@@ -200,7 +225,7 @@ function TopBar(mapLists:MapListInfo) {
               <MenuItem key={settings[1]} onClick={miCuenta}>
                 <Typography textAlign="center">{settings[1]}</Typography>
               </MenuItem>
-              <hr/>
+              <hr />
               <MenuItem key={settings[2]} onClick={cerrarSesion}>
                 <Typography textAlign="center">{settings[2]}</Typography>
               </MenuItem>

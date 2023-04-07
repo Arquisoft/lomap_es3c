@@ -52,7 +52,7 @@ export async function checkRegister(userName:string, userWebId:string, provider:
   }
 }
 
-export async function registerUser(userName:String, userWebId:String, provider:String){
+export async function registerUser(userName:string, userWebId:string, provider:string){
   const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
   // Hacer la llamada
   let response = await fetch(apiEndPoint+'/user/add', {
@@ -63,5 +63,32 @@ export async function registerUser(userName:String, userWebId:String, provider:S
   // Manejar el retorno
   switch (response.status) {
     case 200: return response.json();
+  }
+}
+
+export async function existsUser(userName:string, provider:string):Promise<boolean>{
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint+'/user/exists?userName=' + userName + '&provider=' + provider);
+
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: 
+        const { isRegistered } = await response.json();  
+        return isRegistered;
+    default: return false;
+  }
+}
+
+export async function existsSolicitude(userName:string, provider:string, senderName: string, senderProvider: string):Promise<boolean>{
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint+'/solicitude/exists?userName=' + userName + 
+  '&provider=' + provider + '&senderName=' + senderName+ '&senderProvider=' + senderProvider);
+
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: 
+        const { exists } = await response.json();  
+        return exists;
+    default: return true;
   }
 }
