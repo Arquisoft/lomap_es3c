@@ -71,18 +71,62 @@ function TopBar() {
   const nuevoMapa = () => {
     //TODO funcionalidad relativa a la creación de un mapa
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending New Map Function',
+      title: 'Introduzca el nombre del mapa',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Crear',
+      showLoaderOnConfirm: true,
+      preConfirm: (mapName) => {
+          if (mapName === "") {
+            Swal.showValidationMessage(
+              `ERROR: Nombre de mapa vacío`
+            )
+          } else {
+            // AÑADIR EL MAPA
+            
+            Swal.fire({
+              icon: 'success',
+              text: 'Mapa "' + mapName + '" creado',
+              showConfirmButton: false,
+              timer: 2000
+            })
+          }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
   };
 
   const añadirAmigo = () => {
     //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending New Friend Function',
+      title: 'Introduzca el nombre del usuario',
+      input: 'text',
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Enviar solicitud',
+      showLoaderOnConfirm: true,
+      preConfirm: (userName) => {
+          if (userName === "") {
+            Swal.showValidationMessage(
+              `ERROR: Nombre del usuario vacío`
+            )
+          } else {
+            // ENVIAR LA SOLICITUD AL USUARIO
+            
+            Swal.fire({
+              icon: 'success',
+              text: 'Solicitud enviada a ' + userName,
+              showConfirmButton: false,
+              timer: 2000
+            })
+          }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
   };
 
@@ -100,6 +144,7 @@ function TopBar() {
                 key={"Nuevo Mapa"}
                 onClick={nuevoMapa}
                 sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+                focusRipple={false}
               >
                 {<strong>Nuevo Mapa</strong>}
               </Button>
@@ -107,6 +152,7 @@ function TopBar() {
                 key={"Añadir Amigo"}
                 onClick={añadirAmigo}
                 sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
+                focusRipple={false}
               >
                 {<strong>Añadir Amigo</strong>}
               </Button>
