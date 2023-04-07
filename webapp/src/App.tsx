@@ -14,7 +14,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div className="App">
+    <div className="App"> 
       <Routes>
         <Route path='/' element={<Index/>} />
         <Route path='/index' element={<Index/>} />

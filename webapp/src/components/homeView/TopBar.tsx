@@ -104,27 +104,40 @@ function TopBar() {
     //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
-      input: 'text',
-      inputAttributes: {
-        autocapitalize: 'off'
-      },
+      html: `
+            <select id="provider" class="swal2-input">
+              <option value="https://inrupt.net"> Inrupt </option >
+              <option value="https://solidcommunity.net/"> Solid Project </option >
+              <option value="https://solidweb.org/"> Solid Grassroots </option >
+              <option value="https://datapod.igrant.io/"> iGrant.io </option >
+            </select>
+            <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
+            `,
       showCancelButton: true,
       confirmButtonText: 'Enviar solicitud',
       showLoaderOnConfirm: true,
-      preConfirm: (userName) => {
-          if (userName === "") {
+      preConfirm: () => {
+          const provider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
+          const userName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
+
+          if (userName === "" || provider === "") {
             Swal.showValidationMessage(
-              `ERROR: Nombre del usuario vacío`
+              `ERROR: Usuario o proveedor vacío`
             )
           } else {
-            // ENVIAR LA SOLICITUD AL USUARIO
-            
-            Swal.fire({
-              icon: 'success',
-              text: 'Solicitud enviada a ' + userName,
-              showConfirmButton: false,
-              timer: 2000
-            })
+            // COMPROBAR EXISTENCIA DEL USUARIO
+            if(true) {
+              // ENVIAR LA SOLICITUD AL USUARIO
+                          
+              Swal.fire({
+                icon: 'success',
+                text: 'Solicitud enviada a ' + userName + " (" + provider + ")",
+                showConfirmButton: false,
+                timer: 2000
+              })
+            } else {
+              // MOSTRAR ERROR
+            }
           }
       },
       allowOutsideClick: () => !Swal.isLoading()
