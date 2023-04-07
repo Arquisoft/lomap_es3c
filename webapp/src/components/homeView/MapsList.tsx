@@ -4,38 +4,26 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { MapMarkersState } from '../map/Map';
-import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
+import { styled } from '@mui/material';
+import Swal from 'sweetalert2';
 import { useSession } from '@inrupt/solid-ui-react';
-import { useEffect, useState } from 'react';
+import { MapMarkersState } from '../map/Map';
 
 const height = window.innerHeight * 0.37;
+const sites = ['Portugal, 2016', 'Ruta por San Vicente', 'Navidad Gijón', 'Almería', 'Viaje a Canarias', 'La Palma', 'La Palma II', '<3', 'Tetuán', 'Aubameyang'];
 
 export default function MapsList(props:MapMarkersState) {
 
-  const [sites, setSites] = useState<string[]>([]);
-
-  let session = useSession();
-
-  useEffect(() => {
-    // Función para cargar los mapas desde la promesa de getMapsFromPod
-    const loadMaps = async () => {
-      try {
-        const maps = await getMapsFromPod(session); // Espera a que la promesa de getMapsFromPod se resuelva
-        setSites(maps); // Actualiza el estado con los datos de los mapas
-      } catch (error) {
-        console.error('Error al cargar los mapas:', error);
-      }
-    };
-      loadMaps();
-  }, [session.session.info.isLoggedIn]);
-
   const clickMap = (map: string) => {
-    let markers = getMarkersOfMapFromPod(session,map);
-    props.setMarkers(markers);
-    props.setSelectedMap(map);
+    //TODO funcionalidad relativa a mapas
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Pending Map Function (' + map + ')',
+    })
   };
   
+
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
     const site = sites[index];

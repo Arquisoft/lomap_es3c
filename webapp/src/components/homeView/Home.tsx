@@ -32,17 +32,30 @@ export const Home = () => {
 
   const [selectedMap, setSelectedMap] = useState<string>();
 
+  const {session} = useSession();
+
+  handleRedirectAfterLogin();
+
+  /*
+  Funcion que procesa la informacion de inicio de sesion 
+  */
+  async function handleRedirectAfterLogin() {
+      await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
+  }
+
+
+
   return (
     <>
       <TopBar></TopBar>
       <Content>
         <IzqBox>
           <SRoutes>
-            <Route path='/' element={<Map markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap}/>}/>
+            <Route path='/' element={<Map session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap}/>}/>
           </SRoutes>
         </IzqBox>
         <DerBox sx={{display: "flex", justifyContent: "left"}}>
-          <LateralMenu markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap}></LateralMenu>
+          <LateralMenu session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap}></LateralMenu>
         </DerBox>
       </Content>
     </>

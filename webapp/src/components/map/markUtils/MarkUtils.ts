@@ -2,6 +2,7 @@ import { getFile, overwriteFile } from "@inrupt/solid-client";
 import { SessionInfo } from "@inrupt/solid-ui-react/dist/src/hooks/useSession";
 import { JsonLdDocument, NodeObject, fromRDF } from "jsonld";
 import { MarkerInfo } from "../Map";
+import { Session } from "@inrupt/solid-client-authn-browser";
 
 let file: any;
 
@@ -37,8 +38,7 @@ export async function createJSONLDPoint(selectedMap: string, marker: MarkerInfo)
   return updatedFile;
 }
 
-export async function addMarkerToPod(selectedMap: string, marker: MarkerInfo, session: SessionInfo) {
-
+export async function addMarkerToPod(selectedMap: string, marker: MarkerInfo, session: Session) {
   await getFileFromPod(session);
 
   let markerFile = await createJSONLDPoint(selectedMap, marker);
@@ -55,7 +55,7 @@ export async function addMarkerToPod(selectedMap: string, marker: MarkerInfo, se
   }
 }
 
-export async function getMarkersOfMapFromPod(session: SessionInfo, mapName: string) {
+export async function getMarkersOfMapFromPod(session: Session, mapName: string) {
   await getFileFromPod(session);
   try {
     // Lee el contenido del archivo JSON-LD como una cadena
@@ -79,7 +79,7 @@ export async function getMarkersOfMapFromPod(session: SessionInfo, mapName: stri
   }
 }
 
-export async function getMapsFromPod(session: SessionInfo) {
+export async function getMapsFromPod(session: Session) {
   await getFileFromPod(session);
   try {
     // Lee el contenido del archivo JSON-LD como una cadena
@@ -92,7 +92,7 @@ export async function getMapsFromPod(session: SessionInfo) {
   }
 }
 
-export async function getFileFromPod(session: SessionInfo) {
+export async function getFileFromPod(session: Session) {
   try {
     file = await getFile("https://israel11.inrupt.net/private/maps", { fetch: session.fetch });
   } catch (e) {

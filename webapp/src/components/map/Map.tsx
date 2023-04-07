@@ -12,7 +12,7 @@ import {
     SolidDataset,
     getFile
 } from "@inrupt/solid-client";
-import {handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
+import {Session, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
 import { addMarkerToPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
@@ -29,6 +29,7 @@ export interface MarkerInfo {
 }
 
 export interface MapMarkersState{
+    session:Session;
     markers:any;
     setMarkers:any;
     selectedMap:any;
@@ -36,8 +37,6 @@ export interface MapMarkersState{
 }
 
 function Map(props:MapMarkersState) {
-
-    const session = useSession();
     
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
@@ -45,7 +44,7 @@ function Map(props:MapMarkersState) {
 
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
-        addMarkerToPod(props.selectedMap,marker,session);
+        addMarkerToPod(props.selectedMap,marker,props.session);
     }
 
     const mapOnClick = (e :LatLng) =>{
