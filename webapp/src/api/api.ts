@@ -39,7 +39,7 @@ export async function pruebaBBDD(data:String){
 
 // IMPLEMENTAR RESTO DE MÉTODOS
 
-export async function checkRegister(userName:String, userWebId:String, provider:String):Promise<Boolean>{
+export async function checkRegister(userName:string, userWebId:string, provider:string):Promise<boolean>{
   const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
   let response = await fetch(apiEndPoint+'/user/isRegistered?userName=' + userName + '&userWebId=' + userWebId + '&provider=' + provider);
 

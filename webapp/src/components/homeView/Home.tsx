@@ -55,16 +55,8 @@ export const Home = () => {
 
   const {session} = useSession();
 
-  /*
-  Funcion que procesa la informacion de inicio de sesion 
-  */
-  async function handleRedirectAfterLogin() {
-      await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
-  }
-
-  handleRedirectAfterLogin();
-
   handleRedirectAfterIdentification();
+  
   return (
     <>
       <TopBar></TopBar>
