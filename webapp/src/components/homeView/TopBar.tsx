@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { Button } from '@mui/material';
 import { logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
+import DraftsIcon from '@mui/icons-material/Drafts';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -99,7 +100,7 @@ function TopBar() {
     })
   };
 
-  const añadirAmigo = () => {
+  const nuevoAmigo = () => {
     //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
@@ -130,6 +131,16 @@ function TopBar() {
     })
   };
 
+  const verSolicitudes = () => {
+    //TODO funcionalidad relativa a las solicitudes de amistad entrantes
+    Swal.fire({
+      title: "Lista de solicitudes",
+      html: `
+              <p>Solicitudes de amistad</p>
+            `
+    })
+  };
+
   return (
     <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
       <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>
@@ -149,12 +160,20 @@ function TopBar() {
                 {<strong>Nuevo Mapa</strong>}
               </Button>
               <Button
-                key={"Añadir Amigo"}
-                onClick={añadirAmigo}
+                key={"Nuevo Amigo"}
+                onClick={nuevoAmigo}
+                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em"  }}
+                focusRipple={false}
+              >
+                {<strong>Nuevo Amigo</strong>}
+              </Button>
+              <Button
+                key={"Solicitudes"}
+                onClick={verSolicitudes}
                 sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
                 focusRipple={false}
               >
-                {<strong>Añadir Amigo</strong>}
+                  <DraftsIcon fontSize="small" />
               </Button>
               
           </Box>
