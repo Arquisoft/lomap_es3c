@@ -11,13 +11,18 @@ interface Props {
 
 export default function InitTopBar({ setIndex }: Props) {
 
-  const goLogin = () => {
+  const goIdentification = () => {
     setIndex(0);
   };
   
-  const goRegister = () => {
+  const goInfoApp = () => {
     setIndex(1);
   };
+
+  const goInfoUs = () => {
+    setIndex(2);
+  };
+  
   return (
     <AppBar position="static" sx={{borderBottom: "solid black 0.25em", width: "100%"}}>
       <Container sx={{marginLeft: "1em", width: "100%", minWidth: "100%"}}>
@@ -33,19 +38,27 @@ export default function InitTopBar({ setIndex }: Props) {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:"right", marginRight: "5em" }}>
 
             <Button 
-              key={"LoginNav"}
-              onClick={goLogin}
+              key={"IdentificationNav"}
+              onClick={goIdentification}
               sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
             >
-              {<strong>Inicio Sesión</strong>}
+              {<strong>Identifícate</strong>}
             </Button>
 
             <Button 
-              key={"RegisterNav"}
-              onClick={goRegister}
+              key={"InfoApp"}
+              onClick={goInfoApp}
+              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+            >
+              {<strong>¿Qué es?</strong>}
+            </Button>
+
+            <Button 
+              key={"InfoUs"}
+              onClick={goInfoUs}
               sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
             >
-              {<strong>Registro</strong>}
+              {<strong>Sobre nosotros</strong>}
             </Button>
 
           </Box>

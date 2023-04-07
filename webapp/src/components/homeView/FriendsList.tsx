@@ -8,25 +8,34 @@ import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import path from 'path';
-
-const height = window.innerHeight * 0.37;
-const friends = ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
-
+//import { pruebaBBDD } from '../../api/api';
 
 export default function FriendsList() {
+  //const pruebaBBDD = () => {
+    // BBDD Conf 3/6 - Invocación GUI
+    //let data = "PRUEBA_BBDD";
+    //pruebaBBDD(data).then(back => console.log(back.back));
+  //}
 
-  const navigate = useNavigate();
+  const loadFriends = () => {
+    // CARGA DE AMIGOS DEL USUARIO REGISTRADO
+
+    return ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
+  }
+
+  const height = window.innerHeight * 0.37;
+  const friends =  loadFriends();
 
   const clickFriend = (friend: string) => {
-    //TODO funcionalidad relativa a amigos
-  
-    navigate(`/amigo/${friend}`);
-  
-    // Swal.fire({
-    //   icon: 'error',
-    //   title: 'Oops...',
-    //   text: 'Pending Friend Function (' + friend + ')',
-    // })
+    //pruebaBBDD(friend).then(back => console.log(back.back));
+
+    // CARGA DE LA VENTANA DEL AMIGO AL PULSAR SOBRE ÉL
+
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Pending Friend Function (' + friend + ')',
+    })
   };
 
   function renderRow(props: ListChildComponentProps) {

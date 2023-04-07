@@ -1,16 +1,19 @@
-import { NativeSelect, Box, Button, InputLabel, FormControl } from '@mui/material'
+import { NativeSelect, Box, Button,  FormControl, Typography } from '@mui/material'
 import { useState } from 'react'
 import { login } from "@inrupt/solid-client-authn-browser";
 
+interface Props {
+  handleFocus: () => void;
+  handleBlur: () => void;
+}
 
-export const RegisterProvider = () => {
-
+export const RegisterProvider = ({ handleFocus, handleBlur }: Props) => {
     const [provider, setProvider] = useState('');
 
-    const register = async function () {
+    const identification = async function () {
         await login({
             oidcIssuer: provider,
-            redirectUrl: "http://localhost:3000/",//Url a la que nos llevara una vez logeado
+            redirectUrl: "http://localhost:3000/home",//Url a la que nos llevara una vez logeado
             clientName: "LoMap_es3c"
         });
     }
@@ -21,14 +24,12 @@ export const RegisterProvider = () => {
             paddingTop: "3em", display: "flex", flexDirection: "column"
         }}>
 
-            <Box sx={{ fontSize: "1.3em", color: "black" }}><strong> REGISTRO </strong></Box>
+            <Typography variant="h4" sx={{ mb: 2, color: "white", fontWeight: "bold", textShadow: "2px 2px black" }}>IDENTIFÍCATE</Typography>
 
             <Box sx={{ height: "5vh" }}></Box>
 
-            <FormControl required sx={{ marginLeft: "30%", marginRight: "30%", width: "40%" }}>
-                <InputLabel variant="standard" htmlFor="select-native">
-                    Proveedor de identidad
-                </InputLabel>
+            <FormControl required sx={{ marginLeft: "35%", marginRight: "35%", width: "30%" }}>
+                <Typography variant="body1" sx={{ marginBottom: '10px' }}>Proveedor de identidad:</Typography>
                 <NativeSelect
                     defaultValue={""}
                     required
@@ -37,6 +38,9 @@ export const RegisterProvider = () => {
                         id: 'select-native',
                     }}
                     onChange={(event) => setProvider(event.target.value)}
+                    onFocus={handleFocus} 
+                    onBlur={handleBlur}
+                    style={{ borderBottom: "0.02em solid black" }}
                 >
                     <option value="" disabled></option>
                     <option value={"https://inrupt.net"}>  Inrupt  </option >
@@ -46,11 +50,20 @@ export const RegisterProvider = () => {
                 </NativeSelect>
             </FormControl>
 
-            <Box sx={{ height: "3vh" }}></Box>
+            <Box sx={{ height: "5vh" }}></Box>
 
             <Box>
-                <Button variant="outlined" sx={{ color: "black", border: "solid black 0.1em" }} onClick={register}>
-                    Registrar POD
+                <Button variant="outlined" sx={{ 
+                                                    color: "black", 
+                                                    border: "solid black 0.1em", 
+                                                    '&:hover': {
+                                                        backgroundColor: 'rgba(0, 93, 185, 1)',
+                                                        color: 'black',
+                                                        border: "solid black 0.1em",
+                                                        fontWeight: "bold",
+                                                    } 
+                                           }} onClick={identification}>
+                    Acceder
                 </Button>
             </Box>
         </Box>

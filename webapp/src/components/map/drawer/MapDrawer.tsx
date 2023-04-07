@@ -37,8 +37,9 @@ export default function PlaceDrawer(props:DrawerInfo) {
 
   //Mostramos el formularo para añadir un punto
   const list = () => (
-    <Box
-      sx={{ width: 350 }}
+    <Box sx={{ 
+            width: 350
+         }}
       role="presentation"
     >
       <MapPlaceForm action={props.onSubmit} isReadOnly={false}></MapPlaceForm>

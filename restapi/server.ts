@@ -7,6 +7,9 @@ import api from "./api";
 const app: Application = express();
 const port: number = 5000;
 
+// BBDD Conf 2/6 - Require (Importar)
+const db = require("./src/db")
+
 const metricsMiddleware:RequestHandler = promBundle({includeMethod: true});
 app.use(metricsMiddleware);
 

@@ -24,6 +24,17 @@ export default function SliderMapPlace(props:Identity) {
   return (
     <Box className='m-2' sx={{ width: 'auto' }}>
       <Slider
+        sx={{
+          '& .MuiSlider-track': {
+            color: 'black',
+          },
+          '& .MuiSlider-rail': {
+            color: 'black',
+          },
+          '& .MuiSlider-thumb': {
+            color: 'black',
+          },
+        }}
         aria-label="Custom marks"
         defaultValue={5}
         step={1}
