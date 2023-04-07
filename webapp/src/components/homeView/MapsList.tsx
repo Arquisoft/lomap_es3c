@@ -7,32 +7,39 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
 
-const height = window.innerHeight * 0.37;
-const sites = ['Portugal, 2016', 'Ruta por San Vicente', 'Navidad Gijón', 'Almería', 'Viaje a Canarias', 'La Palma', 'La Palma II', '<3', 'Tetuán', 'Aubameyang'];
-
-const clickMap = (map: string) => {
-  //TODO funcionalidad relativa a mapas
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Pending Map Function (' + map + ')',
-  })
-};
-
-function renderRow(props: ListChildComponentProps) {
-  const { index, style } = props;
-  const site = sites[index];
-
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton onClick={() => clickMap(site)}>
-        <ListItemText primary={site} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
-
 export default function MapsList() {
+
+  const loadMaps = () => {
+    // CARGA DE MAPAS DEL USUARIO REGISTRADO
+
+    return ['Portugal, 2016', 'Ruta por San Vicente', 'Navidad Gijón', 'Almería', 'Viaje a Canarias', 'La Palma', 'La Palma II', '<3', 'Tetuán', 'Aubameyang'];
+  }
+  
+  const height = window.innerHeight * 0.37;
+  const maps = loadMaps();
+  
+  const clickMap = (map: string) => {
+    // CARGA DEL MAPA AL PULSAR SOBRE ÉL
+    
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Pending Map Function (' + map + ')',
+    })
+  };
+
+  function renderRow(props: ListChildComponentProps) {
+    const { index, style } = props;
+    const map = maps[index];
+  
+    return (
+      <ListItem style={style} key={index} component="div" disablePadding>
+        <ListItemButton onClick={() => clickMap(map)}>
+          <ListItemText primary={map} />
+        </ListItemButton>
+      </ListItem>
+    );
+  }
 
   return (
     <Box
@@ -42,7 +49,7 @@ export default function MapsList() {
           height={height}
           width={1000} //360
           itemSize={46}
-          itemCount={sites.length}
+          itemCount={maps.length}
           overscanCount={5}
         >
           {renderRow}
