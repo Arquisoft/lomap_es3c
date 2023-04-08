@@ -59,11 +59,10 @@ export default function FriendsList() {
       inputOptions: {
         'Mapas': mapsObj
       },
-      inputPlaceholder: 'Seleciona un mapa',
+      inputPlaceholder: 'Selecciona un mapa',
       showCancelButton: true,
       inputValidator: (value) => {
         return new Promise((resolve) => {
-          console.log(value);
           if (value === '') {
             resolve('Debes seleccionar un mapa')
           } else {

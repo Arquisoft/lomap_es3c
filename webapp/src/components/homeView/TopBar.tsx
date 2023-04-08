@@ -18,8 +18,8 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
+import { deleteSolicitude, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { existsSolicitude, existsUser, registerSolicitude } from '../../api/api';
 import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
@@ -95,7 +95,6 @@ function TopBar(filterInfo:MapFilterInfo) {
   }
 
   const nuevoAmigo = () => {
-    //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
       html: `
@@ -170,15 +169,59 @@ function TopBar(filterInfo:MapFilterInfo) {
     })
   };
 
-
   const verSolicitudes = () => {
-    //TODO funcionalidad relativa a las solicitudes de amistad entrantes
-    Swal.fire({
-      title: "Lista de solicitudes",
-      html: `
-              <p>Solicitudes de amistad</p>
-            `
-    })
+    if (session.info.isLoggedIn) {
+      const userWebId = session.info.webId?.split('/profile')[0];
+      const userName = userWebId?.split('//')[1].split('.')[0];
+      const provider = userWebId?.split('//')[1].split('.')[1];
+
+      if(userName != null && provider != null) {
+        getSolicitudes(userName, provider).then((solicitudes) => {
+          const options = solicitudes.map((s) => {
+            return `<option value="${s.senderName + "-" + s.senderProvider}">${s.senderName + " (" + s.senderProvider + ")"}</option>`;
+          });
+
+          Swal.fire({
+            title: 'Solicitudes de amistad',
+            html: `
+                  <select id="user" class="swal2-input">
+                  ${options}
+                  </select>
+                  `,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Aceptar',
+            denyButtonText: 'Rechazar',
+          }).then((result) => {
+            const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
+      
+            if (result.isConfirmed) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Usuario ' + user.split("-")[0] + ' aceptado',
+                showConfirmButton: false,
+                timer: 1500
+              }).then(() => {
+                // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
+                //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
+                //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+
+                deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
+              });
+            } else if (result.isDenied) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Usuario ' + user.split("-")[0] + ' rechazado',
+                showConfirmButton: false,
+                timer: 1500
+              }).then(() => {
+                deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
+              });
+            }
+          })
+        })
+      }; 
+    }
   };
 
   return (
