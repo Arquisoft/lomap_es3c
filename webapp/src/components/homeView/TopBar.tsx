@@ -20,7 +20,7 @@ import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
 import { deleteSolicitude, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -150,6 +150,7 @@ function TopBar(filterInfo:MapFilterInfo) {
                       })
   
                       registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
+                      addToKnowInPod(session, "https://dgg.inrupt.net/profile/card#me"); //TODO: Reemplazar por el cardme del usuario destinatario.
                     }
                   }
                 });
@@ -205,6 +206,8 @@ function TopBar(filterInfo:MapFilterInfo) {
                 // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
                 //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
                 //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+                
+                addToKnowInPod(session, "https://dgg.inrupt.net/profile/card#me"); //TODO: Reemplazar por el cardme del usuario destinatario.
 
                 deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
               });
