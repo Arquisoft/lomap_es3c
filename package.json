@@ -3,6 +3,7 @@
     "@inrupt/solid-client-authn-browser": "^1.13.3",
     "leaflet": "^1.9.3",
     "mapbox-gl": "^1.13.3",
+    "mongoose": "^7.0.3",
     "react-mapbox-gl": "^5.1.1",
     "react-window": "^1.8.8",
     "sweetalert2": "^11.7.3"

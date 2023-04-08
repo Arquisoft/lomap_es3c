@@ -15,8 +15,12 @@ export default function InitTopBar({ setIndex }: Props) {
     setIndex(0);
   };
   
-  const goInfo = () => {
+  const goInfoApp = () => {
     setIndex(1);
+  };
+
+  const goInfoUs = () => {
+    setIndex(2);
   };
   
   return (
@@ -25,6 +29,10 @@ export default function InitTopBar({ setIndex }: Props) {
         <Toolbar disableGutters sx={{width: "100%"}}>
           <a href="/">
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
+          </a>
+
+          <a href="/home">
+            home
           </a>
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:"right", marginRight: "5em" }}>
@@ -38,8 +46,16 @@ export default function InitTopBar({ setIndex }: Props) {
             </Button>
 
             <Button 
-              key={"InfoNav"}
-              onClick={goInfo}
+              key={"InfoApp"}
+              onClick={goInfoApp}
+              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+            >
+              {<strong>¿Qué es?</strong>}
+            </Button>
+
+            <Button 
+              key={"InfoUs"}
+              onClick={goInfoUs}
               sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
             >
               {<strong>Sobre nosotros</strong>}

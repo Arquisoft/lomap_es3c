@@ -1,5 +1,9 @@
 import express, { Request, Response, Router } from 'express';
 import {check} from 'express-validator';
+//import Prueba from './src/pruebaSchema';
+import User from './src/userSchema';
+
+const mongoose = require('mongoose');
 
 const api:Router = express.Router()
 
@@ -32,5 +36,57 @@ api.post(
     return res.sendStatus(200);
   }
 );
+
+// BBDD Conf 5/6 - Método que implementa el GET/POST
+/*
+api.post(
+  "/prueba/bbdd",
+  async (req: Request, res: Response): Promise<Response> => {
+    // Hacer la llamada
+    let data = req.body.data;
+    const pruebaData = new Prueba({data : data});
+    pruebaData.save();
+    // Manejar el retorno
+    return res.status(200).send({back: "Prueba Hecha"});
+  }
+)
+*/
+
+// IMPLEMENTAR RESTO DE MÉTODOS
+
+api.get(
+  "/user/isRegistered",
+  async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const userName = req.query.userName;
+      const userWebId = req.query.userWebId;
+      const provider = req.query.provider;
+
+      const user = await User.findOne({ userName, userWebId, provider });
+
+      if (user) {
+        return res.status(200).send({ isRegistered: true });
+      } else {
+        return res.status(200).send({ isRegistered: false });
+      }
+    } catch (error) {
+      return res.status(500).send({ error: 'Error al buscar usuario' });
+    }
+  }
+);
+
+api.post(
+  "/user/add",
+  async (req: Request, res: Response): Promise<Response> => {
+    // Hacer la llamada
+    let userName = req.body.userName;
+    let userWebId = req.body.userWebId;
+    let provider = req.body.provider;
+    const userData = new User({userName : userName, userWebId : userWebId, provider : provider});
+    userData.save();
+    // Manejar el retorno
+    return res.status(200);
+  }
+)
 
 export default api;

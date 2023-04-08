@@ -14,10 +14,17 @@ import Swal from 'sweetalert2';
 import { Button } from '@mui/material';
 import { logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
+import DraftsIcon from '@mui/icons-material/Drafts';
+import { createMap } from '../map/markUtils/MarkUtils';
+import { useSession } from '@inrupt/solid-ui-react';
+import { MapListInfo } from '../map/Map';
+import createMapWindow from './CreateMap';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar() {
+function TopBar(mapLists:MapListInfo) {
+  const {session} = useSession();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -69,20 +76,60 @@ function TopBar() {
   };
 
   const nuevoMapa = () => {
-    //TODO funcionalidad relativa a la creación de un mapa
+    createMapWindow(session);
+  };
+
+  const nuevoAmigo = () => {
+    //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending New Map Function',
+      title: 'Introduzca el nombre del usuario',
+      html: `
+            <select id="provider" class="swal2-input">
+              <option value="https://inrupt.net"> Inrupt </option >
+              <option value="https://solidcommunity.net/"> Solid Project </option >
+              <option value="https://solidweb.org/"> Solid Grassroots </option >
+              <option value="https://datapod.igrant.io/"> iGrant.io </option >
+            </select>
+            <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
+            `,
+      showCancelButton: true,
+      confirmButtonText: 'Enviar solicitud',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+          const provider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
+          const userName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
+
+          if (userName === "" || provider === "") {
+            Swal.showValidationMessage(
+              `ERROR: Usuario o proveedor vacío`
+            )
+          } else {
+            // COMPROBAR EXISTENCIA DEL USUARIO
+            if(true) {
+              // ENVIAR LA SOLICITUD AL USUARIO
+                          
+              Swal.fire({
+                icon: 'success',
+                text: 'Solicitud enviada a ' + userName + " (" + provider + ")",
+                showConfirmButton: false,
+                timer: 2000
+              })
+            } else {
+              // MOSTRAR ERROR
+            }
+          }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
   };
 
-  const añadirAmigo = () => {
-    //TODO funcionalidad relativa a la adición de un amigo
+  const verSolicitudes = () => {
+    //TODO funcionalidad relativa a las solicitudes de amistad entrantes
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending New Friend Function',
+      title: "Lista de solicitudes",
+      html: `
+              <p>Solicitudes de amistad</p>
+            `
     })
   };
 
@@ -100,15 +147,25 @@ function TopBar() {
                 key={"Nuevo Mapa"}
                 onClick={nuevoMapa}
                 sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+                focusRipple={false}
               >
                 {<strong>Nuevo Mapa</strong>}
               </Button>
               <Button
-                key={"Añadir Amigo"}
-                onClick={añadirAmigo}
-                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
+                key={"Nuevo Amigo"}
+                onClick={nuevoAmigo}
+                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em"  }}
+                focusRipple={false}
               >
-                {<strong>Añadir Amigo</strong>}
+                {<strong>Nuevo Amigo</strong>}
+              </Button>
+              <Button
+                key={"Solicitudes"}
+                onClick={verSolicitudes}
+                sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em' }}
+                focusRipple={false}
+              >
+                  <DraftsIcon fontSize="small" />
               </Button>
               
           </Box>

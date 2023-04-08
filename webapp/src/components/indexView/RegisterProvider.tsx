@@ -2,9 +2,12 @@ import { NativeSelect, Box, Button,  FormControl, Typography } from '@mui/materi
 import { useState } from 'react'
 import { login } from "@inrupt/solid-client-authn-browser";
 
+interface Props {
+  handleFocus: () => void;
+  handleBlur: () => void;
+}
 
-export const RegisterProvider = () => {
-
+export const RegisterProvider = ({ handleFocus, handleBlur }: Props) => {
     const [provider, setProvider] = useState('');
 
     const identification = async function () {
@@ -35,6 +38,9 @@ export const RegisterProvider = () => {
                         id: 'select-native',
                     }}
                     onChange={(event) => setProvider(event.target.value)}
+                    onFocus={handleFocus} 
+                    onBlur={handleBlur}
+                    style={{ borderBottom: "0.02em solid black" }}
                 >
                     <option value="" disabled></option>
                     <option value={"https://inrupt.net"}>  Inrupt  </option >
@@ -44,10 +50,19 @@ export const RegisterProvider = () => {
                 </NativeSelect>
             </FormControl>
 
-            <Box sx={{ height: "3vh" }}></Box>
+            <Box sx={{ height: "5vh" }}></Box>
 
             <Box>
-                <Button variant="outlined" sx={{ color: "black", border: "solid black 0.1em" }} onClick={identification}>
+                <Button variant="outlined" sx={{ 
+                                                    color: "black", 
+                                                    border: "solid black 0.1em", 
+                                                    '&:hover': {
+                                                        backgroundColor: 'rgba(0, 93, 185, 1)',
+                                                        color: 'black',
+                                                        border: "solid black 0.1em",
+                                                        fontWeight: "bold",
+                                                    } 
+                                           }} onClick={identification}>
                     Acceder
                 </Button>
             </Box>

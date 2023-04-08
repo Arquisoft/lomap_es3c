@@ -2,21 +2,24 @@ import { useEffect, useState } from 'react';
 import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import L, { Icon } from 'leaflet';
+import L, { Icon, LatLng, marker } from 'leaflet';
 import MapDrawer from './drawer/MapDrawer';
-import AddPlaceDrawer from './drawer/MapDrawer';
-import markerIconPng from "leaflet/dist/images/marker-icon.png";
+import PlaceDrawer from './drawer/MapDrawer';
+
 import {
-    createSolidDataset,
-    getPodUrlAll,
     saveFileInContainer,
     getThingAll,
-    removeThing,
-    SolidDataset
+    SolidDataset,
+    getFile
 } from "@inrupt/solid-client";
-import { getDefaultSession, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
+import {Session, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
 import { useSession } from "@inrupt/solid-ui-react";
-import { createGeoJSONPoint } from './markUtils/MarkUtils';
+import { addMarkerToPod, createMap} from './markUtils/MarkUtils';
+import MapEventHandler from './MapEventHandler';
+import { Markers } from './Markers';
+import e from 'express';
+import Swal from 'sweetalert2';
+import createMapWindow from '../homeView/CreateMap';
 
 
 export interface MarkerInfo {
@@ -27,108 +30,57 @@ export interface MarkerInfo {
     coords: [number, number];
 }
 
-function Map() {
-    const session = useSession();
+export interface MapListInfo{
+    sites:any;
+    setSites:any;
+}
 
+export interface MapInfo{
+    session:Session;
+    markers:any;
+    setMarkers:any;
+    selectedMap:any;
+    setSelectedMap:any;
+    sites:string[];
+    setSites:any;
+}
+
+function Map(props:MapInfo) {
+    
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
     const [isSelected, setIsSelected] = useState(false);
 
-    const [markers, setMarkers] = useState<MarkerInfo[]>([]);
-
-    let myReadingList: SolidDataset;
-
-    async function getMarkers() {
-        const allThings = getThingAll(myReadingList);
-
-        return (allThings.map((position, idx) =>
-            <Marker key={`marker-${idx}`} position={[0, 0]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                <Popup>
-                    <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-                </Popup>
-            </Marker>
-        ));
-
-    }
-
-    async function addMarkerToPod(marker: MarkerInfo) {
-        var markerFile = new File([createGeoJSONPoint(marker)], "filename.geojson", { type: "application/geo+json" });
-
-        // Guardar los cambios en el pod
-        let savedReadingList = await saveFileInContainer(
-            "https://israel11.inrupt.net/public",
-            markerFile,
-            { slug: markerFile.name, contentType: markerFile.type, fetch: session.fetch }
-        );
-        alert(savedReadingList);
-    }
-
-    handleRedirectAfterLogin();
-
-    /*
-    Funcion que procesa la informacion de inicio de sesion 
-    */
-    async function handleRedirectAfterLogin() {
-        await handleIncomingRedirect(); //Obtiene la informacion de identificacion aportada por el identity provider
-    }
-
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
-        setMarkers([...markers, marker]);
-        addMarkerToPod(marker);
+        addMarkerToPod(props.selectedMap,marker,props.session);
+
+        let aux = props.markers;
+        aux.push(marker);
+        props.setMarkers(aux);
     }
 
-    const Markers = () => {
-        /*
-        const allThings = getThingAll(myReadingList);
-
-        return (<div>
-            {allThings.map((position, idx) =>
-            <Marker key={`marker-${idx}`} position={[0, 0]} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                <Popup>
-                    <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-                </Popup>
-            </Marker>
-            )}
-        </div>);
-        */
-        return (
-            <div>
-                {markers.map((position, idx) =>
-                    <Marker key={`marker-${idx}`} position={position.coords} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })}>
-                        <Popup>
-                            <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-                        </Popup>
-                    </Marker>
-                )}
-            </div>
-        )
-
+    const mapOnClick = (e :LatLng) =>{
+        if(props.selectedMap == undefined){
+            nuevoMapa();
+        }else{
+            setSelectedPosition([
+                e.lat,
+                e.lng
+            ]);
+            //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
+            setIsSelected(true);
+        }
     }
 
-    const Drawer = () => {
+    const nuevoMapa = () => {
+        createMapWindow(props.session);
+      };
 
-        const map = useMapEvents({
-            click(e: { latlng: { lat: number; lng: number; }; }) {
-                setSelectedPosition([
-                    e.latlng.lat,
-                    e.latlng.lng
-                ]);
-                //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
-                setIsSelected(true);
-            },
-        })
-
-        //Retornamos el menú lateral si hay una posición seleccionada
-        return (
-            selectedPosition ?
-                <div>
-                    <AddPlaceDrawer opened={isSelected} onSubmit={addMarker}></AddPlaceDrawer>
-                </div>
-                : null
-        )
+    const toggleDrawer = (isSelected:boolean) =>{
+        setIsSelected(isSelected);
     }
-
+    
     return (
         <MapContainer
             className="map"
@@ -136,8 +88,9 @@ function Map() {
             zoom={4}
             maxZoom={18}
         >
-            <Markers></Markers>
-            <Drawer />
+            <MapEventHandler onClick={mapOnClick} />
+            <Markers marker={props.markers}></Markers>
+            <PlaceDrawer opened={isSelected} onSubmit={addMarker}  toggleDrawer={toggleDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

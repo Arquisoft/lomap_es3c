@@ -6,33 +6,50 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
+import { useSession } from '@inrupt/solid-ui-react';
+import { MapInfo} from '../map/Map';
+import { useState } from 'react';
+import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 
 const height = window.innerHeight * 0.37;
-const sites = ['Portugal, 2016', 'Ruta por San Vicente', 'Navidad Gijón', 'Almería', 'Viaje a Canarias', 'La Palma', 'La Palma II', '<3', 'Tetuán', 'Aubameyang'];
 
-const clickMap = (map: string) => {
-  //TODO funcionalidad relativa a mapas
-  Swal.fire({
-    icon: 'error',
-    title: 'Oops...',
-    text: 'Pending Map Function (' + map + ')',
-  })
-};
 
-function renderRow(props: ListChildComponentProps) {
-  const { index, style } = props;
-  const site = sites[index];
+export default function MapsList(mapLists:MapInfo) {
 
-  return (
-    <ListItem style={style} key={index} component="div" disablePadding>
-      <ListItemButton onClick={() => clickMap(site)}>
-        <ListItemText primary={site} />
-      </ListItemButton>
-    </ListItem>
-  );
-}
+  const {session} = useSession();
 
-export default function MapsList() {
+  React.useEffect(() => {
+    const loadSites = async () => {
+      // Simula una función asincrónica para cargar los sitios
+      let maps = await getMapsFromPod(mapLists.session);
+      mapLists.setSites(maps);
+    }
+    if (session.info.isLoggedIn) {
+      loadSites();
+    }else{
+      mapLists.setSites([]); 
+    }
+}, [mapLists.sites]);
+
+  const clickMap = async (map: string) => {
+    let markers = await getMarkersOfMapFromPod(session,map);
+    mapLists.setMarkers(markers);
+    mapLists.setSelectedMap(map);
+  };
+  
+
+  function renderRow(props: ListChildComponentProps) {
+    const { index, style } = props;
+    const site = mapLists.sites[index];
+  
+    return (
+      <ListItem style={style} key={index} component="div" disablePadding>
+        <ListItemButton onClick={() => clickMap(site)}>
+          <ListItemText primary={site} />
+        </ListItemButton>
+      </ListItem>
+    );
+  }
 
   return (
     <Box
@@ -42,7 +59,7 @@ export default function MapsList() {
           height={height}
           width={1000} //360
           itemSize={46}
-          itemCount={sites.length}
+          itemCount={mapLists.sites.length}
           overscanCount={5}
         >
           {renderRow}

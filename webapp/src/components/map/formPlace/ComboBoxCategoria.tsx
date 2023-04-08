@@ -1,19 +1,21 @@
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-interface Identity {
+interface ComboBoxProps {
     id : string;
+    defaultValue?: { label: string};
 }
 
-export default function ComboBoxCategoria(props:Identity) {
+export default function ComboBoxCategoria(props:ComboBoxProps) {
   return (
     <Autocomplete
       disablePortal
       id={props.id}
+      defaultValue = {props.defaultValue}
       options={categories}
       className='m-2'
       sx={{ width: 'auto' }}
-      renderInput={(params) => <TextField {...params} label="Categoría" />}
+      renderInput={(params) => <TextField {...params} label="Categoría" InputLabelProps={{ style: { color: 'black' } }}/>}
     />
   );
 }

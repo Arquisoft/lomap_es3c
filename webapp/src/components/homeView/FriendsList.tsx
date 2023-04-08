@@ -4,37 +4,81 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import path from 'path';
+import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { useSession } from '@inrupt/solid-ui-react';
+//import { pruebaBBDD } from '../../api/api';
 
-import { useFriendsList } from '../Amigos/podsFriends';
+export default function FriendsList() {
+  //const pruebaBBDD = () => {
+    // BBDD Conf 3/6 - Invocación GUI
+    //let data = "PRUEBA_BBDD";
+    //pruebaBBDD(data).then(back => console.log(back.back));
+  //}
 
-
-const height = window.innerHeight * 0.37;
-const friends = ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
-
-
-export default function FriendsList() {  
+  const {session} = useSession();
   
-  const friendsList = useFriendsList();
-  
-  const navigate = useNavigate();
+  const [friendsList, setFriendsList] = React.useState<string[]>([]);
+  const [friendsNamesList, setFriendsNamesList] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    const loadFriends = async () => {
+      if (session.info.isLoggedIn) {
+        const friends = await getFriendsFromPod(session);
+        setFriendsList(friends);
+        const friendsNames = await getFriendsNamesFromPod(friends);
+        setFriendsNamesList(friendsNames);
+      } else {
+        setFriendsList([]);
+        setFriendsNamesList([]);
+      }
+    };
+
+    loadFriends();
+  }, [session]);
+
+  const loadMapsForFriend = (friend: string) => {
+    // TODO: CARGA DE MAPAS DEL AMIGOS PULSADO
+
+    return ['Mapa1', 'Mapa2', 'Mapa3'];
+  }
+
+  const height = window.innerHeight * 0.37;
 
   const clickFriend = (friend: string) => {
-    //TODO funcionalidad relativa a amigos
-   
+    const maps = loadMapsForFriend(friend);
+
+    const mapsObj: {[key: string]: string} = {};
+    maps.forEach((m) => {
+      mapsObj[m] = m;
+    });
+
     Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Pending Friend Function (' + friend + ')',
+      title: 'Mapas de ' + friend,
+      input: 'select',
+      inputOptions: {
+        'Mapas': mapsObj
+      },
+      inputPlaceholder: 'Seleciona un mapa',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          console.log(value);
+          if (value === '') {
+            resolve('Debes seleccionar un mapa')
+          } else {
+            // TODO: SE MUESTRA EL MAPA SELECCIONADO
+
+            Swal.close();
+          }
+        })
+      }
     })
   };
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-    const friend = friends[index];
+    const friend = friendsNamesList[index];
 
     return (
       <ListItem style={style} key={index} component="div" disablePadding>
@@ -53,7 +97,7 @@ export default function FriendsList() {
         height={height}
         width={1000} //360
         itemSize={46}
-        itemCount={friends.length}
+        itemCount={friendsNamesList.length}
         overscanCount={5}
       >
         {renderRow}

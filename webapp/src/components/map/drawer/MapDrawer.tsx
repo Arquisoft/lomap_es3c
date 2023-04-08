@@ -1,25 +1,23 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import MapPlaceForm from '../formPlace/MapPlaceForm';
+import { useEffect } from 'react';
 
 export interface DrawerInfo {
   opened : boolean;
   onSubmit:any;
+  toggleDrawer:any;
 }
 
-export default function AddPlaceDrawer(props:DrawerInfo) {
+export default function PlaceDrawer(props:DrawerInfo) {
 
   const [state, setState] = React.useState(props.opened);
+
+  useEffect(() => {
+    setState(props.opened);
+  }, [props.opened]);
+
 
   //En funcion del booleano desplegamos u ocultamos el menu lateral
   const toggleDrawer =
@@ -34,15 +32,17 @@ export default function AddPlaceDrawer(props:DrawerInfo) {
       }
 
       setState(open);
+      props.toggleDrawer(open);
     };
 
   //Mostramos el formularo para añadir un punto
   const list = () => (
-    <Box
-      sx={{ width: 350 }}
+    <Box sx={{ 
+            width: 350
+         }}
       role="presentation"
     >
-      <MapPlaceForm action={props.onSubmit}></MapPlaceForm>
+      <MapPlaceForm action={props.onSubmit} isReadOnly={false}></MapPlaceForm>
     </Box>
   );
 
