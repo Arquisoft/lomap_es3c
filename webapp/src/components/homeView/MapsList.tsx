@@ -7,14 +7,14 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
 import { useSession } from '@inrupt/solid-ui-react';
-import { LateralMenuInfo, MapListInfo, MapMarkersState } from '../map/Map';
+import { MapInfo} from '../map/Map';
 import { useState } from 'react';
 import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 
 const height = window.innerHeight * 0.37;
 
 
-export default function MapsList(mapLists:LateralMenuInfo) {
+export default function MapsList(mapLists:MapInfo) {
 
   const {session} = useSession();
 

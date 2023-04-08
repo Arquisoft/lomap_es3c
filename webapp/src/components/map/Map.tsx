@@ -35,7 +35,7 @@ export interface MapListInfo{
     setSites:any;
 }
 
-export interface LateralMenuInfo{
+export interface MapInfo{
     session:Session;
     markers:any;
     setMarkers:any;
@@ -45,15 +45,7 @@ export interface LateralMenuInfo{
     setSites:any;
 }
 
-export interface MapMarkersState{
-    session:Session;
-    markers:any;
-    setMarkers:any;
-    selectedMap:any;
-    setSelectedMap:any;
-}
-
-function Map(props:LateralMenuInfo) {
+function Map(props:MapInfo) {
     
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
