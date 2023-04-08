@@ -1,29 +1,33 @@
 import { model, Schema } from 'mongoose';
 
-const userSchema = new Schema(
+const solicitudeSchema = new Schema(
     {
-        userName: {
+        senderName: {
             type: String,
             required: true,
         },
-        userWebId: {
+        senderProvider: {
             type: String,
-            required: false,
+            required: true,
         },
-        provider: {
+        receiverName: {
+            type: String,
+            required: true,
+        },
+        receiverProvider: {
             type: String,
             required: true,
         },
     }
 )
 
-userSchema.set('toJSON', {
+solicitudeSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         delete returnedObject._id
         delete returnedObject.__v
     }
 })
 
-const User = model("User", userSchema);
+const Solicitude = model("Solicitude", solicitudeSchema);
 
-export default User;
+export default Solicitude;

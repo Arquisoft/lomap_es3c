@@ -25,13 +25,13 @@ export const Forms = ({ index, setIndex }: Props) => {
     return (
         <Box sx={{ width: "100%", height: "80vh", backgroundColor: 'rgba(25, 118, 210, 0.5)', paddingTop: "6.6vh" }}>
             <Carousel variant='dark' activeIndex={index} onSelect={setIndex} interval={carouselAutoplay} >
-                <Carousel.Item>
+                <Carousel.Item style={{ height: '75vh' }}>
                     <RegisterProvider handleFocus={handleFocus} handleBlur={handleBlur} />
                 </Carousel.Item>
-                <Carousel.Item>
+                <Carousel.Item style={{ height: '75vh' }}>
                     <WhatIs />
                 </Carousel.Item>
-                <Carousel.Item>
+                <Carousel.Item style={{ height: '75vh' }}>
                     <AboutUs />
                 </Carousel.Item>
             </Carousel>

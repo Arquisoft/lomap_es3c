@@ -1,6 +1,4 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import { ListChildComponentProps } from 'react-window';
+import { useParams } from 'react-router-dom';
 import { NavFragment } from '../Fragments/NavFragment';
 import './mapasAmigo.css';
 

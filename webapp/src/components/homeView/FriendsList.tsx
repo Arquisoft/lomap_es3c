@@ -4,10 +4,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { styled } from '@mui/material';
 import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import path from 'path';
+import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { useSession } from '@inrupt/solid-ui-react';
 //import { pruebaBBDD } from '../../api/api';
 
 export default function FriendsList() {
@@ -17,11 +16,26 @@ export default function FriendsList() {
     //pruebaBBDD(data).then(back => console.log(back.back));
   //}
 
-  const loadFriends = () => {
-    // TODO: CARGA DE AMIGOS DEL USUARIO REGISTRADO
+  const {session} = useSession();
+  
+  const [friendsList, setFriendsList] = React.useState<string[]>([]);
+  const [friendsNamesList, setFriendsNamesList] = React.useState<string[]>([]);
 
-    return ['Alex', 'Israel', 'Jorge', 'Enrique', 'Pedro', 'Elisa', 'María', 'Carla', 'El pequeño Timmy', 'Leo Messi', 'Diegogar', 'Thiago Messi'];
-  }
+  React.useEffect(() => {
+    const loadFriends = async () => {
+      if (session.info.isLoggedIn) {
+        const friends = await getFriendsFromPod(session);
+        setFriendsList(friends);
+        const friendsNames = await getFriendsNamesFromPod(friends);
+        setFriendsNamesList(friendsNames);
+      } else {
+        setFriendsList([]);
+        setFriendsNamesList([]);
+      }
+    };
+
+    loadFriends();
+  }, [session]);
 
   const loadMapsForFriend = (friend: string) => {
     // TODO: CARGA DE MAPAS DEL AMIGOS PULSADO
@@ -30,7 +44,6 @@ export default function FriendsList() {
   }
 
   const height = window.innerHeight * 0.37;
-  const friends =  loadFriends();
 
   const clickFriend = (friend: string) => {
     const maps = loadMapsForFriend(friend);
@@ -65,7 +78,7 @@ export default function FriendsList() {
 
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
-    const friend = friends[index];
+    const friend = friendsNamesList[index];
 
     return (
       <ListItem style={style} key={index} component="div" disablePadding>
@@ -84,7 +97,7 @@ export default function FriendsList() {
         height={height}
         width={1000} //360
         itemSize={46}
-        itemCount={friends.length}
+        itemCount={friendsNamesList.length}
         overscanCount={5}
       >
         {renderRow}

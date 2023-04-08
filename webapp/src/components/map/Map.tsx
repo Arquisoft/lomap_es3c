@@ -1,15 +1,14 @@
-import {useState } from 'react';
+import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import {  LatLng } from 'leaflet';
+import { LatLng } from 'leaflet';
 import PlaceDrawer from './drawer/MapDrawer';
-import { Session } from '@inrupt/solid-client-authn-browser';
-import { addMarkerToPod } from './markUtils/MarkUtils';
+import {Session } from '@inrupt/solid-client-authn-browser';
+import { addMarkerToPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
 import createMapWindow from '../homeView/CreateMap';
-
 
 export interface MarkerInfo {
     name: string;
