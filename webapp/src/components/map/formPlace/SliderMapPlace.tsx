@@ -3,6 +3,7 @@ import Slider from '@mui/material/Slider';
 
 interface Identity {
     id : string;
+    onChange: any; 
 }
 
 const marks = [
@@ -38,6 +39,7 @@ export default function SliderMapPlace(props:Identity) {
         aria-label="Custom marks"
         defaultValue={5}
         step={1}
+        onChange={props.onChange}
         valueLabelDisplay="auto"
         marks={marks}
         max={10}

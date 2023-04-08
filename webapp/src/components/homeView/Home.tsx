@@ -55,17 +55,20 @@ export const Home = () => {
 
   const [sites, setSites] = useState<string[]>([]);
 
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
   const {session} = useSession();
 
   handleRedirectAfterIdentification();
   
   return (
     <>
-      <TopBar sites={sites} setSites={setSites}></TopBar>
+      <TopBar selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}></TopBar>
       <Content>
         <IzqBox>
           <SRoutes>
-            <Route path='/' element={<Map session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap} sites={sites} setSites={setSites}/>}/>
+            <Route path='/' element={<Map session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap}
+             setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}/>}/>
           </SRoutes>
         </IzqBox>
         <DerBox sx={{display: "flex", justifyContent: "left"}}>
