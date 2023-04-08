@@ -92,3 +92,17 @@ export async function existsSolicitude(userName:string, provider:string, senderN
     default: return true;
   }
 }
+
+export async function registerSolicitude(senderName:string, senderProvider:string, receiverName: string, receiverProvider: string){
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  // Hacer la llamada
+  let response = await fetch(apiEndPoint+'/solicitude/add', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({'senderName':senderName, 'senderProvider':senderProvider, 'receiverName':receiverName, 'receiverProvider':receiverProvider})
+  });
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: return response.json();
+  }
+}

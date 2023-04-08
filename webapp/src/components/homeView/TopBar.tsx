@@ -18,7 +18,8 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
-import { existsSolicitude, existsUser } from '../../api/api';
+import { existsSolicitude, existsUser, registerSolicitude } from '../../api/api';
+import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -80,6 +81,17 @@ function TopBar(mapLists: MapListInfo) {
   };
 
   
+async function areFriends(userName: string): Promise<boolean> {
+  const friends = await getFriendsFromPod(session);
+  const friendsNames = await getFriendsNamesFromPod(friends);
+  let isFriend = false;
+  friendsNames.forEach((friend) => {
+    if (friend == userName){
+      isFriend = true;
+    }
+  })
+  return isFriend;
+}
 
   const nuevoAmigo = () => {
     //TODO funcionalidad relativa a la adición de un amigo
@@ -112,7 +124,7 @@ function TopBar(mapLists: MapListInfo) {
               if (sender) {
                 const senderName = sender.split('//')[1].split('.')[0];
                 const senderProvider = sender.split('//')[1].split('.')[1];
-                existsSolicitude(userName, provider, senderName, senderProvider).then((exists) => {
+                existsSolicitude(userName, provider, senderName, senderProvider).then(async (exists) => {
                   if (exists) {
                     Swal.fire({
                       icon: 'error',
@@ -121,8 +133,18 @@ function TopBar(mapLists: MapListInfo) {
                       timer: 2000
                     })
                   } else {
-                    const esAmigo = true;
-                    //mirar que no sean ya amigos
+                    const esAmigo = await areFriends(userName);
+                    if (esAmigo){
+                      Swal.fire({
+                        icon: 'error',
+                        text: "Ya sois amigos!",
+                        showConfirmButton: false,
+                        timer: 2000
+                      })
+                    } else {
+                      //comprobar que no existe la solicitud
+                      registerSolicitude(senderName, senderProvider, userName, provider);
+                    }
                     Swal.fire({
                       icon: 'success',
                       text: 'Solicitud enviada a ' + userName + " (" + provider + ")",
@@ -135,7 +157,7 @@ function TopBar(mapLists: MapListInfo) {
             } else {
               Swal.fire({
                 icon: 'error',
-                text: "La solicitud no se ha podido enviar",
+                text: "La solicitud no se ha podido enviar, este usuario no existe en nuestro sistema",
                 showConfirmButton: false,
                 timer: 2000
               })
@@ -238,3 +260,4 @@ function TopBar(mapLists: MapListInfo) {
   );
 }
 export default TopBar;
+

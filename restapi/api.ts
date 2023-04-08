@@ -133,4 +133,19 @@ api.post(
   }
 )
 
+api.post(
+  "/solicitude/add",
+  async (req: Request, res: Response): Promise<Response> => {
+    // Hacer la llamada
+    let senderName = req.body.senderName;
+    let senderProvider = req.body.senderProvider;
+    let receiverName = req.body.receiverName;
+    let receiverProvider = req.body.receiverProvider;
+    const solicitudeData = new Solicitude({senderName : senderName, senderProvider : senderProvider, receiverName : receiverName, receiverProvider: receiverProvider});
+    solicitudeData.save();
+    // Manejar el retorno
+    return res.status(200);
+  }
+)
+
 export default api;
