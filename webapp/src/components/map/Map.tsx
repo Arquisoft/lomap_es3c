@@ -1,24 +1,13 @@
-import { useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import { useState } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import L, { Icon, LatLng, marker } from 'leaflet';
-import MapDrawer from './drawer/MapDrawer';
+import { LatLng } from 'leaflet';
 import PlaceDrawer from './drawer/MapDrawer';
-
-import {
-    saveFileInContainer,
-    getThingAll,
-    SolidDataset,
-    getFile
-} from "@inrupt/solid-client";
-import {Session, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
-import { useSession } from "@inrupt/solid-ui-react";
-import { addMarkerToPod, createMap} from './markUtils/MarkUtils';
+import {Session } from '@inrupt/solid-client-authn-browser';
+import { addMarkerToPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
-import e from 'express';
-import Swal from 'sweetalert2';
 import createMapWindow from '../homeView/CreateMap';
 
 
