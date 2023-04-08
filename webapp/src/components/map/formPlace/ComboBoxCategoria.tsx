@@ -2,8 +2,9 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 interface ComboBoxProps {
-    id : string;
-    defaultValue?: { label: string};
+  id: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<{}>, value: string | null) => void;
 }
 
 export default function ComboBoxCategoria(props:ComboBoxProps) {
@@ -11,19 +12,23 @@ export default function ComboBoxCategoria(props:ComboBoxProps) {
     <Autocomplete
       disablePortal
       id={props.id}
-      defaultValue = {props.defaultValue}
       options={categories}
       className='m-2'
       sx={{ width: 'auto' }}
-      renderInput={(params) => <TextField {...params} label="Categoría" InputLabelProps={{ style: { color: 'black' } }}/>}
+      value={props.value}
+      onChange={(event, value) => props.onChange(event,value)}
+      isOptionEqualToValue={(option, value) => option === value}
+      renderInput={(params) => (
+        <TextField {...params} label="Categoría" InputLabelProps={{ style: { color: 'black' } }} />
+      )}
     />
   );
 }
 
 const categories = [
-  { label: 'Tienda'},
-  { label: 'Bar'},
-  { label: 'Restaurante'},
-  { label: 'Paisaje'},
-  { label: 'Monumento'},
+  'Tienda',
+  'Bar',
+  'Restaurante',
+  'Paisaje',
+  'Monumento'
 ];

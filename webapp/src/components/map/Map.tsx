@@ -1,24 +1,13 @@
-import { useEffect, useState } from 'react';
-import { MapContainer, Marker, Popup, TileLayer, useMapEvents } from 'react-leaflet';
+import {useState } from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './Map.css';
-import L, { Icon, LatLng, marker } from 'leaflet';
-import MapDrawer from './drawer/MapDrawer';
+import {  LatLng } from 'leaflet';
 import PlaceDrawer from './drawer/MapDrawer';
-
-import {
-    saveFileInContainer,
-    getThingAll,
-    SolidDataset,
-    getFile
-} from "@inrupt/solid-client";
-import {Session, handleIncomingRedirect } from '@inrupt/solid-client-authn-browser';
-import { useSession } from "@inrupt/solid-ui-react";
-import { addMarkerToPod, createMap} from './markUtils/MarkUtils';
+import { Session } from '@inrupt/solid-client-authn-browser';
+import { addMarkerToPod } from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
-import e from 'express';
-import Swal from 'sweetalert2';
 import createMapWindow from '../homeView/CreateMap';
 
 
@@ -30,40 +19,42 @@ export interface MarkerInfo {
     coords: [number, number];
 }
 
-export interface MapListInfo{
-    sites:any;
-    setSites:any;
+export interface MapListInfo {
+    sites: any;
+    setSites: any;
 }
 
-export interface MapInfo{
-    session:Session;
-    markers:any;
-    setMarkers:any;
-    selectedMap:any;
-    setSelectedMap:any;
-    sites:string[];
-    setSites:any;
+export interface MapInfo {
+    session: Session;
+    markers: any;
+    setMarkers: any;
+    selectedMap: any;
+    setSelectedMap: any;
+    sites: string[];
+    setSites: any;
+    selectedCategories?:string[];
+    setSelectedCategories?:any;
 }
 
-function Map(props:MapInfo) {
-    
+function Map(props: MapInfo) {
+
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
     const [isSelected, setIsSelected] = useState(false);
 
     const addMarker = (marker: MarkerInfo) => {
         marker.coords = [selectedPosition[0], selectedPosition[1]];
-        addMarkerToPod(props.selectedMap,marker,props.session);
+        addMarkerToPod(props.selectedMap, marker, props.session);
 
         let aux = props.markers;
         aux.push(marker);
         props.setMarkers(aux);
     }
 
-    const mapOnClick = (e :LatLng) =>{
-        if(props.selectedMap == undefined){
+    const mapOnClick = (e: LatLng) => {
+        if (props.selectedMap == undefined) {
             nuevoMapa();
-        }else{
+        } else {
             setSelectedPosition([
                 e.lat,
                 e.lng
@@ -75,12 +66,12 @@ function Map(props:MapInfo) {
 
     const nuevoMapa = () => {
         createMapWindow(props.session);
-      };
+    };
 
-    const toggleDrawer = (isSelected:boolean) =>{
+    const toggleDrawer = (isSelected: boolean) => {
         setIsSelected(isSelected);
     }
-    
+
     return (
         <MapContainer
             className="map"
@@ -89,13 +80,13 @@ function Map(props:MapInfo) {
             maxZoom={18}
         >
             <MapEventHandler onClick={mapOnClick} />
-            <Markers marker={props.markers}></Markers>
-            <PlaceDrawer opened={isSelected} onSubmit={addMarker}  toggleDrawer={toggleDrawer}></PlaceDrawer>
+            <Markers marker={props.markers} selectedCategories={props.selectedCategories} setSelectedCategories={props.setSelectedCategories}></Markers>
+            <PlaceDrawer opened={isSelected} onSubmit={addMarker} toggleDrawer={toggleDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
-        </MapContainer>
+        </MapContainer >
     );
 
 

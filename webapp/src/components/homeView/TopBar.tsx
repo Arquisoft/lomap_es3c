@@ -19,10 +19,11 @@ import { createMap } from '../map/markUtils/MarkUtils';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
+import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar(mapLists:MapListInfo) {
+function TopBar(filterInfo:MapFilterInfo) {
   const {session} = useSession();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -140,6 +141,8 @@ function TopBar(mapLists:MapListInfo) {
           <a href="/home">
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
+
+          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories}></MapFilter>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:"right", marginRight: "5em" }}>
 
