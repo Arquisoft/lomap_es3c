@@ -94,7 +94,6 @@ function TopBar(mapLists: MapListInfo) {
   }
 
   const nuevoAmigo = () => {
-    //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
       html: `
@@ -169,15 +168,28 @@ function TopBar(mapLists: MapListInfo) {
     })
   };
 
-
+  const getSolicitudes = () => {
+    return ['1', '2', '3'];
+  };
+  
   const verSolicitudes = () => {
-    //TODO funcionalidad relativa a las solicitudes de amistad entrantes
-    Swal.fire({
-      title: "Lista de solicitudes",
-      html: `
-              <p>Solicitudes de amistad</p>
-            `
-    })
+      const solicitudes = getSolicitudes();
+      Swal.fire({
+        title: "Solicitudes de amistad",
+        input: "select",
+        inputOptions: solicitudes,
+        showCancelButton: true,
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Rechazar",
+        allowOutsideClick: false
+      }).then((result) => {
+        const opcionSeleccionada = solicitudes[result.value];
+        if (result.isConfirmed) {
+          console.log(opcionSeleccionada);
+        } else {
+          console.log(opcionSeleccionada);
+        }
+      });
   };
 
   return (
