@@ -81,17 +81,17 @@ function TopBar(mapLists: MapListInfo) {
   };
 
   
-async function areFriends(userName: string): Promise<boolean> {
-  const friends = await getFriendsFromPod(session);
-  const friendsNames = await getFriendsNamesFromPod(friends);
-  let isFriend = false;
-  friendsNames.forEach((friend) => {
-    if (friend == userName){
-      isFriend = true;
-    }
-  })
-  return isFriend;
-}
+  async function areFriends(userName: string): Promise<boolean> {
+    const friends = await getFriendsFromPod(session);
+    let isFriend = false;
+    friends.forEach((friend) => {
+      let f = friend.split("//")[1].split(".inrupt.net")[0];
+      if (f == userName){
+        isFriend = true;
+      }
+    })
+    return isFriend;
+  }
 
   const nuevoAmigo = () => {
     //TODO funcionalidad relativa a la adición de un amigo
@@ -110,54 +110,54 @@ async function areFriends(userName: string): Promise<boolean> {
       confirmButtonText: 'Enviar solicitud',
       showLoaderOnConfirm: true,
       preConfirm: () => {
-        const provider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
-        const userName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
+        const receiverProvider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
+        const receiverName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
 
-        if (userName === "" || provider === "") {
+        if (receiverName === "" || receiverProvider === "") {
           Swal.showValidationMessage(
             `ERROR: Usuario o proveedor vacío`
           )
         } else {
-          existsUser(userName, provider).then((register) => {
-            if (register) {
+          existsUser(receiverName, receiverProvider).then((exists) => {
+            if (exists) {
               const sender = session.info.webId;
               if (sender) {
                 const senderName = sender.split('//')[1].split('.')[0];
                 const senderProvider = sender.split('//')[1].split('.')[1];
-                existsSolicitude(userName, provider, senderName, senderProvider).then(async (exists) => {
+                existsSolicitude(receiverName, receiverProvider, senderName, senderProvider).then(async (exists) => {
                   if (exists) {
                     Swal.fire({
                       icon: 'error',
-                      text: "La solicitud ya existe",
+                      text: "Ya existe una solicitud pendiente",
                       showConfirmButton: false,
                       timer: 2000
                     })
                   } else {
-                    const esAmigo = await areFriends(userName);
-                    if (esAmigo){
+                    const isFriend = await areFriends(receiverName);
+                    if (isFriend){
                       Swal.fire({
                         icon: 'error',
-                        text: "Ya sois amigos!",
+                        text: "El usuario ya es tu amigo",
                         showConfirmButton: false,
                         timer: 2000
                       })
                     } else {
-                      //comprobar que no existe la solicitud
-                      registerSolicitude(senderName, senderProvider, userName, provider);
+                      Swal.fire({
+                        icon: 'success',
+                        text: 'Solicitud enviada a ' + receiverName + " (" + receiverProvider + ")",
+                        showConfirmButton: false,
+                        timer: 2000
+                      })
+  
+                      registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
                     }
-                    Swal.fire({
-                      icon: 'success',
-                      text: 'Solicitud enviada a ' + userName + " (" + provider + ")",
-                      showConfirmButton: false,
-                      timer: 2000
-                    })
                   }
                 });
               }
             } else {
               Swal.fire({
                 icon: 'error',
-                text: "La solicitud no se ha podido enviar, este usuario no existe en nuestro sistema",
+                text: "El usuario introducido no existe",
                 showConfirmButton: false,
                 timer: 2000
               })

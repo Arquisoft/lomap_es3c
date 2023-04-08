@@ -73,16 +73,16 @@ export async function existsUser(userName:string, provider:string):Promise<boole
   // Manejar el retorno
   switch (response.status) {
     case 200: 
-        const { isRegistered } = await response.json();  
-        return isRegistered;
+        const { exists } = await response.json();  
+        return exists;
     default: return false;
   }
 }
 
-export async function existsSolicitude(userName:string, provider:string, senderName: string, senderProvider: string):Promise<boolean>{
+export async function existsSolicitude(receiverName:string, receiverProvider:string, senderName: string, senderProvider: string):Promise<boolean>{
   const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
-  let response = await fetch(apiEndPoint+'/solicitude/exists?userName=' + userName + 
-  '&provider=' + provider + '&senderName=' + senderName+ '&senderProvider=' + senderProvider);
+  let response = await fetch(apiEndPoint+'/solicitude/exists?receiverName=' + receiverName + 
+  '&receiverProvider=' + receiverProvider + '&senderName=' + senderName+ '&senderProvider=' + senderProvider);
 
   // Manejar el retorno
   switch (response.status) {
@@ -93,7 +93,7 @@ export async function existsSolicitude(userName:string, provider:string, senderN
   }
 }
 
-export async function registerSolicitude(senderName:string, senderProvider:string, receiverName: string, receiverProvider: string){
+export async function registerSolicitude(receiverName: string, receiverProvider: string, senderName:string, senderProvider:string){
   const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
   // Hacer la llamada
   let response = await fetch(apiEndPoint+'/solicitude/add', {

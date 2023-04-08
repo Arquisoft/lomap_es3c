@@ -77,48 +77,6 @@ api.get(
   }
 );
 
-api.get(
-  "/user/exists",
-  async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const userName = req.query.userName;
-      const provider = req.query.provider;
-
-      const user = await User.findOne({ userName: userName, provider: provider });
-
-      if (user) {
-        return res.status(200).send({ isRegistered: true });
-      } else {
-        return res.status(200).send({ isRegistered: false });
-      }
-    } catch (error) {
-      return res.status(500).send({ error: 'Error al buscar usuario' });
-    }
-  }
-);
-
-api.get(
-  "/solicitude/exists",
-  async (req: Request, res: Response): Promise<Response> => {
-    try {
-      const recieverName = req.query.userName;
-      const recieverProvider = req.query.provider;
-      const senderName = req.query.senderName;
-      const senderProvider = req.query.senderProvider;
-
-      const solicitude = await Solicitude.findOne({ senderName, senderProvider, recieverName, recieverProvider});
-
-      if (solicitude) {
-        return res.status(200).send({ exists: true });
-      } else {
-        return res.status(200).send({ exists: false });
-      }
-    } catch (error) {
-      return res.status(500).send({ error: 'Error al buscar solicitud' });
-    }
-  }
-);
-
 api.post(
   "/user/add",
   async (req: Request, res: Response): Promise<Response> => {
@@ -132,6 +90,48 @@ api.post(
     return res.status(200);
   }
 )
+
+api.get(
+  "/user/exists",
+  async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const userName = req.query.userName;
+      const provider = req.query.provider;
+
+      const user = await User.findOne({ userName: userName, provider: provider });
+
+      if (user) {
+        return res.status(200).send({ exists: true });
+      } else {
+        return res.status(200).send({ exists: false });
+      }
+    } catch (error) {
+      return res.status(500).send({ error: 'Error al buscar usuario' });
+    }
+  }
+);
+
+api.get(
+  "/solicitude/exists",
+  async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const receiverName = req.query.receiverName;
+      const receiverProvider = req.query.receiverProvider;
+      const senderName = req.query.senderName;
+      const senderProvider = req.query.senderProvider;
+
+      const solicitude = await Solicitude.findOne({ senderName, senderProvider, receiverName, receiverProvider});
+
+      if (solicitude) {
+        return res.status(200).send({ exists: true });
+      } else {
+        return res.status(200).send({ exists: false });
+      }
+    } catch (error) {
+      return res.status(500).send({ error: 'Error al buscar solicitud' });
+    }
+  }
+);
 
 api.post(
   "/solicitude/add",
