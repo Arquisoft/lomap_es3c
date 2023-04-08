@@ -1,6 +1,7 @@
 import { Session } from "@inrupt/solid-client-authn-browser";
 
 import {
+  getFile,
   getSolidDataset,
   getStringNoLocale,
   getThing,
@@ -45,6 +46,21 @@ export async function getFriendsNamesFromPod(friendsUrls) {
     }
     //console.log(nombreAmigos)
     return nombreAmigos
+  
+  } catch (error) {
+    console.log(error)
+  }
+  
+  return ['']
+}
+
+
+export async function getFriendsMapsFromPod(friendUrl, session) {
+  try {    
+    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/maps");
+    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch });
+    const content = await file.text();
+    console.log(content);    
   
   } catch (error) {
     console.log(error)
