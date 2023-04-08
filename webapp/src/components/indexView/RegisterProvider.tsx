@@ -20,7 +20,7 @@ export const RegisterProvider = ({ handleFocus, handleBlur }: Props) => {
 
     return (
         <Box sx={{
-            marginLeft: "25%", marginRight: "25%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
+            marginLeft: "20%", marginRight: "20%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
             paddingTop: "3em", display: "flex", flexDirection: "column"
         }}>
 

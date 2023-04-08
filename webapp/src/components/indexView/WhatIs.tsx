@@ -5,8 +5,8 @@ import ImageComponent from '../Image';
 export const WhatIs = () => {
     return (
         <Box sx={{ 
-            marginLeft: "25%", marginRight: "25%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
-            paddingTop: "1.3em", display: 'flex', flexDirection: 'column', alignItems: 'center'
+            marginLeft: "20%", marginRight: "20%", height: "67vh", backgroundColor: 'rgba(25, 118, 210, 1)', border: "solid black 0.2em",
+            paddingTop: "1.3em", display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
         }} >
             <Typography variant="h4" sx={{ mb: 2, color: "white", fontWeight: "bold", textShadow: "2px 2px black" }}>¿Qué es LoMap?</Typography>
             <Typography variant="body1" sx={{ mb: 4 , marginBottom: "0.25em" }}><strong>LoMap</strong> es una aplicación de mapas personalizados.</Typography>
