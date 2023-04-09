@@ -16,16 +16,15 @@ import { logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
-import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
 import { deleteSolicitude, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { getFriendsFromPod } from '../Amigos/podsFriends';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar(filterInfo:MapFilterInfo) {
-  const {session} = useSession();
+function TopBar(filterInfo: MapFilterInfo) {
+  const { session } = useSession();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -81,13 +80,13 @@ function TopBar(filterInfo:MapFilterInfo) {
     createMapWindow(session);
   };
 
-  
+
   async function areFriends(userName: string): Promise<boolean> {
     const friends = await getFriendsFromPod(session);
     let isFriend = false;
     friends.forEach((friend) => {
       let f = friend.split("//")[1].split(".inrupt.net")[0];
-      if (f == userName){
+      if (f == userName) {
         isFriend = true;
       }
     })
@@ -134,7 +133,7 @@ function TopBar(filterInfo:MapFilterInfo) {
                     })
                   } else {
                     const isFriend = await areFriends(receiverName);
-                    if (isFriend){
+                    if (isFriend) {
                       Swal.fire({
                         icon: 'error',
                         text: "El usuario ya es tu amigo",
@@ -148,7 +147,7 @@ function TopBar(filterInfo:MapFilterInfo) {
                         showConfirmButton: false,
                         timer: 2000
                       })
-  
+
                       registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
                     }
                   }
@@ -175,52 +174,62 @@ function TopBar(filterInfo:MapFilterInfo) {
       const userName = userWebId?.split('//')[1].split('.')[0];
       const provider = userWebId?.split('//')[1].split('.')[1];
 
-      if(userName != null && provider != null) {
+      if (userName != null && provider != null) {
         getSolicitudes(userName, provider).then((solicitudes) => {
-          const options = solicitudes.map((s) => {
-            return `<option value="${s.senderName + "-" + s.senderProvider}">${s.senderName + " (" + s.senderProvider + ")"}</option>`;
-          });
+          if (solicitudes.length == 0) {
+            Swal.fire({
+              icon: 'info',
+              title: 'No tienes solicitudes de amistad',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar'
+            });
+          } else {
+            const options = solicitudes.map((s) => {
+              return `<option value="${s.senderName + "-" + s.senderProvider}">${s.senderName + " (" + s.senderProvider + ")"}</option>`;
+            });
 
-          Swal.fire({
-            title: 'Solicitudes de amistad',
-            html: `
-                  <select id="user" class="swal2-input">
-                  ${options}
-                  </select>
-                  `,
-            showDenyButton: true,
-            showCancelButton: false,
-            confirmButtonText: 'Aceptar',
-            denyButtonText: 'Rechazar',
-          }).then((result) => {
-            const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
-      
-            if (result.isConfirmed) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Usuario ' + user.split("-")[0] + ' aceptado',
-                showConfirmButton: false,
-                timer: 1500
-              }).then(() => {
-                // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
-                //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
-                //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+            Swal.fire({
+              title: 'Solicitudes de amistad',
+              html: `
+                    <select id="user" class="swal2-input">
+                    ${options}
+                    </select>
+                    `,
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Aceptar',
+              denyButtonText: 'Rechazar',
+            }).then((result) => {
+              const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
 
-                deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
-              });
-            } else if (result.isDenied) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Usuario ' + user.split("-")[0] + ' rechazado',
-                showConfirmButton: false,
-                timer: 1500
-              }).then(() => {
-                deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
-              });
-            }
-          })
+              if (result.isConfirmed) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Usuario ' + user.split("-")[0] + ' aceptado',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => {
+                  // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
+                  //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
+                  //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+
+                  deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
+                });
+              } else if (result.isDenied) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Usuario ' + user.split("-")[0] + ' rechazado',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => {
+                  deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
+                });
+              }
+            })
+          }
+
         })
-      }; 
+      };
     }
   };
 
