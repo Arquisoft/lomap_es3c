@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
 import { Button } from '@mui/material';
-import { logout } from "@inrupt/solid-client-authn-browser";
+import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
@@ -20,6 +20,7 @@ import createMapWindow from './CreateMap';
 import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { getFile, overwriteFile } from '@inrupt/solid-client';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -44,14 +45,74 @@ function TopBar(filterInfo: MapFilterInfo) {
   const navigate = useNavigate();
 
   const miPerfil = () => {
-    //TODO funcionalidad relativa al perfil del usuario
     handleCloseUserMenu();
+    mostrarVentanaPerfil();
+  };
+
+  const mostrarVentanaPerfil = async () => {
+    // Obtener el nombre del usuario desde la sesión
+    const user = session.info.webId;
+    let nombreUsuario = "";
+    let biografiaUsuario;
+    if (user) {
+      nombreUsuario = user.split('//')[1].split('.')[0];
+      biografiaUsuario = await getBioFromPod(session);
+    }
+
+    // Crear el contenido de la ventana modal
+    const html = `
+      <div>
+        <label for="name">Nombre</label>
+        <input id="name" class="swal2-input" value="${nombreUsuario}" style="width: 65%;" readonly>
+        <br/>
+        <h5>Biografía:</h5>
+        <textarea id="biografia" rows="5" cols="40" style="resize: none; text-align: center;">${biografiaUsuario}</textarea>
+      </div>
+    `;
+
+    // Mostrar la ventana
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Profile Function',
+      title: 'Mi perfil',
+      html: html,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar biografía',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        const bio = (Swal.getPopup()?.querySelector('#biografia') as HTMLInputElement).value;
+        addBioToPod(session, bio);
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
   };
+
+  async function addBioToPod(session: Session, bio: string): Promise<void> {
+    // Obtener la URL del archivo de biografía en la carpeta pública
+    const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
+
+    // Crear un objeto Blob a partir del contenido de la biografía
+    const blob = new Blob([bio], { type: "text/plain" });
+
+    // Sobrescribir el archivo de biografía en la carpeta pública con el nuevo contenido
+    await overwriteFile(bioFileUrl, blob, { fetch: session.fetch });
+
+    console.log(`La biografía ha sido actualizada en la URL: ${bioFileUrl}`);
+  }
+
+  async function getBioFromPod(session: Session): Promise<string> {
+    // Obtener la URL del archivo de biografía en la carpeta pública
+    const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
+
+    try {
+      // Obtener el contenido del archivo de biografía utilizando la función getFile
+      const file = await getFile(bioFileUrl, { fetch: session.fetch });
+      const content = await file.text();
+      console.log(`La biografía recuperada del POD es: ${content}`);
+      return content;
+    } catch (e) {
+      console.log(`No se ha encontrado un archivo de biografía en la URL: ${bioFileUrl}`);
+      return "Aún no se ha creado una biografía.";
+    }
+  }
 
   const miCuenta = async () => {
     //TODO funcionalidad relativa a la cuenta del usuario
