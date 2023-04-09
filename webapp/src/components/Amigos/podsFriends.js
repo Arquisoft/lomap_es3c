@@ -98,22 +98,34 @@ export async function addToKnowInPod(session, nuevoConocido) {
     
     if (profileThing != null) {
 
-      profileThing = addUrl(
-        profileThing,
-        FOAF.knows,
-        nuevoConocido
-      );
+      var sonAmigos = false;
+      var conocidos = getUrlAll(profileThing, FOAF.knows);
+      for(var i = 0; i < conocidos.length; i++) {
+        if(conocidos[i]== nuevoConocido) {
+          console.log("ya es amigo");
+          sonAmigos = true;
+        }  
+      }
 
-      profileDataset = setThing(
-        profileDataset,
-        profileThing
-      );
-    
-      await saveSolidDatasetAt(
-        session.info.webId,
-        profileDataset,
-        { fetch: session.fetch }
-      );
+      if(!sonAmigos) {
+        console.log("estoy aqui")
+        profileThing = addUrl(
+          profileThing,
+          FOAF.knows,
+          nuevoConocido
+        );
+
+        profileDataset = setThing(
+          profileDataset,
+          profileThing
+        );
+      
+        await saveSolidDatasetAt(
+          session.info.webId,
+          profileDataset,
+          { fetch: session.fetch }
+        );
+      }
     }
 
   } catch (error) {
