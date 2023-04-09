@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import ComboBoxCategoria from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
 import { MarkerInfo } from '../Map';
-import { DrawerInfo } from '../drawer/MapDrawer';
+import { DrawerInfo } from '../drawer/PointCreateDrawer';
 import { Box } from '@mui/material';
 import Swal from 'sweetalert2';
 
@@ -17,13 +17,24 @@ function MapPlaceForm(props: FormProps): JSX.Element {
 
   const [selectedCategory, setSelectedCategory] = useState<string>('Tienda');
   const [selectedScore, setSelectedScore] = useState<number>(5);
+  const [filesArray, setFilesArray] = useState<File[]>([]);
 
   const handleAutocompleteChange = (event: React.ChangeEvent<{}>, value: string | null) => {
     setSelectedCategory(value || ""); // Si el valor es null, establece una cadena vacía
   };
 
-  const handleSliderChange = (e:Event,value: number) => {
+  const handleSliderChange = (e: Event, value: number) => {
     setSelectedScore(value);
+  };
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileInputChange = () => {
+    // Obtener la lista de archivos seleccionados
+    const fileList = inputRef.current?.files;
+    
+    // Convertir la lista de archivos en un arreglo de tipo File[]
+    setFilesArray(Array.from(fileList as FileList) as File[]);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -36,6 +47,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
       categoria: selectedCategory,
       comments: formData.get('comments') as string,
       score: selectedScore,
+      images:filesArray,
       coords: [0, 0]
       // Aquí se deben agregar las propiedades del objeto nuevo
     };
@@ -63,10 +75,24 @@ function MapPlaceForm(props: FormProps): JSX.Element {
         <div className='d-flex flex-column justify-content-center'>
           <label htmlFor='combobox-category' className='text-center'><strong>Categoria</strong></label>
           <ComboBoxCategoria
-            id="categoria"
+            id="combobox-category"
             value={selectedCategory}
             onChange={handleAutocompleteChange}
           />
+        </div>
+        <Box sx={{ height: "1em" }} />
+        <div className='d-flex flex-column justify-content-center'>
+          <label htmlFor='image-button' className='text-center'><strong>Subir imágenes</strong></label>
+            <input
+              id='image-button'
+              name='images'
+              type="file"
+              required
+              multiple
+              accept="image/*"
+              ref={inputRef}
+              onChange={handleFileInputChange}
+            />
         </div>
         <Box sx={{ height: "1em" }} />
         <div className='d-flex flex-column justify-content-center'>

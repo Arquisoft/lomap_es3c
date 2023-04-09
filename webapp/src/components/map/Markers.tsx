@@ -2,11 +2,15 @@ import { Icon } from "leaflet";
 import { Marker, Popup } from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { MarkerInfo } from "./Map";
+import { Session } from "@inrupt/solid-client-authn-browser";
 
 export interface MarkersProps{
+    session:Session;
     marker:MarkerInfo[];
     selectedCategories?:string[];
     setSelectedCategories?:any;
+    setIsViewPointDrawerSelected:any;
+    setSelectedMarker:any;
 }
 
 export function Markers(props:MarkersProps){
@@ -23,10 +27,12 @@ export function Markers(props:MarkersProps){
     return (
         <div>
             {filteredMarkers.map((markerInfo, idx) =>
-                <Marker key={`marker-${idx}`} position={markerInfo.coords} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] }) }>
-                    <Popup>
-                        <span>A pretty CSS3 popup. <br /> Easily customizable.</span>
-                    </Popup>
+                <Marker key={`marker-${idx}`} position={markerInfo.coords} icon={new Icon({ iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41] })} eventHandlers={{
+                    click: (e) => {
+                      props.setSelectedMarker(markerInfo);
+                      props.setIsViewPointDrawerSelected(true);
+                    },
+                  }}>
                 </Marker>
             )}
         </div>
