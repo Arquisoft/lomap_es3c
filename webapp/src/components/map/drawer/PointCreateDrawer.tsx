@@ -38,7 +38,8 @@ export default function PlaceDrawer(props:DrawerInfo) {
   //Mostramos el formularo para añadir un punto
   const list = () => (
     <Box sx={{ 
-            width: 350
+            width: 350,
+            backgroundColor: "rgba(25, 118, 210, 0.8)"
          }}
       role="presentation"
     >

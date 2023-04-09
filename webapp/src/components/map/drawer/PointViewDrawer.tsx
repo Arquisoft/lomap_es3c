@@ -64,12 +64,13 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     //Mostramos la vista con la informacion del punto
     const list = () => (
         <Box sx={{
-            width: 450
+            width: 450,
+            backgroundColor: "rgba(25, 118, 210, 0.8)"
         }}
             role="presentation"
         >
-            <h2>Nombre: {props.marker.name}</h2>
-            <h3>Categoria: {props.marker.categoria}</h3>
+            <h2 className='text-center'>Nombre: {props.marker.name}</h2>
+            <h3 className='text-center'>Categoria: {props.marker.categoria}</h3>
             <h3>Coordenadas</h3>
             <ul>
                 <li>Latitud: {props.marker.coords[0]}</li>

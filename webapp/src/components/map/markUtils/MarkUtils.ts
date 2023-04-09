@@ -146,6 +146,7 @@ export async function getFileFromPod(session: Session,url?:string) {
     let podUrl = url !== undefined ? url : (session.info.webId?.split('/profile')[0]+'/private/maps'  || '');
     file = await getFile(podUrl, { fetch: session.fetch });
   } catch (e) {
+    alert("asdasd")
     let maps: JsonLdDocument = {
       "@context": "https://schema.org/",
       "maps": []
