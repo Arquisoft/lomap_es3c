@@ -1,4 +1,4 @@
-import { getFile, overwriteFile } from "@inrupt/solid-client";
+import { createContainerAt, getFile, overwriteFile, saveFileInContainer } from "@inrupt/solid-client";
 import { JsonLdDocument} from "jsonld";
 import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
@@ -6,7 +6,7 @@ import { Session } from "@inrupt/solid-client-authn-browser";
 let file: any;
 
 export async function createJSONLDPoint(selectedMap: string, marker: MarkerInfo) {
-  const { name, comments, score, categoria, coords } = marker;
+  const { name, comments, score, categoria,images, coords } = marker;
 
   let place: JsonLdDocument = {
     "@context": "https://schema.org/",
@@ -15,6 +15,7 @@ export async function createJSONLDPoint(selectedMap: string, marker: MarkerInfo)
     "latitude": coords[0],
     "longitude": coords[1],
     "category": categoria,
+    "images":images as string[],
     "score": score,
     "comment": comments
   };
@@ -60,6 +61,7 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string,u
       comments: marker.comment,
       score: marker.score,
       categoria: marker.category,
+      images:marker.images,
       coords: [marker.latitude, marker.longitude]
     }));
 
@@ -108,11 +110,11 @@ export async function createMap(session:Session,mapName:string){
   return jsonld.maps.map((map: { name: string; }) => map.name);
 }
 
-async function overwriteFileInPod(session:Session,file:File){
+export async function overwriteFileInPod(session:Session,file:File,url?:string){
   // Guardar los cambios en el pod
   try {
     await overwriteFile(
-      (session.info.webId?.split('/profile')[0]+'/public/maps'  || ''), //TODO: Cambiar public por private
+      url !== undefined ? url : (session.info.webId?.split('/profile')[0]+'/public/maps'  || ''), //TODO: Cambiar public por private
       file,
       { contentType: file.type, fetch: session.fetch }
     );
@@ -121,11 +123,30 @@ async function overwriteFileInPod(session:Session,file:File){
   }
 }
 
+export async function saveImageInPod(session:Session,file:File,fileName:string){
+  // Guardar los cambios en el pod
+  try {
+    await saveFileInContainer(
+      (session.info.webId?.split('/profile')[0]+'/private/images'  || ''),
+      file,
+      { contentType: file.type,slug: fileName, fetch: session.fetch }
+    );
+  } catch (e) {
+    await createContainerAt((session.info.webId?.split('/profile')[0]+'/private/images'  || ''), { fetch: session.fetch });
+    await saveFileInContainer(
+      (session.info.webId?.split('/profile')[0]+'/private/images'  || ''),
+      file,
+      { contentType: file.type,slug: fileName, fetch: session.fetch }
+    );
+  }
+}
+
 export async function getFileFromPod(session: Session,url?:string) {
   try {
     let podUrl = url !== undefined ? url : (session.info.webId?.split('/profile')[0]+'/public/maps'  || ''); //TODO: Cambiar public por private
     file = await getFile(podUrl, { fetch: session.fetch });
   } catch (e) {
+    alert("asdasd")
     let maps: JsonLdDocument = {
       "@context": "https://schema.org/",
       "maps": []
@@ -135,5 +156,13 @@ export async function getFileFromPod(session: Session,url?:string) {
     file = new File([blob], "maps.jsonld", { type: blob.type });
     overwriteFileInPod(session,file);
   }
+}
 
+export async function getImageFromPod(session: Session,name:string) {
+  try {
+    let podUrl = (session.info.webId?.split('/profile')[0]+'/private/images/'  || '')+name;
+    file = await getFile(podUrl, { fetch: session.fetch });
+    return file;
+  } catch (e) {
+  }
 }
