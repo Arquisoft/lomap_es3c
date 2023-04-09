@@ -149,6 +149,7 @@ function TopBar(filterInfo: MapFilterInfo) {
                       })
 
                       registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
+                      addToKnowInPod(session, "https://dgg.inrupt.net/profile/card#me"); //TODO: Reemplazar por el cardme del usuario destinatario.
                     }
                   }
                 });
@@ -188,30 +189,32 @@ function TopBar(filterInfo: MapFilterInfo) {
               return `<option value="${s.senderName + "-" + s.senderProvider}">${s.senderName + " (" + s.senderProvider + ")"}</option>`;
             });
 
-            Swal.fire({
-              title: 'Solicitudes de amistad',
-              html: `
-                    <select id="user" class="swal2-input">
-                    ${options}
-                    </select>
-                    `,
-              showDenyButton: true,
-              showCancelButton: false,
-              confirmButtonText: 'Aceptar',
-              denyButtonText: 'Rechazar',
-            }).then((result) => {
-              const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
-
-              if (result.isConfirmed) {
-                Swal.fire({
-                  icon: 'success',
-                  title: 'Usuario ' + user.split("-")[0] + ' aceptado',
-                  showConfirmButton: false,
-                  timer: 1500
-                }).then(() => {
-                  // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
-                  //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
-                  //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+          Swal.fire({
+            title: 'Solicitudes de amistad',
+            html: `
+                  <select id="user" class="swal2-input">
+                  ${options}
+                  </select>
+                  `,
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: 'Aceptar',
+            denyButtonText: 'Rechazar',
+          }).then((result) => {
+            const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
+      
+            if (result.isConfirmed) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Usuario ' + user.split("-")[0] + ' aceptado',
+                showConfirmButton: false,
+                timer: 1500
+              }).then(() => {
+                // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
+                //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
+                //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+                
+                addToKnowInPod(session, "https://dgg.inrupt.net/profile/card#me"); //TODO: Reemplazar por el cardme del usuario destinatario.
 
                   deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
                 });
