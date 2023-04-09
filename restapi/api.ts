@@ -148,4 +148,45 @@ api.post(
   }
 )
 
+api.get(
+  "/solicitude/getAll",
+  async (req: Request, res: Response): Promise<Response> => {
+    try {
+      const receiverName = req.query.userName;
+      const receiverProvider = req.query.provider;
+
+      const solicitudes = await Solicitude.find({ receiverName: receiverName, receiverProvider: receiverProvider });
+
+      return res.status(200).send({ solicitudes: solicitudes });
+    } catch (error) {
+      return res.status(500).send({ error: 'Error al buscar solicitud' });
+    }
+  }
+);
+
+api.post(
+  "/solicitude/delete",
+  async (req: Request, res: Response): Promise<Response> => {
+    // Hacer la llamada
+    let senderName = req.body.senderName;
+    let senderProvider = req.body.senderProvider;
+    let receiverName = req.body.receiverName;
+    let receiverProvider = req.body.receiverProvider;
+    await Solicitude.deleteOne({senderName, senderProvider, receiverName, receiverProvider});
+    // Manejar el retorno
+    return res.status(200);
+  }
+)
+
+api.post(
+  "/user/delete",
+  async (req: Request, res: Response): Promise<Response> => {
+    // Hacer la llamada
+    let userWebId = req.body.userWebId;
+    await User.deleteOne({userWebId : userWebId});
+    // Manejar el retorno
+    return res.status(200);
+  }
+)
+
 export default api;

@@ -31,8 +31,8 @@ function MapFilter(props:MapFilterInfo) {
   };
   
   return (
-    <div style={{ display: 'inline-flex' }}>
-      <h3 style={{ marginLeft: '0.7em', marginRight: '0.5em' }}>Filtrar por categorías:</h3>
+    <div style={{ display: 'inline-flex', color: 'black', marginLeft: '2.5em', alignItems: 'center' }}>
+      <h3 style={{ marginLeft: '0.5em', marginRight: '1em', fontSize: '1.1em', marginTop: '0.3em' }}><strong>CATEGORÍAS:</strong></h3>
       <FormControlLabel
         control={<Checkbox checked={isChecked.Tienda} onChange={handleCheckboxChange('Tienda')} color="default" />}
         label="Tienda"

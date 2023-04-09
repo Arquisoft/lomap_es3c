@@ -1,10 +1,15 @@
 import { Session } from "@inrupt/solid-client-authn-browser";
 
 import {
+  addUrl,
+  getFile,
   getSolidDataset,
   getStringNoLocale,
   getThing,
-  getUrlAll
+  getUrlAll,
+  saveSolidDatasetAt,
+  setThing,
+  setUrl
 } from "@inrupt/solid-client";
 
 import { FOAF } from "@inrupt/vocab-common-rdf";
@@ -17,10 +22,23 @@ export async function getFriendsFromPod(session) {
     //console.log(webId)
     let profileDataset = await getSolidDataset(webId);
     let profileThing = getThing(profileDataset, webId);
-    
     if (profileThing != null) {
-      var amigos = getUrlAll(profileThing, FOAF.knows);
-      //console.log(amigos)
+      var conocidos = getUrlAll(profileThing, FOAF.knows);
+      
+      var amigos = Array();
+      for(var i = 0; i < conocidos.length; i++) {
+        let profileConocidoDataset = await getSolidDataset(conocidos[i]);
+        let profileConocidoThing = getThing(profileConocidoDataset, conocidos[i]);
+        if (profileConocidoThing != null) {
+          var conocidosDelConocido = getUrlAll(profileConocidoThing, FOAF.knows);
+          for(var j = 0; j < conocidosDelConocido.length; j++) {
+            if(conocidosDelConocido[j] == webId) {
+              amigos.push(conocidos[i]);
+            }
+          }          
+        }
+      }
+
       return amigos
     }
     
@@ -51,4 +69,66 @@ export async function getFriendsNamesFromPod(friendsUrls) {
   }
   
   return ['']
+}
+
+//Para obtener los mapas de tu amigo.
+export async function getFriendsMapsFromPod(friendUrl, session) {
+  try {    
+    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/maps");
+    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch });
+    const content = await file.text();
+    console.log(content);    
+  
+  } catch (error) {
+    console.log(error)
+  }
+  
+  return ['']
+}
+
+
+//Añadir a knows.
+export async function addToKnowInPod(session, nuevoConocido) {
+  
+  const webId = session.info.webId;
+
+  try { 
+    let profileDataset = await getSolidDataset(webId);
+    let profileThing = getThing(profileDataset, webId);
+    
+    if (profileThing != null) {
+
+      var sonAmigos = false;
+      var conocidos = getUrlAll(profileThing, FOAF.knows);
+      for(var i = 0; i < conocidos.length; i++) {
+        if(conocidos[i]== nuevoConocido) {
+          console.log("ya es amigo");
+          sonAmigos = true;
+        }  
+      }
+
+      if(!sonAmigos) {
+        console.log("estoy aqui")
+        profileThing = addUrl(
+          profileThing,
+          FOAF.knows,
+          nuevoConocido
+        );
+
+        profileDataset = setThing(
+          profileDataset,
+          profileThing
+        );
+      
+        await saveSolidDatasetAt(
+          session.info.webId,
+          profileDataset,
+          { fetch: session.fetch }
+        );
+      }
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
 }

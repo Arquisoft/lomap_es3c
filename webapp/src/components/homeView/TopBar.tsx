@@ -12,20 +12,20 @@ import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
 import { Button } from '@mui/material';
-import { logout } from "@inrupt/solid-client-authn-browser";
+import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
-import { MapListInfo } from '../map/Map';
 import createMapWindow from './CreateMap';
+import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { existsSolicitude, existsUser, registerSolicitude } from '../../api/api';
-import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { getFile, overwriteFile } from '@inrupt/solid-client';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar(filterInfo:MapFilterInfo) {
-  const {session} = useSession();
+function TopBar(filterInfo: MapFilterInfo) {
+  const { session } = useSession();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -45,22 +45,107 @@ function TopBar(filterInfo:MapFilterInfo) {
   const navigate = useNavigate();
 
   const miPerfil = () => {
-    //TODO funcionalidad relativa al perfil del usuario
     handleCloseUserMenu();
+    mostrarVentanaPerfil();
+  };
+
+  const mostrarVentanaPerfil = async () => {
+    // Obtener el nombre del usuario desde la sesión
+    const user = session.info.webId;
+    let nombreUsuario = "";
+    let biografiaUsuario;
+    if (user) {
+      nombreUsuario = user.split('//')[1].split('.')[0];
+      biografiaUsuario = await getBioFromPod(session);
+    }
+
+    // Crear el contenido de la ventana modal
+    const html = `
+      <div>
+        <label for="name">Nombre</label>
+        <input id="name" class="swal2-input" value="${nombreUsuario}" style="width: 65%;" readonly>
+        <br/>
+        <h5>Biografía:</h5>
+        <textarea id="biografia" rows="5" cols="40" style="resize: none; text-align: center;">${biografiaUsuario}</textarea>
+      </div>
+    `;
+
+    // Mostrar la ventana
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Profile Function',
+      title: 'Mi perfil',
+      html: html,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar biografía',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        const bio = (Swal.getPopup()?.querySelector('#biografia') as HTMLInputElement).value;
+        addBioToPod(session, bio);
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
   };
 
-  const miCuenta = () => {
+  async function addBioToPod(session: Session, bio: string): Promise<void> {
+    // Obtener la URL del archivo de biografía en la carpeta pública
+    const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
+
+    // Crear un objeto Blob a partir del contenido de la biografía
+    const blob = new Blob([bio], { type: "text/plain" });
+
+    // Sobrescribir el archivo de biografía en la carpeta pública con el nuevo contenido
+    await overwriteFile(bioFileUrl, blob, { fetch: session.fetch });
+
+    console.log(`La biografía ha sido actualizada en la URL: ${bioFileUrl}`);
+  }
+
+  async function getBioFromPod(session: Session): Promise<string> {
+    // Obtener la URL del archivo de biografía en la carpeta pública
+    const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
+
+    try {
+      // Obtener el contenido del archivo de biografía utilizando la función getFile
+      const file = await getFile(bioFileUrl, { fetch: session.fetch });
+      const content = await file.text();
+      console.log(`La biografía recuperada del POD es: ${content}`);
+      return content;
+    } catch (e) {
+      console.log(`No se ha encontrado un archivo de biografía en la URL: ${bioFileUrl}`);
+      return "Aún no se ha creado una biografía.";
+    }
+  }
+
+  const miCuenta = async () => {
     //TODO funcionalidad relativa a la cuenta del usuario
     handleCloseUserMenu();
+    
+    const webId = session.info.webId;
+    const arrayWebId = [webId];
+    const name = await getFriendsNamesFromPod(arrayWebId);
+
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Account Function',
+      title: 'Mi Cuenta',
+      html: `
+            <label for="name">Nombre</label>
+            <input id="name" class="swal2-input" value="${name}" style="width: 65%;" readonly>
+            <br/>
+            <label for="webId">Web ID</label>
+            <input id="webId" class="swal2-input" value="${webId}" style="width: 65%;" readonly>
+            `,
+      showCancelButton: true,
+      confirmButtonText: 'Desactivar cuenta',
+      cancelButtonText: 'Atrás',
+      showLoaderOnConfirm: true,
+      width: '60%',
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed && webId) {
+        Swal.fire('Cuenta desactivada', 'Podrá reactivarla la próxima vez que inicie sesión', 'success').then(() => {
+          logout().then(() => {
+            navigate(`/`);
+            deleteUser(webId.split("/profile/")[0])
+          });
+        })
+      }
     })
   };
 
@@ -70,24 +155,19 @@ function TopBar(filterInfo:MapFilterInfo) {
 
     await logout();
     navigate(`/`);
-    /* Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Session Function',
-    }) */
   };
 
   const nuevoMapa = () => {
     createMapWindow(session);
   };
 
-  
+
   async function areFriends(userName: string): Promise<boolean> {
     const friends = await getFriendsFromPod(session);
     let isFriend = false;
     friends.forEach((friend) => {
       let f = friend.split("//")[1].split(".inrupt.net")[0];
-      if (f == userName){
+      if (f == userName) {
         isFriend = true;
       }
     })
@@ -95,7 +175,6 @@ function TopBar(filterInfo:MapFilterInfo) {
   }
 
   const nuevoAmigo = () => {
-    //TODO funcionalidad relativa a la adición de un amigo
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
       html: `
@@ -135,7 +214,7 @@ function TopBar(filterInfo:MapFilterInfo) {
                     })
                   } else {
                     const isFriend = await areFriends(receiverName);
-                    if (isFriend){
+                    if (isFriend) {
                       Swal.fire({
                         icon: 'error',
                         text: "El usuario ya es tu amigo",
@@ -149,8 +228,9 @@ function TopBar(filterInfo:MapFilterInfo) {
                         showConfirmButton: false,
                         timer: 2000
                       })
-  
+
                       registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
+                      addToKnowInPod(session, "https://" + receiverName + "." + receiverProvider + ".net/profile/card#me");
                     }
                   }
                 });
@@ -170,15 +250,69 @@ function TopBar(filterInfo:MapFilterInfo) {
     })
   };
 
-
   const verSolicitudes = () => {
-    //TODO funcionalidad relativa a las solicitudes de amistad entrantes
-    Swal.fire({
-      title: "Lista de solicitudes",
-      html: `
-              <p>Solicitudes de amistad</p>
-            `
-    })
+    if (session.info.isLoggedIn) {
+      const userWebId = session.info.webId?.split('/profile')[0];
+      const userName = userWebId?.split('//')[1].split('.')[0];
+      const provider = userWebId?.split('//')[1].split('.')[1];
+
+      if (userName != null && provider != null) {
+        getSolicitudes(userName, provider).then((solicitudes) => {
+          if (solicitudes.length == 0) {
+            Swal.fire({
+              icon: 'info',
+              title: 'No tienes solicitudes de amistad',
+              showConfirmButton: true,
+              confirmButtonText: 'Aceptar'
+            });
+          } else {
+            const options = solicitudes.map((s) => {
+              return `<option value="${s.senderName + "-" + s.senderProvider}">${s.senderName + " (" + s.senderProvider + ")"}</option>`;
+            });
+
+            Swal.fire({
+              title: 'Solicitudes de amistad',
+              html: `
+                  <select id="user" class="swal2-input">
+                  ${options}
+                  </select>
+                  `,
+              showDenyButton: true,
+              showCancelButton: false,
+              confirmButtonText: 'Aceptar',
+              denyButtonText: 'Rechazar',
+            }).then((result) => {
+              const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
+
+              if (result.isConfirmed) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Usuario ' + user.split("-")[0] + ' aceptado',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => {
+                  // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
+                  //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
+                  //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
+
+                  addToKnowInPod(session, "https://" + user.split("-")[0] + "." + user.split("-")[1] + ".net/profile/card#me");
+                });
+              } else if (result.isDenied) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Usuario ' + user.split("-")[0] + ' rechazado',
+                  showConfirmButton: false,
+                  timer: 1500
+                }).then(() => {
+                  deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
+                });
+              }
+            })
+          }
+
+        })
+      };
+    }
   };
 
   return (

@@ -1,4 +1,4 @@
-import {User} from '../shared/shareddtypes';
+import {Solicitude, User} from '../shared/shareddtypes';
 
 export async function addUser(user:User):Promise<boolean>{
     const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
@@ -100,6 +100,52 @@ export async function registerSolicitude(receiverName: string, receiverProvider:
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({'senderName':senderName, 'senderProvider':senderProvider, 'receiverName':receiverName, 'receiverProvider':receiverProvider})
+  });
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: return response.json();
+  }
+}
+
+export async function getSolicitudes(userName:string, provider:string):Promise<Solicitude[]>{
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint+'/solicitude/getAll?userName=' + userName + '&provider=' + provider);
+
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: 
+        try {
+            const { solicitudes } = await response.json();
+            return solicitudes;
+        } catch (error) {
+            console.log("Error al parsear la respuesta: ", error);
+            return [];
+        }
+    default: return [];
+  }
+}
+
+export async function deleteSolicitude(receiverName: string, receiverProvider: string, senderName:string, senderProvider:string):Promise<any>{
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  // Hacer la llamada
+  let response = await fetch(apiEndPoint+'/solicitude/delete', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({'senderName':senderName, 'senderProvider':senderProvider, 'receiverName':receiverName, 'receiverProvider':receiverProvider})
+  });
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: return response.json();
+  }
+}
+
+export async function deleteUser(userWebId:string){
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  // Hacer la llamada
+  let response = await fetch(apiEndPoint+'/user/delete', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({'userWebId':userWebId})
   });
   // Manejar el retorno
   switch (response.status) {

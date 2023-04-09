@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import Swal from 'sweetalert2';
-import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
 //import { pruebaBBDD } from '../../api/api';
 
@@ -26,7 +26,8 @@ export default function FriendsList() {
       if (session.info.isLoggedIn) {
         const friends = await getFriendsFromPod(session);
         setFriendsList(friends);
-        const friendsNames = await getFriendsNamesFromPod(friends);
+        //const friendsNames = await getFriendsNamesFromPod(friends);
+        const friendsNames = friends.map(friend => friend.split("//")[1].split(".inrupt.net")[0]);
         setFriendsNamesList(friendsNames);
       } else {
         setFriendsList([]);
@@ -38,15 +39,15 @@ export default function FriendsList() {
   }, [session]);
 
   const loadMapsForFriend = (friend: string) => {
-    // TODO: CARGA DE MAPAS DEL AMIGOS PULSADO
+    getFriendsMapsFromPod(friend, session)
 
     return ['Mapa1', 'Mapa2', 'Mapa3'];
   }
 
   const height = window.innerHeight * 0.37;
 
-  const clickFriend = (friend: string) => {
-    const maps = loadMapsForFriend(friend);
+  const clickFriend = (index: number) => {
+    const maps = loadMapsForFriend(friendsList[index]);
 
     const mapsObj: {[key: string]: string} = {};
     maps.forEach((m) => {
@@ -54,16 +55,15 @@ export default function FriendsList() {
     });
 
     Swal.fire({
-      title: 'Mapas de ' + friend,
+      title: 'Mapas de ' + friendsNamesList[index],
       input: 'select',
       inputOptions: {
         'Mapas': mapsObj
       },
-      inputPlaceholder: 'Seleciona un mapa',
+      inputPlaceholder: 'Selecciona un mapa',
       showCancelButton: true,
       inputValidator: (value) => {
         return new Promise((resolve) => {
-          console.log(value);
           if (value === '') {
             resolve('Debes seleccionar un mapa')
           } else {
@@ -82,7 +82,7 @@ export default function FriendsList() {
 
     return (
       <ListItem style={style} key={index} component="div" disablePadding>
-        <ListItemButton onClick={() => clickFriend(friend)}>
+        <ListItemButton onClick={() => clickFriend(index)}>
           <ListItemText primary={friend} />
         </ListItemButton>
       </ListItem>
