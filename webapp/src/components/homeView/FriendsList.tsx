@@ -26,7 +26,8 @@ export default function FriendsList() {
       if (session.info.isLoggedIn) {
         const friends = await getFriendsFromPod(session);
         setFriendsList(friends);
-        const friendsNames = await getFriendsNamesFromPod(friends);
+        //const friendsNames = await getFriendsNamesFromPod(friends);
+        const friendsNames = friends.map(friend => friend.split("//")[1].split(".inrupt.net")[0]);
         setFriendsNamesList(friendsNames);
       } else {
         setFriendsList([]);
