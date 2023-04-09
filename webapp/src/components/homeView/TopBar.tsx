@@ -19,7 +19,7 @@ import { useSession } from '@inrupt/solid-ui-react';
 import createMapWindow from './CreateMap';
 import { deleteSolicitude, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { getFriendsFromPod } from '../Amigos/podsFriends';
+import { addToKnowInPod, getFriendsFromPod } from '../Amigos/podsFriends';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -215,8 +215,6 @@ function TopBar(filterInfo: MapFilterInfo) {
                 //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
                 
                 addToKnowInPod(session, "https://dgg.inrupt.net/profile/card#me"); //TODO: Reemplazar por el cardme del usuario destinatario.
-
-                  deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
                 });
               } else if (result.isDenied) {
                 Swal.fire({
