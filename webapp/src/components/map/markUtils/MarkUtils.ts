@@ -112,7 +112,7 @@ async function overwriteFileInPod(session:Session,file:File){
   // Guardar los cambios en el pod
   try {
     await overwriteFile(
-      (session.info.webId?.split('/profile')[0]+'/private/maps'  || ''),
+      (session.info.webId?.split('/profile')[0]+'/public/maps'  || ''), //TODO: Cambiar public por private
       file,
       { contentType: file.type, fetch: session.fetch }
     );
@@ -123,7 +123,7 @@ async function overwriteFileInPod(session:Session,file:File){
 
 export async function getFileFromPod(session: Session,url?:string) {
   try {
-    let podUrl = url !== undefined ? url : (session.info.webId?.split('/profile')[0]+'/private/maps'  || '');
+    let podUrl = url !== undefined ? url : (session.info.webId?.split('/profile')[0]+'/public/maps'  || ''); //TODO: Cambiar public por private
     file = await getFile(podUrl, { fetch: session.fetch });
   } catch (e) {
     let maps: JsonLdDocument = {

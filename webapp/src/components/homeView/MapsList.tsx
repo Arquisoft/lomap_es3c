@@ -32,6 +32,7 @@ export default function MapsList(mapLists:MapInfo) {
 }, [mapLists.sites]);
 
   const clickMap = async (map: string) => {
+    mapLists.setEditable(true);
     let markers = await getMarkersOfMapFromPod(session,map);
     mapLists.setMarkers(markers);
     mapLists.setSelectedMap(map);

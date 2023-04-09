@@ -1,5 +1,3 @@
-import { Session } from "@inrupt/solid-client-authn-browser";
-
 import {
   addUrl,
   getFile,
@@ -8,8 +6,7 @@ import {
   getThing,
   getUrlAll,
   saveSolidDatasetAt,
-  setThing,
-  setUrl
+  setThing
 } from "@inrupt/solid-client";
 
 import { FOAF } from "@inrupt/vocab-common-rdf";
@@ -74,11 +71,50 @@ export async function getFriendsNamesFromPod(friendsUrls) {
 //Para obtener los mapas de tu amigo.
 export async function getFriendsMapsFromPod(friendUrl, session) {
   try {    
-    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/maps");
-    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch });
+    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/public/maps");  //TODO: Cambiar public por private
+    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch }); 
     const content = await file.text();
-    console.log(content);    
+    
+    try {
+      // Lee el contenido del archivo JSON-LD como una cadena
+      const content = await file.text();
+      // Parsea el contenido JSON-LD en un objeto JavaScript
+      const parsedContent = JSON.parse(content);
+      
+      return parsedContent.maps.map((map) => map.name);
+
+    } catch (e) {
+      console.error(e);
+    }
   
+  } catch (error) {
+    console.log(error)
+  }
+  
+  return ['']
+}
+
+export async function getMarkersOfFriendMapFromPod(session, friendUrl, mapName) {
+  try {    
+    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/public/maps");  //TODO: Cambiar public por private
+    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch }); 
+    const content = await file.text();
+    
+    // Parsea el contenido JSON-LD en un objeto JavaScript
+    const parsedContent = JSON.parse(content);
+
+    const map = parsedContent.maps.find((map) => map.name === mapName);
+
+    const markers = map.spatialCoverage.map((marker) => ({
+      name: marker.name,
+      comments: marker.comment,
+      score: marker.score,
+      categoria: marker.category,
+      coords: [marker.latitude, marker.longitude]
+    }));
+  
+    return markers;
+
   } catch (error) {
     console.log(error)
   }
@@ -91,7 +127,7 @@ export async function getFriendsMapsFromPod(friendUrl, session) {
 export async function addToKnowInPod(session, nuevoConocido) {
   
   const webId = session.info.webId;
-
+  
   try { 
     let profileDataset = await getSolidDataset(webId);
     let profileThing = getThing(profileDataset, webId);
@@ -131,4 +167,8 @@ export async function addToKnowInPod(session, nuevoConocido) {
   } catch (error) {
     console.log(error)
   }
+}
+
+export async function grantReadAccessToFriend(session, agentWebId) {
+  //TODO: Dar acceso de lectura a los mapas privados.
 }

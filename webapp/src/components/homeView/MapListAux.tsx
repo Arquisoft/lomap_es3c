@@ -10,11 +10,13 @@ export interface MapListState{
     setSelectedMap:any;
     sites:string[];
     setSites:any;
+    editable?: boolean;
+    setEditable: any;
 }
 
 function MapListAux(props: MapListState) {
     if (props.open) {
-        return (<MapsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites}></MapsList>);
+        return (<MapsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} setEditable={props.setEditable} ></MapsList>);
     } else {
         return (<></>);
     }

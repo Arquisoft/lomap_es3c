@@ -19,7 +19,7 @@ import { useSession } from '@inrupt/solid-ui-react';
 import createMapWindow from './CreateMap';
 import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
@@ -291,10 +291,6 @@ function TopBar(filterInfo: MapFilterInfo) {
                   showConfirmButton: false,
                   timer: 1500
                 }).then(() => {
-                  // TODO: MATERIALIZAR AMISTAD BIDIRECCIONALMENTE EN LOS PODS
-                  //    Usuario 1 (el que recibe la solicitud): Nombre en la variable "userName" y proveedor en la variable "provider"
-                  //    Usuario 2 (el que envía la solicitud): Nombre en user.split("-")[0] y proveedor en user.split("-")[1]
-
                   addToKnowInPod(session, "https://" + user.split("-")[0] + "." + user.split("-")[1] + ".net/profile/card#me");
                 });
               } else if (result.isDenied) {
@@ -309,7 +305,6 @@ function TopBar(filterInfo: MapFilterInfo) {
               }
             })
           }
-
         })
       };
     }

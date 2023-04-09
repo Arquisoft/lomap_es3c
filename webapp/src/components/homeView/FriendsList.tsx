@@ -5,11 +5,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import Swal from 'sweetalert2';
-import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod, getMarkersOfFriendMapFromPod } from '../Amigos/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
+import { getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
+import { MapInfo } from '../map/Map';
 //import { pruebaBBDD } from '../../api/api';
 
-export default function FriendsList() {
+export default function FriendsList(friendMap:MapInfo) {
   //const pruebaBBDD = () => {
     // BBDD Conf 3/6 - Invocación GUI
     //let data = "PRUEBA_BBDD";
@@ -26,8 +28,8 @@ export default function FriendsList() {
       if (session.info.isLoggedIn) {
         const friends = await getFriendsFromPod(session);
         setFriendsList(friends);
-        //const friendsNames = await getFriendsNamesFromPod(friends);
-        const friendsNames = friends.map(friend => friend.split("//")[1].split(".inrupt.net")[0]);
+        const friendsNames = await getFriendsNamesFromPod(friends);
+        //const friendsNames = friends.map(friend => friend.split("//")[1].split(".inrupt.net")[0]);
         setFriendsNamesList(friendsNames);
       } else {
         setFriendsList([]);
@@ -38,16 +40,20 @@ export default function FriendsList() {
     loadFriends();
   }, [session]);
 
-  const loadMapsForFriend = (friend: string) => {
-    getFriendsMapsFromPod(friend, session)
+  const loadMapsForFriend = async (friend: string) => {
+    var mapas = await getFriendsMapsFromPod(friend, session)
 
-    return ['Mapa1', 'Mapa2', 'Mapa3'];
+    if (mapas as unknown as Array<string>) {
+      return mapas as unknown as Array<string>;
+    }
+
+    return [''];
   }
 
   const height = window.innerHeight * 0.37;
 
-  const clickFriend = (index: number) => {
-    const maps = loadMapsForFriend(friendsList[index]);
+  const clickFriend = async (index: number) => {
+    const maps = await loadMapsForFriend(friendsList[index]);
 
     const mapsObj: {[key: string]: string} = {};
     maps.forEach((m) => {
@@ -67,7 +73,10 @@ export default function FriendsList() {
           if (value === '') {
             resolve('Debes seleccionar un mapa')
           } else {
-            // TODO: SE MUESTRA EL MAPA SELECCIONADO
+            friendMap.setEditable(false);
+            getMarkersOfFriendMapFromPod(session, friendsList[index],value).then((markers) => {
+              friendMap.setMarkers(markers);});            
+            friendMap.setSelectedMap(value);
 
             Swal.close();
           }

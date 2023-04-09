@@ -60,6 +60,8 @@ export const Home = () => {
   const {session} = useSession();
 
   handleRedirectAfterIdentification();
+
+  const [editable, setEditable] = useState<boolean>();
   
   return (
     <>
@@ -68,11 +70,11 @@ export const Home = () => {
         <IzqBox>
           <SRoutes>
             <Route path='/' element={<Map session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap}
-             setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories}/>}/>
+             setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} editable={editable} setEditable={setEditable} />}/>
           </SRoutes>
         </IzqBox>
         <DerBox sx={{display: "flex", justifyContent: "left"}}>
-          <LateralMenu session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap} sites={sites} setSites={setSites}></LateralMenu>
+          <LateralMenu session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} editable={editable} setEditable={setEditable}></LateralMenu>
         </DerBox>
       </Content>
     </>

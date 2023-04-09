@@ -33,6 +33,8 @@ export interface MapInfo {
     setSites: any;
     selectedCategories?:string[];
     setSelectedCategories?:any;
+    editable?: boolean;
+    setEditable: any;
 }
 
 function Map(props: MapInfo) {
@@ -51,16 +53,18 @@ function Map(props: MapInfo) {
     }
 
     const mapOnClick = (e: LatLng) => {
-        if (props.selectedMap == undefined) {
-            nuevoMapa();
-        } else {
-            setSelectedPosition([
-                e.lat,
-                e.lng
-            ]);
-            //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
-            setIsSelected(true);
-        }
+        if(!(props.editable == undefined || props.editable === false)) {
+            if (props.selectedMap == undefined) {
+                nuevoMapa();
+            } else {
+                setSelectedPosition([
+                    e.lat,
+                    e.lng
+                ]);
+                //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
+                setIsSelected(true);
+            }
+        }        
     }
 
     const nuevoMapa = () => {
