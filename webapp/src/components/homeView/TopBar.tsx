@@ -17,9 +17,9 @@ import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
 import createMapWindow from './CreateMap';
-import { deleteSolicitude, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
+import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
-import { addToKnowInPod, getFriendsFromPod } from '../Amigos/podsFriends';
+import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -53,13 +53,38 @@ function TopBar(filterInfo: MapFilterInfo) {
     })
   };
 
-  const miCuenta = () => {
+  const miCuenta = async () => {
     //TODO funcionalidad relativa a la cuenta del usuario
     handleCloseUserMenu();
+    
+    const webId = session.info.webId;
+    const arrayWebId = [webId];
+    const name = await getFriendsNamesFromPod(arrayWebId);
+
     Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Account Function',
+      title: 'Mi Cuenta',
+      html: `
+            <label for="name">Nombre</label>
+            <input id="name" class="swal2-input" value="${name}" style="width: 65%;" readonly>
+            <br/>
+            <label for="webId">Web ID</label>
+            <input id="webId" class="swal2-input" value="${webId}" style="width: 65%;" readonly>
+            `,
+      showCancelButton: true,
+      confirmButtonText: 'Desactivar cuenta',
+      cancelButtonText: 'Atrás',
+      showLoaderOnConfirm: true,
+      width: '60%',
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed && webId) {
+        Swal.fire('Cuenta desactivada', 'Podrá reactivarla la próxima vez que inicie sesión', 'success').then(() => {
+          logout().then(() => {
+            navigate(`/`);
+            deleteUser(webId.split("/profile/")[0])
+          });
+        })
+      }
     })
   };
 
@@ -69,11 +94,6 @@ function TopBar(filterInfo: MapFilterInfo) {
 
     await logout();
     navigate(`/`);
-    /* Swal.fire({
-      icon: 'error',
-      title: 'Oops...',
-      text: 'Pending Session Function',
-    }) */
   };
 
   const nuevoMapa = () => {

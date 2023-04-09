@@ -138,3 +138,17 @@ export async function deleteSolicitude(receiverName: string, receiverProvider: s
     case 200: return response.json();
   }
 }
+
+export async function deleteUser(userWebId:string){
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  // Hacer la llamada
+  let response = await fetch(apiEndPoint+'/user/delete', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({'userWebId':userWebId})
+  });
+  // Manejar el retorno
+  switch (response.status) {
+    case 200: return response.json();
+  }
+}

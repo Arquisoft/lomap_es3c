@@ -178,4 +178,15 @@ api.post(
   }
 )
 
+api.post(
+  "/user/delete",
+  async (req: Request, res: Response): Promise<Response> => {
+    // Hacer la llamada
+    let userWebId = req.body.userWebId;
+    await User.deleteOne({userWebId : userWebId});
+    // Manejar el retorno
+    return res.status(200);
+  }
+)
+
 export default api;
