@@ -10,6 +10,7 @@ import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
 import createMapWindow from '../homeView/CreateMap';
 import PointViewDrawer from './drawer/PointViewDrawer';
+import addMarker, { AddMarkerInfo } from './AddMarker';
 
 export interface MarkerInfo {
     name: string;
@@ -56,29 +57,15 @@ function Map(props: MapInfo) {
 
     const [isViewPointDrawerSelected, setIsViewPointDrawerSelected] = useState(false);
 
-    const addMarker = (marker: MarkerInfo) => {
-        let fileArray = marker.images as File[];
-        let fileArrayToPod:File[] = [];
-        let stringArrayToPod:string[] =[];
-        let fileName:string;
-        let blob;
-        let renamedFile;
-        for(let i=0;i<fileArray.length;i++){
-            fileName = props.selectedMap + "-" + marker.name + "-" + i;
-            blob = fileArray[i].slice(0, fileArray[i].size, fileArray[i].type);
-            renamedFile = new File([blob],fileName, { type: fileArray[i].type });
-            fileArrayToPod.push(renamedFile);
-            stringArrayToPod.push(fileName + "." + fileArray[i].type.split("image/")[1]);
-        }
-        marker.images=stringArrayToPod;
-        marker.coords = [selectedPosition[0], selectedPosition[1]];
-        addMarkerToPod(props.selectedMap, marker, props.session);
-        for(let i=0;i<fileArrayToPod.length;i++){
-            saveImageInPod(props.session,fileArrayToPod[i],stringArrayToPod[i]);
-        }
-        let aux = props.markers;
-        aux.push(marker);
-        props.setMarkers(aux);
+    const onSubmitAddMarker = (marker: MarkerInfo) => {
+        addMarker({
+            marker: marker,
+            session: props.session,
+            selectedMap: props.selectedMap,
+            markers: props.markers,
+            setMarkers: props.setMarkers,
+            selectedPosition: selectedPosition
+        });
     }
 
     const mapOnClick = (e: LatLng) => {
@@ -118,7 +105,7 @@ function Map(props: MapInfo) {
             <MapEventHandler onClick={mapOnClick} />
             <Markers session={props.session} marker={props.markers} selectedCategories={props.selectedCategories} setSelectedCategories={props.setSelectedCategories} setIsViewPointDrawerSelected={setIsViewPointDrawerSelected} setSelectedMarker={setSelectedMarker}></Markers>
             <PointViewDrawer session={props.session} opened={isViewPointDrawerSelected} toggleDrawer={toggleViewPointDrawer} marker={selectedMarker}></PointViewDrawer>
-            <PlaceDrawer opened={isCreateDrawerSelected} onSubmit={addMarker} toggleDrawer={toggleCreateDrawer}></PlaceDrawer>
+            <PlaceDrawer opened={isCreateDrawerSelected} onSubmit={onSubmitAddMarker} toggleDrawer={toggleCreateDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
