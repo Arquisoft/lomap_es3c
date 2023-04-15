@@ -52,7 +52,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
       name: formData.get('name') as string,
       categoria: selectedCategory,
       comments: formData.get('comments') as string,
-      score: selectedScore,
+      score: isOpen?selectedScore:-1,
       images: filesArray,
       coords: [0, 0]
       // Aquí se deben agregar las propiedades del objeto nuevo
