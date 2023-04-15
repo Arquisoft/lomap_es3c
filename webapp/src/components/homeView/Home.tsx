@@ -61,7 +61,7 @@ export const Home = () => {
 
   handleRedirectAfterIdentification();
 
-  const [editable, setEditable] = useState<boolean>();
+  const [editable, setEditable] = useState<boolean>(true);
   
   return (
     <>
