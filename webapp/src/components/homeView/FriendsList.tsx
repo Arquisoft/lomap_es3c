@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import Swal from 'sweetalert2';
-import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod, getMarkersOfFriendMapFromPod } from '../Amigos/podsFriends';
+import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod, getMarkersOfFriendMapFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
 import { getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 import { MapInfo } from '../map/Map';
