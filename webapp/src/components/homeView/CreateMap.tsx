@@ -19,13 +19,22 @@ function createMapWindow(session:Session){
               )
             } else {
               // AÑADIR EL MAPA
-              await createMap(session,mapName);
-              Swal.fire({
-                icon: 'success',
-                text: 'Mapa "' + mapName + '" creado',
-                showConfirmButton: false,
-                timer: 2000
-              })
+              let result =await createMap(session,mapName);
+              if(!result){
+                Swal.fire({
+                  icon: 'error',
+                  text: 'El nombre del mapa ya existe',
+                  showConfirmButton: true
+                })
+              }else{
+                Swal.fire({
+                  icon: 'success',
+                  text: 'Mapa "' + mapName + '" creado',
+                  showConfirmButton: false,
+                  timer: 2000
+                })
+              }
+              
             }
         },
         allowOutsideClick: () => !Swal.isLoading()
