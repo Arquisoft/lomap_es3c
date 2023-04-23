@@ -76,7 +76,7 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
     const markers: MarkerInfo[] = parsedContent.spatialCoverage.map((marker: any) => ({
       name: marker.name,
       categoria: marker.category,
-      images: marker.images,
+      images: marker.image,
       coords: [marker.latitude, marker.longitude]
     }));
 
@@ -163,14 +163,14 @@ export async function saveImageInPod(session: Session, file: File, fileName: str
   // Guardar los cambios en el pod
   try {
     await saveFileInContainer(
-      (session.info.webId?.split('/profile')[0] + '/private/images' || ''),
+      getImageUrl(session),
       file,
       { contentType: file.type, slug: fileName, fetch: session.fetch }
     );
   } catch (e) {
-    await createContainerAt((session.info.webId?.split('/profile')[0] + '/private/images' || ''), { fetch: session.fetch });
+    await createContainerAt(getImageUrl(session), { fetch: session.fetch });
     await saveFileInContainer(
-      (session.info.webId?.split('/profile')[0] + '/private/images' || ''),
+      getImageUrl(session),
       file,
       { contentType: file.type, slug: fileName, fetch: session.fetch }
     );
@@ -202,11 +202,11 @@ function getImageUrl(session: Session) {
 }
 
 export async function getImageFromPod(session: Session, name: string) {
+  console.log(name)
   try {
-    let podUrl = (session.info.webId?.split('/profile')[0] + '/private/images/' || '') + name;
-    //file = await getFile(podUrl, { fetch: session.fetch });
-    //return file;
-    return null;
+    let podUrl = getImageUrl(session) + name;
+    let resImg:any = await getFile(podUrl, { fetch: session.fetch });
+    return resImg;
   } catch (e) {
   }
 }
