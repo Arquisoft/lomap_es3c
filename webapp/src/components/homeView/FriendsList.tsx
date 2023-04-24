@@ -75,7 +75,9 @@ export default function FriendsList(friendMap:MapInfo) {
           } else {
             friendMap.setEditable(false);
             getMarkersOfFriendMapFromPod(session, friendsList[index],value).then((markers) => {
-              friendMap.setMarkers(markers);});            
+              friendMap.setMarkers(markers);}).catch((error)=>{
+                  console.error("Buena tarde")
+              });            
             friendMap.setSelectedMap(value);
 
             Swal.close();

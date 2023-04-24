@@ -18,46 +18,48 @@ import {
 
 import { FOAF } from "@inrupt/vocab-common-rdf";
 
+import { getMapsFriendFromPod, getMapsFromPod } from "../map/markUtils/MarkUtils";
+
 export async function getFriendsFromPod(session) {
 
   try {
-    
+
     const webId = session.info.webId;
     //console.log(webId)
     let profileDataset = await getSolidDataset(webId);
     let profileThing = getThing(profileDataset, webId);
     if (profileThing != null) {
       var conocidos = getUrlAll(profileThing, FOAF.knows);
-      
+
       var amigos = Array();
-      for(var i = 0; i < conocidos.length; i++) {
+      for (var i = 0; i < conocidos.length; i++) {
         let profileConocidoDataset = await getSolidDataset(conocidos[i]);
         let profileConocidoThing = getThing(profileConocidoDataset, conocidos[i]);
         if (profileConocidoThing != null) {
           var conocidosDelConocido = getUrlAll(profileConocidoThing, FOAF.knows);
-          for(var j = 0; j < conocidosDelConocido.length; j++) {
-            if(conocidosDelConocido[j] == webId) {
+          for (var j = 0; j < conocidosDelConocido.length; j++) {
+            if (conocidosDelConocido[j] == webId) {
               amigos.push(conocidos[i]);
             }
-          }          
+          }
         }
       }
 
       return amigos
     }
-    
+
   } catch (error) {
     console.log(error)
   }
-    
+
   return ['']
 }
 
 export async function getFriendsNamesFromPod(friendsUrls) {
-  
-  try {    
+
+  try {
     var nombreAmigos = Array();
-    for(var i = 0; i < friendsUrls.length; i++) {
+    for (var i = 0; i < friendsUrls.length; i++) {
       //console.log(friendsUrls[i])
       let profileAmigoDataset = await getSolidDataset(friendsUrls[i]);
       let profileAmigoThing = getThing(profileAmigoDataset, friendsUrls[i]);
@@ -67,90 +69,71 @@ export async function getFriendsNamesFromPod(friendsUrls) {
     }
     //console.log(nombreAmigos)
     return nombreAmigos
-  
+
   } catch (error) {
     console.log(error)
   }
-  
+
   return ['']
 }
 
 //Para obtener los mapas de tu amigo.
 export async function getFriendsMapsFromPod(friendUrl, session) {
-  try {    
-    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/maps");
-    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch }); 
-    const content = await file.text();
-    
-    try {
-      // Lee el contenido del archivo JSON-LD como una cadena
-      const content = await file.text();
-      // Parsea el contenido JSON-LD en un objeto JavaScript
-      const parsedContent = JSON.parse(content);
-      
-      return parsedContent.maps.map((map) => map.name);
+  //const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/lomap/");
 
-    } catch (e) {
-      console.error(e);
-    }
-  
-  } catch (error) {
-    console.log(error)
+  try {
+    let res = await getMapsFriendFromPod(session,friendUrl);
+
+    return res;
+
+  } catch (e) {
+    console.error(e);
   }
-  
+
   return ['']
 }
 
 export async function getMarkersOfFriendMapFromPod(session, friendUrl, mapName) {
-  try {    
-    const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/maps");
-    var file = await getFile(mapaAmigoUrl, { fetch: session.fetch }); 
-    const content = await file.text();
-    
-    // Parsea el contenido JSON-LD en un objeto JavaScript
-    const parsedContent = JSON.parse(content);
+  const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/lomap/" + mapName);
+  let file = await getFile(mapaAmigoUrl, { fetch: session.fetch });
+  const content = await file.text();
 
-    const map = parsedContent.maps.find((map) => map.name === mapName);
+  // Parsea el contenido JSON-LD en un objeto JavaScript
+  const parsedContent = JSON.parse(content);
 
-    const markers = map.spatialCoverage.map((marker) => ({
-      name: marker.name,
-      comments: marker.comment,
-      score: marker.score,
-      categoria: marker.category,
-      coords: [marker.latitude, marker.longitude]
-    }));
-  
-    return markers;
+  const markers = parsedContent.spatialCoverage.map((marker) => ({
+    name: marker.name,
+    comments: marker.comment,
+    score: marker.score,
+    categoria: marker.category,
+    coords: [marker.latitude, marker.longitude]
+  }));
 
-  } catch (error) {
-    console.log(error)
-  }
-  
-  return ['']
+  return markers;
 }
 
 
 //Añadir a knows.
 export async function addToKnowInPod(session, nuevoConocido) {
-  
+
   const webId = session.info.webId;
-  
-  try { 
+
+  try {
     let profileDataset = await getSolidDataset(webId);
     let profileThing = getThing(profileDataset, webId);
-    
+
     if (profileThing != null) {
 
       var sonAmigos = false;
       var conocidos = getUrlAll(profileThing, FOAF.knows);
-      for(var i = 0; i < conocidos.length; i++) {
-        if(conocidos[i]== nuevoConocido) {
+      for (var i = 0; i < conocidos.length; i++) {
+        if (conocidos[i] == nuevoConocido) {
           console.log("ya es amigo");
           sonAmigos = true;
-        }  
+        }
       }
 
-      if(!sonAmigos) {
+      if (!sonAmigos) {
         console.log("estoy aqui")
         profileThing = addUrl(
           profileThing,
@@ -162,7 +145,7 @@ export async function addToKnowInPod(session, nuevoConocido) {
           profileDataset,
           profileThing
         );
-      
+
         await saveSolidDatasetAt(
           session.info.webId,
           profileDataset,
@@ -176,32 +159,32 @@ export async function addToKnowInPod(session, nuevoConocido) {
   }
 }
 
-export async function grantReadAccessToFriend(session, friendUrl) {
-  
-  var urlMapa = session.info.webId.replace("/profile/card#me", "/private/maps");
+export async function grantReadAccessToFriend(session, friendUrl, mapName) {
 
-  const recurso = await getSolidDatasetWithAcl(urlMapa, {fetch:session.fetch});
+  let urlMapa = session.info.webId.replace("/profile/card#me", "/private/lomap/");
+
+  const recurso = await getSolidDatasetWithAcl(urlMapa, { fetch: session.fetch });
 
   let acl;
   if (hasResourceAcl(recurso)) {
-      acl = getResourceAcl(recurso);
+    acl = getResourceAcl(recurso);
   } else {
-      acl = createAclFromFallbackAcl(recurso);
+    acl = createAclFromFallbackAcl(recurso);
   }
 
   let nuevoAcl = setAgentResourceAccess(
-      acl,
-      friendUrl,
-      { read: true, append: false, write: false, control: false }
+    acl,
+    friendUrl,
+    { read: true, append: false, write: false, control: false }
   );
 
   nuevoAcl = setAgentDefaultAccess(
-      nuevoAcl,
-      friendUrl,
-      { read: true, append: false, write: false,control:false }
+    nuevoAcl,
+    friendUrl,
+    { read: true, append: false, write: false, control: false }
   );
 
-  await saveAclFor(recurso, nuevoAcl,{fetch:session.fetch});
+  await saveAclFor(recurso, nuevoAcl, { fetch: session.fetch });
 
   console.log("Done")
 }
