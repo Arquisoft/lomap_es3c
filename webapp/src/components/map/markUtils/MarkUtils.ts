@@ -89,34 +89,12 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
   }
 }
 
-export async function getMapsFromPod(session: Session, baseUrl?: string) {
-  let url = getMapUrl(session, baseUrl);
+export async function getMapsFromPod(session: Session) {
+  let url = getMapUrl(session);
 
   let urls = await getUrlsOfDataset(session, url);
 
   return urls.map(url => url.split("/lomap/")[1]);
-}
-
-export async function getMapsFriendFromPod(session: Session, friendUrl: string) {
-  console.log("asdasdasda")
-  let url = (friendUrl.split('/profile')[0] + '/private/lomap/');
-  let urls2: string[] = [];
-  await getValidUrls(session, url, urls2).then()
-
-  return urls2.map(url => url.split("/lomap/")[1]);
-}
-
-async function getValidUrls(session: Session, url: string, urls2: string[]) {
-  let urls = await getUrlsOfDataset(session, url);
-  
-  urls.forEach(async element => {
-    console.log(element)
-    try {
-      await getFile(element, { fetch: session.fetch });
-      urls2.push(element);
-    } catch (e) { }
-  });
-  return urls2;
 }
 
 async function checkIfDatasetExists(session: Session, url: string) {
