@@ -18,7 +18,7 @@ import {
 
 import { FOAF } from "@inrupt/vocab-common-rdf";
 
-import { getMapsFriendFromPod, getMapsFromPod } from "../map/markUtils/MarkUtils";
+import { getMapsFriendFromPod } from "../map/markUtils/MarkUtils";
 
 export async function getFriendsFromPod(session) {
 
@@ -104,8 +104,7 @@ export async function getMarkersOfFriendMapFromPod(session, friendUrl, mapName) 
   const markers = parsedContent.spatialCoverage.map((marker) => ({
     name: marker.name,
     comments: marker.comment,
-    score: marker.score,
-    categoria: marker.category,
+    images: marker.image,
     coords: [marker.latitude, marker.longitude]
   }));
 
@@ -161,7 +160,7 @@ export async function addToKnowInPod(session, nuevoConocido) {
 
 export async function grantReadAccessToFriend(session, friendUrl, mapName) {
 
-  let urlMapa = session.info.webId.replace("/profile/card#me", "/private/lomap/");
+  let urlMapa = session.info.webId.replace("/profile/card#me", "/private/lomapImages/");
 
   const recurso = await getSolidDatasetWithAcl(urlMapa, { fetch: session.fetch });
 

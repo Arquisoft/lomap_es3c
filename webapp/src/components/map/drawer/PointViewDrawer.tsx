@@ -35,7 +35,10 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
 
     const fetchImage = async (img: string) => {
       const imagenElemento = document.createElement("img");
-      const imgContent = await getImageFromPod(props.session, img);
+      let aux:any = JSON.stringify(img);
+      aux = JSON.parse(aux);
+      console.log(aux);
+      const imgContent = await getImageFromPod(props.session, aux.contentUrl);
       imagenElemento.src =URL.createObjectURL(imgContent);
       return (
         <ImageListItem key={img as string}>

@@ -18,6 +18,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
 
   for (let imageI of images) {
     auxImages.push({
+      "@context": "https://schema.org/",
       "@type": "ImageObject",
       "author": {
         "@type": "Person",
@@ -150,6 +151,28 @@ export async function createMap(session: Session, mapName: string) {
   await grantReadAccessToFriend(session, "https://lomapes3c.inrupt.net/profile/card#me", mapName);
 
   return true;
+}
+
+export async function getMapsFriendFromPod(session: Session, friendUrl: string) {
+  let url = (friendUrl.split('/profile')[0] + '/private/lomap/');
+  let urls2: string[] = [];
+  await getValidUrls(session, url, urls2)
+
+  await Promise.all(urls2.map(async (url) => {
+    return url;
+  }));
+  return urls2;
+}
+
+async function getValidUrls(session: Session, url: string, urls2: string[]) {
+  let urls = await getUrlsOfDataset(session, url);
+
+  await Promise.all(urls.map(async (element) => {
+    try {
+      await getFile(element, { fetch: session.fetch });
+      urls2.push(element.split("/lomap/")[1]);
+    } catch (e) { }
+  }));
 }
 
 
