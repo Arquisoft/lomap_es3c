@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
-import { Button } from '@mui/material';
+import { Button, Fade } from '@mui/material';
 import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
@@ -158,6 +158,7 @@ function TopBar(filterInfo: MapFilterInfo) {
   };
 
   const nuevoMapa = () => {
+    setAnchorEl(null); // cierra el mini-menú
     createMapWindow(session);
   };
 
@@ -175,6 +176,84 @@ function TopBar(filterInfo: MapFilterInfo) {
   }
 
   const nuevoAmigo = () => {
+    setAnchorEl(null); // cierra el mini-menú
+    Swal.fire({
+      title: 'Introduzca el nombre del usuario',
+      html: `
+            <select id="provider" class="swal2-input">
+              <option value="inrupt"> Inrupt </option >
+              <option value="solidcommunity"> Solid Project </option >
+              <option value="solidweb"> Solid Grassroots </option >
+              <option value="datapod.igrant.io"> iGrant.io </option >
+            </select>
+            <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
+            `,
+      showCancelButton: true,
+      confirmButtonText: 'Enviar solicitud',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        const receiverProvider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
+        const receiverName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
+
+        if (receiverName === "" || receiverProvider === "") {
+          Swal.showValidationMessage(
+            `ERROR: Usuario o proveedor vacío`
+          )
+        } else {
+          existsUser(receiverName, receiverProvider).then((exists) => {
+            if (exists) {
+              const sender = session.info.webId;
+              if (sender) {
+                const senderName = sender.split('//')[1].split('.')[0];
+                const senderProvider = sender.split('//')[1].split('.')[1];
+                existsSolicitude(receiverName, receiverProvider, senderName, senderProvider).then(async (exists) => {
+                  if (exists) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: "Ya existe una solicitud pendiente",
+                      showConfirmButton: false,
+                      timer: 2000
+                    })
+                  } else {
+                    const isFriend = await areFriends(receiverName);
+                    if (isFriend) {
+                      Swal.fire({
+                        icon: 'error',
+                        text: "El usuario ya es tu amigo",
+                        showConfirmButton: false,
+                        timer: 2000
+                      })
+                    } else {
+                      Swal.fire({
+                        icon: 'success',
+                        text: 'Solicitud enviada a ' + receiverName + " (" + receiverProvider + ")",
+                        showConfirmButton: false,
+                        timer: 2000
+                      })
+
+                      registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
+                      addToKnowInPod(session, "https://" + receiverName + "." + receiverProvider + ".net/profile/card#me");
+                    }
+                  }
+                });
+              }
+            } else {
+              Swal.fire({
+                icon: 'error',
+                text: "El usuario introducido no existe",
+                showConfirmButton: false,
+                timer: 2000
+              })
+            }
+          })
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+  };
+
+  const compartirMapa = () => {
+    setAnchorEl(null); // cierra el mini-menú
     Swal.fire({
       title: 'Introduzca el nombre del usuario',
       html: `
@@ -310,6 +389,15 @@ function TopBar(filterInfo: MapFilterInfo) {
     }
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClickOptions = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleCloseOptions = () => {
+      setAnchorEl(null);
+    };
+
   return (
     <AppBar position="static" sx={{ borderBottom: "solid black 0.25em", width: "100%" }}>
       <Container sx={{ marginLeft: "1em", width: "100%", minWidth: "100%" }}>
@@ -323,21 +411,31 @@ function TopBar(filterInfo: MapFilterInfo) {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 
             <Button
-              key={"Nuevo Mapa"}
-              onClick={nuevoMapa}
+              id="fade-button"
+              aria-controls={open ? 'fade-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClickOptions}
               sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
-              focusRipple={false}
             >
-              {<strong>Nuevo Mapa</strong>}
+              <strong>Opciones</strong>
             </Button>
-            <Button
-              key={"Nuevo Amigo"}
-              onClick={nuevoAmigo}
-              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
-              focusRipple={false}
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                'aria-labelledby': 'fade-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleCloseOptions}
+              TransitionComponent={Fade}
             >
-              {<strong>Nuevo Amigo</strong>}
-            </Button>
+              <MenuItem onClick={nuevoMapa}>Nuevo Mapa</MenuItem>
+              <MenuItem onClick={nuevoAmigo}>Nuevo Amigo</MenuItem>
+              <hr />
+              <MenuItem onClick={compartirMapa}>Compartir Mapa</MenuItem>
+            </Menu>
+
             <Button
               key={"Solicitudes"}
               onClick={verSolicitudes}
@@ -346,7 +444,6 @@ function TopBar(filterInfo: MapFilterInfo) {
             >
               <DraftsIcon fontSize="small" />
             </Button>
-
           </Box>
 
           <Box sx={{ flexGrow: 0, marginRight: "2em" }}>
