@@ -24,7 +24,7 @@ export const RegisterProvider = ({ handleFocus, handleBlur }: Props) => {
             paddingTop: "3em", display: "flex", flexDirection: "column", justifyContent: 'center'
         }}>
 
-            <Typography variant="h4" sx={{ mb: 2, color: "white", fontWeight: "bold", textShadow: "2px 2px black" }}>IDENTIFÍCATE</Typography>
+            <Typography variant="h4" sx={{ mb: 2, color: "white", fontWeight: "bold", textShadow: "2px 2px black", textAlign: "center" }}>IDENTIFÍCATE</Typography>
 
             <Box sx={{ height: "5vh" }}></Box>
 
@@ -52,7 +52,7 @@ export const RegisterProvider = ({ handleFocus, handleBlur }: Props) => {
 
             <Box sx={{ height: "5vh" }}></Box>
 
-            <Box>
+            <Box sx={{ height: "5vh", display: "flex", justifyContent: "center" }}>
                 <Button variant="outlined" sx={{ 
                                                     color: "black", 
                                                     border: "solid black 0.1em", 
