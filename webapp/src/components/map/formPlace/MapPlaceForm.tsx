@@ -51,6 +51,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
     let marker: MarkerInfo = {
       name: formData.get('name') as string,
       categoria: selectedCategory,
+      description: formData.get('description') as string,
       comments: formData.get('comments') as string,
       score: isOpen?selectedScore:-1,
       images: filesArray,
@@ -86,6 +87,19 @@ function MapPlaceForm(props: FormProps): JSX.Element {
             onChange={handleAutocompleteChange}
           />
         </div>
+        <Box sx={{ height: "1em" }} />
+        <div className='d-flex flex-column justify-content-center'>
+                <label htmlFor='description' className='text-center'><strong>Descripción</strong></label>
+                <TextField
+                  name='description'
+                  id="description"
+                  label="Descripción"
+                  className='m-2'
+                  multiline
+                  rows={4}
+                  InputLabelProps={{ style: { color: 'black' }, focused: true }}
+                />
+              </div>
         <Box sx={{ height: "1em" }} />
         <div className='d-flex flex-column justify-content-center'>
           <label htmlFor='image-button' className='text-center'><strong>Subir imágenes</strong></label>

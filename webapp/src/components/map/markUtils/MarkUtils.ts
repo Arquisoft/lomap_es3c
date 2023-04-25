@@ -12,7 +12,7 @@ import { grantReadAccessToFriend } from "../../Amigos/podsFriends";
 let selectedMapFile: string;
 
 export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
-  const { name, categoria, images, coords } = marker;
+  const { name, categoria,description, images, coords } = marker;
 
   let auxImages = [];
 
@@ -40,7 +40,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
     "additionalType": categoria,
     "latitude": coords[0],
     "longitude": coords[1],
-    "description": "_Marker's-Description_",
+    "description": description,
     "review": [],
     "image": auxImages,
     "dateCreated": "_Marker's-Creation-Date_"
