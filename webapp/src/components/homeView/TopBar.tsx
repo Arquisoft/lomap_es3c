@@ -62,22 +62,20 @@ function TopBar(filterInfo: MapFilterInfo) {
     // Crear el contenido de la ventana modal
     const html = `
       <div>
-        <label for="name" style="padding-bottom:0em;"><h5>Nombre de usuario</h5></label><br/>
-        <input id="name" class="swal2-input" value="${nombreUsuario}" style="width: 65%; margin-top:0em;" readonly>
-        <br/><br/>
-        <h5>Biografía</h5>
-        <textarea id="biografia" placeholder="No existe biografía" rows="5" cols="40" style="resize: none; padding: 0.5em;">${biografiaUsuario}</textarea>
+        <label for="name">Nombre</label>
+        <input id="name" class="swal2-input" value="${nombreUsuario}" style="width: 65%;" readonly>
+        <br/>
+        <h5>Biografía:</h5>
+        <textarea id="biografia" rows="5" cols="40" style="resize: none; text-align: center;">${biografiaUsuario}</textarea>
       </div>
     `;
 
     // Mostrar la ventana
     Swal.fire({
-      title: '<p style="color:black; margin-bottom:0.25em;">Mi perfil</p>',
+      title: 'Mi perfil',
       html: html,
       showCancelButton: true,
-      cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
       confirmButtonText: 'Guardar biografía',
-      confirmButtonColor: 'rgba(25, 118, 210, 1)',
       showLoaderOnConfirm: true,
       preConfirm: () => {
         const bio = (Swal.getPopup()?.querySelector('#biografia') as HTMLInputElement).value;
@@ -112,7 +110,7 @@ function TopBar(filterInfo: MapFilterInfo) {
       return content;
     } catch (e) {
       console.log(`No se ha encontrado un archivo de biografía en la URL: ${bioFileUrl}`);
-      return "";
+      return "Aún no se ha creado una biografía.";
     }
   }
 
@@ -125,7 +123,7 @@ function TopBar(filterInfo: MapFilterInfo) {
     const name = await getFriendsNamesFromPod(arrayWebId);
 
     Swal.fire({
-      title: '<p style="color:black; margin-bottom:0.25em;">Mi cuenta</p>',
+      title: 'Mi Cuenta',
       html: `
             <label for="name">Nombre</label>
             <input id="name" class="swal2-input" value="${name}" style="width: 65%;" readonly>
@@ -135,9 +133,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             `,
       showCancelButton: true,
       confirmButtonText: 'Desactivar cuenta',
-      confirmButtonColor: 'rgba(25, 118, 210, 1)',
       cancelButtonText: 'Atrás',
-      cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
       showLoaderOnConfirm: true,
       width: '60%',
       allowOutsideClick: () => !Swal.isLoading(),
@@ -182,7 +178,7 @@ function TopBar(filterInfo: MapFilterInfo) {
   const nuevoAmigo = () => {
     setAnchorEl(null); // cierra el mini-menú
     Swal.fire({
-      title: '<p style="color:black; margin-bottom:0em;">Introduzca el nombre del usuario</p>',
+      title: 'Introduzca el nombre del usuario',
       html: `
             <select id="provider" class="swal2-input">
               <option value="inrupt"> Inrupt </option >
@@ -193,9 +189,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
             `,
       showCancelButton: true,
-      cancelButtonColor: "rgba(255, 50, 50, 0.9)",
       confirmButtonText: 'Enviar solicitud',
-      confirmButtonColor: "rgba(25, 118, 210, 1)",
       showLoaderOnConfirm: true,
       preConfirm: () => {
         const receiverProvider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
@@ -260,48 +254,79 @@ function TopBar(filterInfo: MapFilterInfo) {
 
   const compartirMapa = () => {
     setAnchorEl(null); // cierra el mini-menú
+    Swal.fire({
+      title: 'Introduzca el nombre del usuario',
+      html: `
+            <select id="provider" class="swal2-input">
+              <option value="inrupt"> Inrupt </option >
+              <option value="solidcommunity"> Solid Project </option >
+              <option value="solidweb"> Solid Grassroots </option >
+              <option value="datapod.igrant.io"> iGrant.io </option >
+            </select>
+            <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
+            `,
+      showCancelButton: true,
+      confirmButtonText: 'Enviar solicitud',
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+        const receiverProvider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
+        const receiverName = (Swal.getPopup()?.querySelector('#userName') as HTMLInputElement).value;
 
-    const maps = ['Mapa 1','Mapa 2','Mapa 3'].map((map) => {
-      return `<option value="${map}">${map}</option>`; // TODO cargar mapas
+        if (receiverName === "" || receiverProvider === "") {
+          Swal.showValidationMessage(
+            `ERROR: Usuario o proveedor vacío`
+          )
+        } else {
+          existsUser(receiverName, receiverProvider).then((exists) => {
+            if (exists) {
+              const sender = session.info.webId;
+              if (sender) {
+                const senderName = sender.split('//')[1].split('.')[0];
+                const senderProvider = sender.split('//')[1].split('.')[1];
+                existsSolicitude(receiverName, receiverProvider, senderName, senderProvider).then(async (exists) => {
+                  if (exists) {
+                    Swal.fire({
+                      icon: 'error',
+                      text: "Ya existe una solicitud pendiente",
+                      showConfirmButton: false,
+                      timer: 2000
+                    })
+                  } else {
+                    const isFriend = await areFriends(receiverName);
+                    if (isFriend) {
+                      Swal.fire({
+                        icon: 'error',
+                        text: "El usuario ya es tu amigo",
+                        showConfirmButton: false,
+                        timer: 2000
+                      })
+                    } else {
+                      Swal.fire({
+                        icon: 'success',
+                        text: 'Solicitud enviada a ' + receiverName + " (" + receiverProvider + ")",
+                        showConfirmButton: false,
+                        timer: 2000
+                      })
+
+                      registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
+                      addToKnowInPod(session, "https://" + receiverName + "." + receiverProvider + ".net/profile/card#me");
+                    }
+                  }
+                });
+              }
+            } else {
+              Swal.fire({
+                icon: 'error',
+                text: "El usuario introducido no existe",
+                showConfirmButton: false,
+                timer: 2000
+              })
+            }
+          })
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
     })
-
-    const friends = ['Amigo 4','Amigo 5','Amigo 6'].map((friend) => {
-      return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
-    })
-
-    if(maps.length == 0 || friends.length == 0) {
-      Swal.fire({
-        icon: 'info',
-        title: 'No tienes mapas/amigos',
-        confirmButtonColor: "rgba(25, 118, 210, 1)",
-        showConfirmButton: true,
-        confirmButtonText: 'Aceptar'
-      });
-    } else {
-      Swal.fire({
-        title: '<p style="color:black; margin-bottom:0em;">Seleccione un mapa y un amigo</p>',
-        html: `
-              <label for="mapSelector">Mapa</label>
-              <select id="mapSelector" class="swal2-input" style="width: 60%; margin-left: 2.3em;">
-                ${maps}
-              </select>
-              <br/>
-              <label for="Amigo">Amigo</label>
-              <select id="friendSelector" class="swal2-input" style="width: 60%; margin-left: 2em;">
-                ${friends}
-              </select>
-              `,
-        showCancelButton: true,
-        cancelButtonColor: "rgba(255, 50, 50, 0.9)",
-        confirmButtonText: 'Compartir',
-        confirmButtonColor: "rgba(25, 118, 210, 1)",
-        showLoaderOnConfirm: true,
-        preConfirm: () => {
-          // TODO insertar código para asociar el mapa x al amigo y
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-      })
-    }
   };
 
   const verSolicitudes = () => {
@@ -316,7 +341,6 @@ function TopBar(filterInfo: MapFilterInfo) {
             Swal.fire({
               icon: 'info',
               title: 'No tienes solicitudes de amistad',
-              confirmButtonColor: "rgba(25, 118, 210, 1)",
               showConfirmButton: true,
               confirmButtonText: 'Aceptar'
             });
@@ -326,18 +350,16 @@ function TopBar(filterInfo: MapFilterInfo) {
             });
 
             Swal.fire({
-              title: '<p style="color:black; margin-bottom:0em;">Solicitudes de amistad</p>',
+              title: 'Solicitudes de amistad',
               html: `
                   <select id="user" class="swal2-input">
                   ${options}
                   </select>
                   `,
               showDenyButton: true,
-              denyButtonColor: "rgba(255, 50, 50, 0.9)",
-              denyButtonText: 'Rechazar',
               showCancelButton: false,
-              confirmButtonColor: "rgba(25, 118, 210, 1)",
               confirmButtonText: 'Aceptar',
+              denyButtonText: 'Rechazar',
             }).then((result) => {
               const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
 
