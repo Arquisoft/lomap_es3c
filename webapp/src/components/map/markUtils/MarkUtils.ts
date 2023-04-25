@@ -231,10 +231,9 @@ function getImageUrl(session: Session) {
   return (session.info.webId?.split('/profile')[0] + '/private/lomapImages/' || '');
 }
 
-export async function getImageFromPod(session: Session, name: string) {
-  console.log(name)
+export async function getImageFromPod(session: Session, url: string) {
   try {
-    let podUrl = getImageUrl(session) + name;
+    let podUrl = url;
     let resImg: any = await getFile(podUrl, { fetch: session.fetch });
     return resImg;
   } catch (e) {

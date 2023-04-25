@@ -37,8 +37,7 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
       const imagenElemento = document.createElement("img");
       let aux:any = JSON.stringify(img);
       aux = JSON.parse(aux);
-      console.log(aux);
-      const imgContent = await getImageFromPod(props.session, aux.contentUrl);
+      const imgContent = await getImageFromPod(props.session, aux.author.identifier + "/private/lomapImages/" + aux.contentUrl);
       imagenElemento.src =URL.createObjectURL(imgContent);
       return (
         <ImageListItem key={img as string}>
