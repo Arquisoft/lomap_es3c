@@ -9,7 +9,7 @@ import {
 
 ReactDOM.render(
   <React.StrictMode>
-    <RouterProvider router={App} />
+    <App/>
   </React.StrictMode>,
   document.getElementById('root')
 );
