@@ -89,6 +89,13 @@ export const Home = () => {
       if(!session.info.isLoggedIn) {
         navigate('/');
         Swal.close();
+        Swal.fire({
+          title: '¡ALTO AHÍ!',
+          icon: 'error',
+          text: 'Intentar acceder ilícitamente a un sitio web está feo',
+          timer: 5000,
+          showConfirmButton: false
+        });
       } else {
         loadFriends();
         Swal.fire({
