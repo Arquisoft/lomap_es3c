@@ -75,6 +75,7 @@ function TopBar(filterInfo: MapFilterInfo) {
       title: '<p style="color:black; margin-bottom:0.25em;">Mi perfil</p>',
       html: html,
       showCancelButton: true,
+      cancelButtonText: 'Atrás',
       cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
       confirmButtonText: 'Guardar biografía',
       confirmButtonColor: 'rgba(25, 118, 210, 1)',
@@ -193,6 +194,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
             `,
       showCancelButton: true,
+      cancelButtonText: 'Atrás',
       cancelButtonColor: "rgba(255, 50, 50, 0.9)",
       confirmButtonText: 'Enviar solicitud',
       confirmButtonColor: "rgba(25, 118, 210, 1)",
@@ -292,6 +294,7 @@ function TopBar(filterInfo: MapFilterInfo) {
               </select>
               `,
         showCancelButton: true,
+        cancelButtonText: 'Atrás',
         cancelButtonColor: "rgba(255, 50, 50, 0.9)",
         confirmButtonText: 'Compartir',
         confirmButtonColor: "rgba(25, 118, 210, 1)",
