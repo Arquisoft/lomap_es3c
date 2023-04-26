@@ -268,14 +268,18 @@ function TopBar(filterInfo: MapFilterInfo) {
       return `<option value="${map}">${map}</option>`; // TODO cargar mapas
     })
 
-    const friendsURL = await getFriendsFromPod(session);
-    const friendsNames = await getFriendsNamesFromPod(friendsURL);
+    //const friendsURL = await getFriendsFromPod(session);
+    //const friendsNames = await getFriendsNamesFromPod(friendsURL);
 
-    const friends = friendsNames.map((friend) => {
-      return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
+    //const friends = friendsNames.map((friend) => {
+    //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
+    //})
+
+    const friendsList = filterInfo.friendsNames.map((friendName) => {
+      return `<option value="${friendName}">${friendName}</option>`;
     })
 
-    if(maps.length == 0 || friends.length == 0) {
+    if(maps.length == 0 || friendsList.length == 0) {
       Swal.fire({
         icon: 'info',
         title: 'No tienes mapas/amigos',
@@ -294,7 +298,7 @@ function TopBar(filterInfo: MapFilterInfo) {
               <br/>
               <label for="Amigo">Amigo</label>
               <select id="friendSelector" class="swal2-input" style="width: 60%; margin-left: 2em;">
-                ${friends}
+                ${friendsList}
               </select>
               `,
         showCancelButton: true,
@@ -391,7 +395,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
-          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories}></MapFilter>
+          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories} friendsURL={filterInfo.friendsURL} friendsNames={filterInfo.friendsNames}></MapFilter>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 

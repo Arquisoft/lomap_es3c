@@ -39,6 +39,8 @@ export interface MapInfo {
     setSelectedCategories?:any;
     editable?: boolean;
     setEditable: any;
+    friendsURL:string[];
+    friendsNames:string[];
 }
 
 function Map(props: MapInfo) {
