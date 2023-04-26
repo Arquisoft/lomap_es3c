@@ -21,6 +21,7 @@ import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitu
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
+import { getMapFromPod, getMapsFromPod } from '../map/markUtils/MarkUtils';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -260,14 +261,17 @@ function TopBar(filterInfo: MapFilterInfo) {
     })
   };
 
-  const compartirMapa = () => {
+  const compartirMapa = async () => {
     setAnchorEl(null); // cierra el mini-menú
 
-    const maps = ['Mapa 1','Mapa 2','Mapa 3'].map((map) => {
+    const maps = (await getMapsFromPod(session)).map((map) => {
       return `<option value="${map}">${map}</option>`; // TODO cargar mapas
     })
 
-    const friends = ['Amigo 4','Amigo 5','Amigo 6'].map((friend) => {
+    const friendsURL = await getFriendsFromPod(session);
+    const friendsNames = await getFriendsNamesFromPod(friendsURL);
+
+    const friends = friendsNames.map((friend) => {
       return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
     })
 
