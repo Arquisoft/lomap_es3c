@@ -14,6 +14,7 @@ import addMarker, { AddMarkerInfo } from './AddMarker';
 
 export interface MarkerInfo {
     name: string;
+    description:string;
     comments: string;
     score: number;
     categoria: string;
@@ -47,6 +48,7 @@ function Map(props: MapInfo) {
     const [selectedMarker, setSelectedMarker] = useState<MarkerInfo>({
         name: "",
         comments: "",
+        description:"",
         score: -1,
         categoria: "",
         images:[],

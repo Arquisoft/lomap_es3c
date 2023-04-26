@@ -1,4 +1,4 @@
-import { Access, WithResourceInfo, createAclFromFallbackAcl, createContainerAt, getContainedResourceUrlAll, getFile, saveAclFor, getResourceAcl, getSolidDataset, getSolidDatasetWithAcl, hasAccessibleAcl, hasFallbackAcl, hasResourceAcl, overwriteFile, setAgentResourceAccess, saveFileInContainer, universalAccess, setAgentDefaultAccess, getAgentResourceAccess, getFileWithAcl } from "@inrupt/solid-client";
+import { Access, WithResourceInfo, createAclFromFallbackAcl, createContainerAt, getContainedResourceUrlAll, getFile, saveAclFor, getResourceAcl, getSolidDataset, getSolidDatasetWithAcl, hasAccessibleAcl, hasFallbackAcl, hasResourceAcl, overwriteFile, setAgentResourceAccess, saveFileInContainer, universalAccess, setAgentDefaultAccess, getAgentResourceAccess, getFileWithAcl, saveSolidDatasetAt } from "@inrupt/solid-client";
 import { JsonLdDocument } from "jsonld";
 import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
@@ -12,7 +12,7 @@ import { grantReadAccessToFriend } from "../../Amigos/podsFriends";
 let selectedMapFile: string;
 
 export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
-  const { name, categoria, images, coords } = marker;
+  const { name, categoria,description, images, coords } = marker;
 
   let auxImages = [];
 
@@ -40,7 +40,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
     "additionalType": categoria,
     "latitude": coords[0],
     "longitude": coords[1],
-    "description": "_Marker's-Description_",
+    "description": description,
     "review": [],
     "image": auxImages,
     "dateCreated": "_Marker's-Creation-Date_"
@@ -103,8 +103,13 @@ async function checkIfDatasetExists(session: Session, url: string) {
   try {
     dataset = await getSolidDataset(url, { fetch: session.fetch });
   } catch (e) {
-    console.error(e)
     await createContainerAt(url, { fetch: session.fetch });
+    dataset = await getSolidDataset(url, { fetch: session.fetch });
+    await saveSolidDatasetAt(
+      url,
+      dataset,
+      { fetch: session.fetch }  // fetch function from authenticated session
+    );
     dataset = await getSolidDataset(url, { fetch: session.fetch });
   }
   return dataset;
@@ -148,7 +153,7 @@ export async function createMap(session: Session, mapName: string) {
 
   await overwriteFileInPod(session, file, getMapUrl(session) + mapName);
 
-  await grantReadAccessToFriend(session, "https://lomapes3c.inrupt.net/profile/card#me", mapName);
+  //await grantReadAccessToFriend(session, "https://lomapes3c.inrupt.net/profile/card#me", mapName);
 
   return true;
 }
