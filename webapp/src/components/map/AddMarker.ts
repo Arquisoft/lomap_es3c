@@ -1,6 +1,6 @@
 import { Session } from "@inrupt/solid-client-authn-browser";
 import { MarkerInfo } from "./Map";
-import { addMarkerToPod, saveImageInPod } from "./markUtils/MarkUtils";
+import { addMarkerToPod } from "./markUtils/MarkUtils";
 
 export interface AddMarkerInfo {
     marker: MarkerInfo;
@@ -11,29 +11,48 @@ export interface AddMarkerInfo {
     selectedPosition: [number, number];
 }
 
-function addMarker(props: AddMarkerInfo) {
-    let fileArray = props.marker.images as File[];
-    let fileArrayToPod: File[] = [];
-    let stringArrayToPod: string[] = [];
-    let fileName: string;
-    let blob;
-    let renamedFile;
-    for (let i = 0; i < fileArray.length; i++) {
-        fileName = props.selectedMap + "-" + props.marker.name + "-" + i;
-        blob = fileArray[i].slice(0, fileArray[i].size, fileArray[i].type);
-        renamedFile = new File([blob], fileName, { type: fileArray[i].type });
-        fileArrayToPod.push(renamedFile);
-        stringArrayToPod.push(fileName + "." + fileArray[i].type.split("image/")[1]);
+async function addMarker(props: AddMarkerInfo) {
+    const fileArray = props.marker.images as File[];
+    const fileUrls: string[] = [];
+
+    const formData = new FormData();
+    for (const element of fileArray) {
+        formData.append("file", element);
+        formData.append("upload_preset", "docs_upload_example_us_preset");
+        await fetch('https://api.cloudinary.com/v1_1/demo/image/upload',
+            {
+                mode: 'cors',
+                method: "POST",
+                body: formData
+            })
+            .then((response) => {
+                return response.text();
+            })
+            .then((data) => {
+                fileUrls.push(JSON.parse(data)["url"]);
+            });
     }
-    props.marker.images = stringArrayToPod;
+
+    // Actualizar la información de la marca con las URLs de las imágenes
+    const aux = props.markers;
+    props.marker.images = fileUrls;
     props.marker.coords = [props.selectedPosition[0], props.selectedPosition[1]];
     addMarkerToPod(props.selectedMap, props.marker, props.session);
-    for (let i = 0; i < fileArrayToPod.length; i++) {
-        saveImageInPod(props.session, fileArrayToPod[i], stringArrayToPod[i]);
-    }
-    let aux = props.markers;
     aux.push(props.marker);
     props.setMarkers(aux);
+}
+
+function readFileAsDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            resolve(reader.result as string);
+        };
+        reader.onerror = (error) => {
+            reject(error);
+        };
+    });
 }
 
 export default addMarker;

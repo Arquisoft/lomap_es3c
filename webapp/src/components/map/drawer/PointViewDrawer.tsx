@@ -2,7 +2,6 @@ import { Fragment, useEffect, useState } from "react";
 import { Box, Drawer, ImageList, ImageListItem } from "@mui/material";
 import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
-import { getImageFromPod } from "../markUtils/MarkUtils";
 
 export interface PointViewDrawerInfo {
     session: Session;
@@ -37,8 +36,7 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
       const imagenElemento = document.createElement("img");
       let aux:any = JSON.stringify(img);
       aux = JSON.parse(aux);
-      const imgContent = await getImageFromPod(props.session, aux.author.identifier + "/private/lomapImages/" + aux.contentUrl);
-      imagenElemento.src =URL.createObjectURL(imgContent);
+      imagenElemento.src =aux;
       return (
         <ImageListItem key={img as string}>
           <img src={imagenElemento.src} alt={`Imagen ${img}`} style={{ width: '10.25em', height: '10.25em' }}
