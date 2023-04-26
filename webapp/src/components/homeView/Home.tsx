@@ -32,7 +32,7 @@ const Content = styled(Box)({
 
 //Manejar la sesion del proveedor
 async function handleRedirectAfterIdentification() {
-  await handleIncomingRedirect();
+  await handleIncomingRedirect({restorePreviousSession: true});
   const session = getDefaultSession();
   if (session.info.isLoggedIn) {
     const userWebId = session.info.webId?.split('/profile')[0];
