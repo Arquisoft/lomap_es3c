@@ -19,7 +19,3 @@ export default function App(): JSX.Element {
   </Router>
   );
 }
-
-function useState<T>(arg0: null): [any, any] {
-  throw new Error('Function not implemented.');
-}

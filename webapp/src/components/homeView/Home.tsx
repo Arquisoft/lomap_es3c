@@ -10,6 +10,7 @@ import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-
 import { checkRegister, registerUser } from '../../api/api';
 import Swal from 'sweetalert2';
 import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { useNavigate } from 'react-router-dom';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -29,7 +30,6 @@ const Content = styled(Box)({
   flexDirection: "row"
 })
 
-
 //Manejar la sesion del proveedor
 async function handleRedirectAfterIdentification() {
   await handleIncomingRedirect({restorePreviousSession: true});
@@ -46,10 +46,26 @@ async function handleRedirectAfterIdentification() {
       })
     }
   }
+}
 
+const readCookie = (name: string) => {
+  try {
+    let cookies = document.cookie.split('; ');
+    let selectedCookie = cookies.find(cookie => cookie.startsWith(name + '='));
+    let valueCookie = selectedCookie?.split('=')[1];
+    return valueCookie;
+  } catch (e: any) {
+    return "";
+  }
 }
 
 export const Home = () => {
+
+  const navigate = useNavigate();
+
+  const {session} = useSession();
+
+  handleRedirectAfterIdentification();
 
   const [markers, setMarkers] = useState<MarkerInfo[]>([]);
 
@@ -58,10 +74,6 @@ export const Home = () => {
   const [sites, setSites] = useState<string[]>([]);
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-  const {session} = useSession();
-
-  handleRedirectAfterIdentification();
 
   const [editable, setEditable] = useState<boolean>(true);
 
@@ -74,15 +86,20 @@ export const Home = () => {
 
   const showLoadingDialog = async () => {
     setTimeout(() => {
-      loadFriends();
-      Swal.fire({
-        title: 'Cargando...',
-        text: 'Espere un instante mientras preparamos todo',
-        timer: 5000,
-        timerProgressBar: true,
-        allowOutsideClick: false,
-        showConfirmButton: false
-      });
+      if(!session.info.isLoggedIn) {
+        navigate('/');
+        Swal.close();
+      } else {
+        loadFriends();
+        Swal.fire({
+          title: 'Cargando...',
+          text: 'Espere un instante mientras preparamos todo',
+          timer: 5000,
+          timerProgressBar: true,
+          allowOutsideClick: false,
+          showConfirmButton: false
+        });
+      }
     }, 1000);
   }
 
