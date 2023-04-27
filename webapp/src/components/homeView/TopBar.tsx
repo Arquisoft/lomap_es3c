@@ -275,9 +275,11 @@ function TopBar(filterInfo: MapFilterInfo) {
     //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
     //})
 
-    const friendsList = filterInfo.friendsNames.map((friendName) => {
-      return `<option value="${friendName}">${friendName}</option>`;
-    })
+    let friendsList= []
+
+    for(let i=0;i<filterInfo.friendsNames.length;i++){
+      friendsList.push(`<option value="${filterInfo.friendsURL[i]}">${filterInfo.friendsNames[i]}</option>`);
+    }
 
     if(maps.length == 0 || friendsList.length == 0) {
       Swal.fire({
@@ -307,8 +309,14 @@ function TopBar(filterInfo: MapFilterInfo) {
         confirmButtonText: 'Compartir',
         confirmButtonColor: "rgba(25, 118, 210, 1)",
         showLoaderOnConfirm: true,
-        preConfirm: () => {
-          // TODO insertar código para asociar el mapa x al amigo y
+        preConfirm: async () => {
+          const mapSelector = document.getElementById('mapSelector') as HTMLSelectElement;
+          const friendSelector = document.getElementById('friendSelector') as HTMLSelectElement;
+
+          const selectedMap = mapSelector.value;
+          const selectedFriend = friendSelector.value;
+          console.log(selectedFriend)
+          await grantReadAccessToFriend(session,selectedFriend,selectedMap);
         },
         allowOutsideClick: () => !Swal.isLoading()
       })

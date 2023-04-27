@@ -73,7 +73,7 @@ export async function getFriendsNamesFromPod(friendsUrls) {
   } catch (error) {
     console.log(error)
   }
-  
+
   return ['']
 }
 
@@ -82,7 +82,7 @@ export async function getFriendsMapsFromPod(friendUrl, session) {
   //const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/lomap/");
 
   try {
-    let res = await getMapsFriendFromPod(session,friendUrl);
+    let res = await getMapsFriendFromPod(session, friendUrl);
 
     return res;
 
@@ -159,31 +159,31 @@ export async function addToKnowInPod(session, nuevoConocido) {
 }
 
 export async function grantReadAccessToFriend(session, friendUrl, mapName) {
+  let urls = [session.info.webId.replace("/profile/card#me", "/private/lomap/"), session.info.webId.replace("/profile/card#me", "/private/lomap/") + mapName];
 
-  let urlMapa = session.info.webId.replace("/profile/card#me", "/private/lomapImages/");
+  for (let url of urls) {
+    console.log(url)
+    const recurso = await getSolidDatasetWithAcl(url, { fetch: session.fetch });
 
-  const recurso = await getSolidDatasetWithAcl(urlMapa, { fetch: session.fetch });
+    let acl;
+    if (hasResourceAcl(recurso)) {
+      acl = getResourceAcl(recurso);
+    } else {
+      acl = createAclFromFallbackAcl(recurso);
+    }
 
-  let acl;
-  if (hasResourceAcl(recurso)) {
-    acl = getResourceAcl(recurso);
-  } else {
-    acl = createAclFromFallbackAcl(recurso);
+    let nuevoAcl = setAgentResourceAccess(
+      acl,
+      friendUrl,
+      { read: true, append: false, write: true, control: false }
+    );
+
+    nuevoAcl = setAgentDefaultAccess(
+      nuevoAcl,
+      friendUrl,
+      { read: true, append: false, write: true, control: false }
+    );
+
+    await saveAclFor(recurso, nuevoAcl, { fetch: session.fetch });
   }
-
-  let nuevoAcl = setAgentResourceAccess(
-    acl,
-    friendUrl,
-    { read: true, append: false, write: false, control: false }
-  );
-
-  nuevoAcl = setAgentDefaultAccess(
-    nuevoAcl,
-    friendUrl,
-    { read: true, append: false, write: false, control: false }
-  );
-
-  await saveAclFor(recurso, nuevoAcl, { fetch: session.fetch });
-
-  console.log("Done")
 }

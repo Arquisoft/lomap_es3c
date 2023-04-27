@@ -153,8 +153,6 @@ export async function createMap(session: Session, mapName: string) {
 
   await overwriteFileInPod(session, file, getMapUrl(session) + mapName);
 
-  //await grantReadAccessToFriend(session, "https://lomapes3c.inrupt.net/profile/card#me", mapName);
-
   return true;
 }
 
