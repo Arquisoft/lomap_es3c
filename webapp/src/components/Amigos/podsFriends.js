@@ -160,8 +160,8 @@ export async function addToKnowInPod(session, nuevoConocido) {
   }
 }
 
-export async function grantReadAccessToFriend(session, friendUrl, mapName) {
-  let urls = [session.info.webId.replace("/profile/card#me", "/private/lomap/"), session.info.webId.replace("/profile/card#me", "/private/lomap/") + mapName];
+export async function grantReadAccessToFriend(session, friendUrl) {
+  let urls = [session.info.webId.replace("/profile/card#me", "/private/lomap/")];
 
   for (let url of urls) {
     console.log(url)
