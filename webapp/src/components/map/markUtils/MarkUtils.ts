@@ -124,12 +124,6 @@ export async function getMapsFromPod(session: Session) {
     } catch (e) {
       await createContainerAt(url, { fetch: session.fetch });
       dataset = await getSolidDataset(url, { fetch: session.fetch });
-      await saveSolidDatasetAt(
-        url,
-        dataset,
-        { fetch: session.fetch }  // fetch function from authenticated session
-      );
-      dataset = await getSolidDataset(url, { fetch: session.fetch });
     }
     return dataset;
   }
