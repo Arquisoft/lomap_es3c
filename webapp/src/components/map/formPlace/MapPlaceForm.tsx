@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import ComboBoxCategoria from './ComboBoxCategoria';
+import ComboBoxCategoria, { getInterCategory } from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
 import { MarkerInfo } from '../Map';
 import { DrawerInfo } from '../drawer/PointCreateDrawer';
@@ -40,7 +40,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
     let marker: MarkerInfo = {
       authorWebId:"",
       name: formData.get('name') as string,
-      categoria: selectedCategory,
+      categoria: getInterCategory(selectedCategory),
       review:[],
       description: formData.get('description') as string,
       images: filesArray,

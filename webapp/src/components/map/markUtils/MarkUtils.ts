@@ -80,7 +80,7 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
     const markers: MarkerInfo[] = parsedContent.spatialCoverage.map((marker: any) => ({
       authorWebId: marker.author.identifier,
       name: marker.name,
-      categoria: marker.category,
+      categoria: marker.additionalType,
       images: marker.image,
       review: marker.review,
       coords: [marker.latitude, marker.longitude]

@@ -104,7 +104,7 @@ export async function getMarkersOfFriendMapFromPod(session, friendUrl, mapName) 
   const markers = parsedContent.spatialCoverage.map((marker) => ({
     authorWebId: marker.author.identifier,
     name: marker.name,
-    categoria: marker.category,
+    categoria: marker.additionalType,
     images: marker.image,
     review: marker.review,
     coords: [marker.latitude, marker.longitude]

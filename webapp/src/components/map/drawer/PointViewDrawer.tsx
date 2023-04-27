@@ -5,6 +5,7 @@ import { Session } from "@inrupt/solid-client-authn-browser";
 import ReviewForm from "../formPlace/ReviewForm";
 import ReviewVista from "../formPlace/ReviewVista";
 import { updateMarkerReview } from "../markUtils/MarkUtils";
+import { getViewCategory } from "../formPlace/ComboBoxCategoria";
 
 export interface PointViewDrawerInfo {
     session: Session;
@@ -86,7 +87,7 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
             role="presentation"
         >
             <h2 className='text-center'>Nombre: {props.marker.name}</h2>
-            <h3 className='text-center'>Categoria: {props.marker.categoria}</h3>
+            <h3 className='text-center'>Categoria: {getViewCategory(props.marker.categoria)}</h3>
             <h3>Coordenadas</h3>
             <ul>
                 <li>Latitud: {props.marker.coords[0]}</li>
