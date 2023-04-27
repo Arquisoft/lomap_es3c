@@ -37,6 +37,7 @@ async function addMarker(props: AddMarkerInfo) {
     const aux = props.markers;
     props.marker.images = fileUrls;
     props.marker.coords = [props.selectedPosition[0], props.selectedPosition[1]];
+    props.marker.authorWebId = (props.session.info.webId?.split('/profile')[0] || 'error')
     addMarkerToPod(props.selectedMap, props.marker, props.session);
     aux.push(props.marker);
     props.setMarkers(aux);

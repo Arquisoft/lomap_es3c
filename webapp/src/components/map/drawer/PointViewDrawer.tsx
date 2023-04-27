@@ -2,15 +2,21 @@ import { Fragment, useEffect, useState } from "react";
 import { Box, Drawer, ImageList, ImageListItem } from "@mui/material";
 import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
+import ReviewForm from "../formPlace/ReviewForm";
+import ReviewVista from "../formPlace/ReviewVista";
+import { updateMarkerReview } from "../markUtils/MarkUtils";
 
 export interface PointViewDrawerInfo {
     session: Session;
     opened: boolean;
     toggleDrawer: any;
     marker: MarkerInfo;
+    map: string;
 }
 
 export default function PointViewDrawer(props: PointViewDrawerInfo) {
+
+    let imageCount = 1;
 
     const [state, setState] = useState(props.opened);
 
@@ -18,33 +24,43 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
 
     useEffect(() => {
         const fetchImages = async () => {
-          const items: JSX.Element[] = [];
-          for (const img of props.marker.images) {
-            const imageListItem = await fetchImage(img as string);
-            items.push(imageListItem);
-          }
-          setImageListItems(items);
+            const items: JSX.Element[] = [];
+            for (const img of props.marker.images) {
+                const imageListItem = await fetchImage(img as string);
+                items.push(imageListItem);
+            }
+            setImageListItems(items);
         };
         fetchImages();
-      }, [state]);
-  
-      useEffect(() => {
-          setState(props.opened);
-      }, [props.opened]);
+    }, [state]);
+
+    useEffect(() => {
+        setState(props.opened);
+    }, [props.opened]);
 
     const fetchImage = async (img: string) => {
-      const imagenElemento = document.createElement("img");
-      let aux:any = JSON.stringify(img);
-      aux = JSON.parse(aux);
-      imagenElemento.src =aux;
-      return (
-        <ImageListItem key={img as string}>
-          <img src={imagenElemento.src} alt={`Imagen ${img}`} style={{ width: '10.25em', height: '10.25em' }}
-           />
-        </ImageListItem>
-      );
+        const imagenElemento = document.createElement("img");
+        let aux: any = JSON.stringify(img);
+        aux = JSON.parse(aux);
+        imagenElemento.src = aux.contentUrl;
+        return (
+            <ImageListItem key={imageCount++}>
+                <img src={imagenElemento.src} alt={`Imagen ${imageCount++}`} style={{ width: '10.25em', height: '10.25em' }}
+                />
+            </ImageListItem>
+        );
     };
-  
+
+    const onSubmitReview = async (review: any) => {
+        if (props.marker.review == undefined) {
+            props.marker.review = [];
+        }
+        props.marker.review.push(review);
+        await updateMarkerReview(props.session, props.marker, props.map);
+        setState(false);
+        props.toggleDrawer(false);
+    }
+
     //En funcion del booleano desplegamos u ocultamos el menu lateral
     const toggleDrawer =
         (open: boolean) =>
@@ -83,6 +99,8 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
             >
                 {imageListItems}
             </ImageList>
+            <ReviewForm reviews={props.marker.review} handleSubmit={onSubmitReview} session={props.session}></ReviewForm>
+            <ReviewVista reviews={props.marker.review}></ReviewVista>
         </Box>
     );
 

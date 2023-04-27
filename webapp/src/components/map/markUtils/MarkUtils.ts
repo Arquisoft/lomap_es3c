@@ -12,7 +12,7 @@ import { grantReadAccessToFriend } from "../../Amigos/podsFriends";
 let selectedMapFile: string;
 
 export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
-  const { name, categoria,description, images, coords } = marker;
+  const { name, categoria, description, images, coords } = marker;
 
   let auxImages = [];
 
@@ -35,7 +35,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
     "name": name,
     "author": {
       "@type": "Person",
-      "identifier": "_WebId_"
+      "identifier": (session.info.webId?.split('/profile')[0] || 'error')
     },
     "additionalType": categoria,
     "latitude": coords[0],
@@ -43,7 +43,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
     "description": description,
     "review": [],
     "image": auxImages,
-    "dateCreated": "_Marker's-Creation-Date_"
+    "dateCreated": Date.now()
   };
 
   // Lee el contenido del archivo JSON-LD como una cadena
@@ -78,9 +78,11 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
     const parsedContent = JSON.parse(selectedMapFile);
 
     const markers: MarkerInfo[] = parsedContent.spatialCoverage.map((marker: any) => ({
+      authorWebId: marker.author.identifier,
       name: marker.name,
       categoria: marker.category,
       images: marker.image,
+      review: marker.review,
       coords: [marker.latitude, marker.longitude]
     }));
 
@@ -90,155 +92,151 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
   }
 }
 
+export async function updateMarkerReview(session: Session, marker: MarkerInfo, selectedMap: string) {
+  await getMapFromPod(session, selectedMap,marker.authorWebId+ "/private/lomap/");
+  try {
+    const parsedContent = JSON.parse(selectedMapFile);
+    for(const element of parsedContent.spatialCoverage){
+      if(marker.name == element.name){
+        element.review = marker.review;
+        break;
+      }
+    } 
+    const updatedContent = JSON.stringify(parsedContent);
+
+    const updatedFile = new File([updatedContent], parsedContent.name, { type: "application/ld+json" });   
+    await overwriteFileInPod(session,updatedFile,marker.authorWebId + "/private/lomap/" +selectedMap);
+  }catch(error){}
+  }
+
 export async function getMapsFromPod(session: Session) {
-  let url = getMapUrl(session);
+    let url = getMapUrl(session);
 
-  let urls = await getUrlsOfDataset(session, url);
+    let urls = await getUrlsOfDataset(session, url);
 
-  return urls.map(url => url.split("/lomap/")[1]);
-}
-
-async function checkIfDatasetExists(session: Session, url: string) {
-  let dataset;
-  try {
-    dataset = await getSolidDataset(url, { fetch: session.fetch });
-  } catch (e) {
-    await createContainerAt(url, { fetch: session.fetch });
-    dataset = await getSolidDataset(url, { fetch: session.fetch });
-    await saveSolidDatasetAt(
-      url,
-      dataset,
-      { fetch: session.fetch }  // fetch function from authenticated session
-    );
-    dataset = await getSolidDataset(url, { fetch: session.fetch });
-  }
-  return dataset;
-}
-
-export async function getUrlsOfDataset(session: Session, url: string) {
-  let dataset = await checkIfDatasetExists(session, url);
-
-  return getContainedResourceUrlAll(dataset);
-}
-
-async function checkIfMapExists(session: Session, mapName: string) {
-  let mapUrl = getMapUrl(session);
-  let urls = await getUrlsOfDataset(session, mapUrl);
-  return !urls.includes(mapUrl + mapName);
-}
-
-export async function createMap(session: Session, mapName: string) {
-
-  let isValidName = await checkIfMapExists(session, mapName);
-
-  if (!isValidName) {
-    return false;
+    return urls.map(url => url.split("/lomap/")[1]);
   }
 
-  let map: JsonLdDocument = {
-    "@context": "https://schema.org",
-    "@type": "Map",
-    "identifier": uuidv4(),
-    "name": mapName,
-    "author": {
-      "@type": "Person",
-      "identifier": (session.info.webId?.split('/profile')[0] || 'error')
-    },
-    "spatialCoverage": []
-  };
-
-  let blob = new Blob([JSON.stringify(map)], { type: "application/ld+json" });
-
-  let file = new File([blob], mapName + ".jsonld", { type: blob.type });
-
-  await overwriteFileInPod(session, file, getMapUrl(session) + mapName);
-
-  return true;
-}
-
-export async function getMapsFriendFromPod(session: Session, friendUrl: string) {
-  let url = (friendUrl.split('/profile')[0] + '/private/lomap/');
-  let urls2: string[] = [];
-  await getValidUrls(session, url, urls2)
-
-  await Promise.all(urls2.map(async (url) => {
-    return url;
-  }));
-  return urls2;
-}
-
-async function getValidUrls(session: Session, url: string, urls2: string[]) {
-  let urls = await getUrlsOfDataset(session, url);
-
-  await Promise.all(urls.map(async (element) => {
+  async function checkIfDatasetExists(session: Session, url: string) {
+    let dataset;
     try {
-      await getFile(element, { fetch: session.fetch });
-      urls2.push(element.split("/lomap/")[1]);
-    } catch (e) { }
-  }));
-}
-
-
-export async function overwriteFileInPod(session: Session, file: File, url?: string) {
-  // Guardar los cambios en el pod
-  try {
-    await overwriteFile(
-      url !== undefined ? url : (session.info.webId?.split('/profile')[0] + '/public/maps' || ''), //TODO: Cambiar public por private
-      file,
-      { contentType: file.type, fetch: session.fetch }
-    );
-  } catch (e) {
-    console.error(e);
+      dataset = await getSolidDataset(url, { fetch: session.fetch });
+    } catch (e) {
+      await createContainerAt(url, { fetch: session.fetch });
+      dataset = await getSolidDataset(url, { fetch: session.fetch });
+      await saveSolidDatasetAt(
+        url,
+        dataset,
+        { fetch: session.fetch }  // fetch function from authenticated session
+      );
+      dataset = await getSolidDataset(url, { fetch: session.fetch });
+    }
+    return dataset;
   }
-}
 
-export async function saveImageInPod(session: Session, file: File, fileName: string) {
-  // Guardar los cambios en el pod
-  try {
-    await saveFileInContainer(
-      getImageUrl(session),
-      file,
-      { contentType: file.type, slug: fileName, fetch: session.fetch }
-    );
-  } catch (e) {
-    await createContainerAt(getImageUrl(session), { fetch: session.fetch });
-    await saveFileInContainer(
-      getImageUrl(session),
-      file,
-      { contentType: file.type, slug: fileName, fetch: session.fetch }
-    );
+  export async function getUrlsOfDataset(session: Session, url: string) {
+    let dataset = await checkIfDatasetExists(session, url);
+
+    return getContainedResourceUrlAll(dataset);
   }
-}
 
-export async function getMapFromPod(session: Session, mapId: string) {
-  const urlContainer = getMapUrl(session);
-  try {
-    let mapUrl = urlContainer + mapId; //TODO: Cambiar public por private
-    let mapFile = await getFile(mapUrl, { fetch: session.fetch });
-    selectedMapFile = await mapFile.text();
-    return mapFile;
-  } catch (e) {
-    console.error(e);
+  async function checkIfMapExists(session: Session, mapName: string) {
+    let mapUrl = getMapUrl(session);
+    let urls = await getUrlsOfDataset(session, mapUrl);
+    return !urls.includes(mapUrl + mapName);
+  }
+
+  export async function createMap(session: Session, mapName: string) {
+
+    let isValidName = await checkIfMapExists(session, mapName);
+
+    if (!isValidName) {
+      return false;
+    }
+
+    let map: JsonLdDocument = {
+      "@context": "https://schema.org",
+      "@type": "Map",
+      "identifier": uuidv4(),
+      "name": mapName,
+      "author": {
+        "@type": "Person",
+        "identifier": (session.info.webId?.split('/profile')[0] || 'error')
+      },
+      "spatialCoverage": []
+    };
+
+    let blob = new Blob([JSON.stringify(map)], { type: "application/ld+json" });
+
+    let file = new File([blob], mapName + ".jsonld", { type: blob.type });
+
+    await overwriteFileInPod(session, file, getMapUrl(session) + mapName);
+
+    return true;
+  }
+
+  export async function getMapsFriendFromPod(session: Session, friendUrl: string) {
+    let url = (friendUrl.split('/profile')[0] + '/private/lomap/');
+    let urls2: string[] = [];
+    await getValidUrls(session, url, urls2)
+
+    await Promise.all(urls2.map(async (url) => {
+      return url;
+    }));
+    return urls2;
+  }
+
+  async function getValidUrls(session: Session, url: string, urls2: string[]) {
+    let urls = await getUrlsOfDataset(session, url);
+
+    await Promise.all(urls.map(async (element) => {
+      try {
+        await getFile(element, { fetch: session.fetch });
+        urls2.push(element.split("/lomap/")[1]);
+      } catch (e) { }
+    }));
+  }
+
+
+  export async function overwriteFileInPod(session: Session, file: File, url?: string) {
+    // Guardar los cambios en el pod
     try {
-      await createContainerAt(urlContainer, { fetch: session.fetch });
+      await overwriteFile(
+        url !== undefined ? url : (session.info.webId?.split('/profile')[0] + '/public/maps' || ''), //TODO: Cambiar public por private
+        file,
+        { contentType: file.type, fetch: session.fetch }
+      );
     } catch (e) {
       console.error(e);
     }
   }
-}
 
-export function getMapUrl(session: Session, baseUrl?: string) {
-  return baseUrl !== undefined ? baseUrl : (session.info.webId?.split('/profile')[0] + '/private/lomap/' || '');
-}
-function getImageUrl(session: Session) {
-  return (session.info.webId?.split('/profile')[0] + '/private/lomapImages/' || '');
-}
-
-export async function getImageFromPod(session: Session, url: string) {
-  try {
-    let podUrl = url;
-    let resImg: any = await getFile(podUrl, { fetch: session.fetch });
-    return resImg;
-  } catch (e) {
+  export async function getMapFromPod(session: Session, mapId: string,url?:string) {
+    const urlContainer = getMapUrl(session,url);
+    try {
+      let mapUrl = urlContainer + mapId; //TODO: Cambiar public por private
+      let mapFile = await getFile(mapUrl, { fetch: session.fetch });
+      selectedMapFile = await mapFile.text();
+      return mapFile;
+    } catch (e) {
+      console.error(e);
+      try {
+        await createContainerAt(urlContainer, { fetch: session.fetch });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }
-}
+
+  export function getMapUrl(session: Session, baseUrl?: string) {
+    return baseUrl !== undefined ? baseUrl : (session.info.webId?.split('/profile')[0] + '/private/lomap/' || '');
+  }
+
+  export async function getImageFromPod(session: Session, url: string) {
+    try {
+      let podUrl = url;
+      let resImg: any = await getFile(podUrl, { fetch: session.fetch });
+      return resImg;
+    } catch (e) {
+    }
+  }
