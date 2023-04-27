@@ -5,6 +5,8 @@ import { useState } from "react";
 export interface MapFilterInfo{
   selectedCategories:string[];
   setSelectedCategories:any;
+  friendsURL:string[];
+  friendsNames:string[];
 }
 
 function MapFilter(props:MapFilterInfo) {

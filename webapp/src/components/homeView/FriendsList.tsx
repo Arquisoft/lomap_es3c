@@ -26,11 +26,15 @@ export default function FriendsList(friendMap:MapInfo) {
   React.useEffect(() => {
     const loadFriends = async () => {
       if (session.info.isLoggedIn) {
-        const friends = await getFriendsFromPod(session);
-        setFriendsList(friends);
-        const friendsNames = await getFriendsNamesFromPod(friends);
+        setFriendsList(friendMap.friendsURL)
+        setFriendsNamesList(friendMap.friendsNames);
+
+        //const friends = await getFriendsFromPod(session);
+        //setFriendsList(friends);
+        //const friendsNames = await getFriendsNamesFromPod(friends);
+        //setFriendsNamesList(friendsNames);
+
         //const friendsNames = friends.map(friend => friend.split("//")[1].split(".inrupt.net")[0]);
-        setFriendsNamesList(friendsNames);
       } else {
         setFriendsList([]);
         setFriendsNamesList([]);
@@ -41,6 +45,12 @@ export default function FriendsList(friendMap:MapInfo) {
   }, [session]);
 
   const loadMapsForFriend = async (friend: string) => {
+    Swal.fire({
+      title: 'Cargando mapas...',
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
+
     var mapas = await getFriendsMapsFromPod(friend, session)
 
     if (mapas as unknown as Array<string>) {
@@ -61,13 +71,17 @@ export default function FriendsList(friendMap:MapInfo) {
     });
 
     Swal.fire({
-      title: 'Mapas de ' + friendsNamesList[index],
+      title: '<p style="color:black; margin-bottom:0em;">Mapas de ' + friendsNamesList[index] + "</p>",
       input: 'select',
       inputOptions: {
         'Mapas': mapsObj
       },
       inputPlaceholder: 'Selecciona un mapa',
       showCancelButton: true,
+      cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
+      cancelButtonText: 'Atrás',
+      confirmButtonColor: 'rgba(25, 118, 210, 1)',
+      confirmButtonText: 'Visualizar',
       inputValidator: (value) => {
         return new Promise((resolve) => {
           if (value === '') {

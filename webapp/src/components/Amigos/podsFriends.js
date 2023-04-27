@@ -73,7 +73,7 @@ export async function getFriendsNamesFromPod(friendsUrls) {
   } catch (error) {
     console.log(error)
   }
-
+  
   return ['']
 }
 

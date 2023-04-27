@@ -4,13 +4,16 @@ import { createMap } from "../map/markUtils/MarkUtils";
 
 function createMapWindow(session:Session){
     Swal.fire({
-        title: 'Introduzca el nombre del mapa',
+        title: '<p style="color: black;">Introduzca el nombre del mapa</p>',
         input: 'text',
         inputAttributes: {
           autocapitalize: 'off'
         },
         showCancelButton: true,
+        cancelButtonText: 'Atrás',
+        cancelButtonColor: "rgba(255, 50, 50, 0.9)",
         confirmButtonText: 'Crear',
+        confirmButtonColor: "rgba(25, 118, 210, 1)",
         showLoaderOnConfirm: true,
         preConfirm:async (mapName) => {
             if (mapName === "") {

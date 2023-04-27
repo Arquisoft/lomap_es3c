@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
-import { Button } from '@mui/material';
+import { Button, Fade } from '@mui/material';
 import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
@@ -21,6 +21,7 @@ import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitu
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
+import { getMapFromPod, getMapsFromPod } from '../map/markUtils/MarkUtils';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -62,20 +63,23 @@ function TopBar(filterInfo: MapFilterInfo) {
     // Crear el contenido de la ventana modal
     const html = `
       <div>
-        <label for="name">Nombre</label>
-        <input id="name" class="swal2-input" value="${nombreUsuario}" style="width: 65%;" readonly>
-        <br/>
-        <h5>Biografía:</h5>
-        <textarea id="biografia" rows="5" cols="40" style="resize: none; text-align: center;">${biografiaUsuario}</textarea>
+        <label for="name" style="padding-bottom:0em;"><h5>Nombre de usuario</h5></label><br/>
+        <input id="name" class="swal2-input" value="${nombreUsuario}" style="width: 65%; margin-top:0em;" readonly>
+        <br/><br/>
+        <h5>Biografía</h5>
+        <textarea id="biografia" placeholder="No existe biografía" rows="5" cols="40" style="resize: none; padding: 0.5em;">${biografiaUsuario}</textarea>
       </div>
     `;
 
     // Mostrar la ventana
     Swal.fire({
-      title: 'Mi perfil',
+      title: '<p style="color:black; margin-bottom:0.25em;">Mi perfil</p>',
       html: html,
       showCancelButton: true,
+      cancelButtonText: 'Atrás',
+      cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
       confirmButtonText: 'Guardar biografía',
+      confirmButtonColor: 'rgba(25, 118, 210, 1)',
       showLoaderOnConfirm: true,
       preConfirm: () => {
         const bio = (Swal.getPopup()?.querySelector('#biografia') as HTMLInputElement).value;
@@ -110,7 +114,7 @@ function TopBar(filterInfo: MapFilterInfo) {
       return content;
     } catch (e) {
       console.log(`No se ha encontrado un archivo de biografía en la URL: ${bioFileUrl}`);
-      return "Aún no se ha creado una biografía.";
+      return "";
     }
   }
 
@@ -123,7 +127,7 @@ function TopBar(filterInfo: MapFilterInfo) {
     const name = await getFriendsNamesFromPod(arrayWebId);
 
     Swal.fire({
-      title: 'Mi Cuenta',
+      title: '<p style="color:black; margin-bottom:0.25em;">Mi cuenta</p>',
       html: `
             <label for="name">Nombre</label>
             <input id="name" class="swal2-input" value="${name}" style="width: 65%;" readonly>
@@ -133,7 +137,9 @@ function TopBar(filterInfo: MapFilterInfo) {
             `,
       showCancelButton: true,
       confirmButtonText: 'Desactivar cuenta',
+      confirmButtonColor: 'rgba(25, 118, 210, 1)',
       cancelButtonText: 'Atrás',
+      cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
       showLoaderOnConfirm: true,
       width: '60%',
       allowOutsideClick: () => !Swal.isLoading(),
@@ -158,6 +164,7 @@ function TopBar(filterInfo: MapFilterInfo) {
   };
 
   const nuevoMapa = () => {
+    setAnchorEl(null); // cierra el mini-menú
     createMapWindow(session);
   };
 
@@ -175,8 +182,9 @@ function TopBar(filterInfo: MapFilterInfo) {
   }
 
   const nuevoAmigo = () => {
+    setAnchorEl(null); // cierra el mini-menú
     Swal.fire({
-      title: 'Introduzca el nombre del usuario',
+      title: '<p style="color:black; margin-bottom:0em;">Introduzca el nombre del usuario</p>',
       html: `
             <select id="provider" class="swal2-input">
               <option value="inrupt"> Inrupt </option >
@@ -187,7 +195,10 @@ function TopBar(filterInfo: MapFilterInfo) {
             <input id="userName" class="swal2-input" placeholder="Nombre de usuario">
             `,
       showCancelButton: true,
+      cancelButtonText: 'Atrás',
+      cancelButtonColor: "rgba(255, 50, 50, 0.9)",
       confirmButtonText: 'Enviar solicitud',
+      confirmButtonColor: "rgba(25, 118, 210, 1)",
       showLoaderOnConfirm: true,
       preConfirm: () => {
         const receiverProvider = (Swal.getPopup()?.querySelector('#provider') as HTMLInputElement).value;
@@ -250,6 +261,60 @@ function TopBar(filterInfo: MapFilterInfo) {
     })
   };
 
+  const compartirMapa = async () => {
+    setAnchorEl(null); // cierra el mini-menú
+
+    const maps = (await getMapsFromPod(session)).map((map) => {
+      return `<option value="${map}">${map}</option>`; // TODO cargar mapas
+    })
+
+    //const friendsURL = await getFriendsFromPod(session);
+    //const friendsNames = await getFriendsNamesFromPod(friendsURL);
+
+    //const friends = friendsNames.map((friend) => {
+    //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
+    //})
+
+    const friendsList = filterInfo.friendsNames.map((friendName) => {
+      return `<option value="${friendName}">${friendName}</option>`;
+    })
+
+    if(maps.length == 0 || friendsList.length == 0) {
+      Swal.fire({
+        icon: 'info',
+        title: 'No tienes mapas/amigos',
+        confirmButtonColor: "rgba(25, 118, 210, 1)",
+        showConfirmButton: true,
+        confirmButtonText: 'Aceptar'
+      });
+    } else {
+      Swal.fire({
+        title: '<p style="color:black; margin-bottom:0em;">Seleccione un mapa y un amigo</p>',
+        html: `
+              <label for="mapSelector">Mapa</label>
+              <select id="mapSelector" class="swal2-input" style="width: 60%; margin-left: 2.3em;">
+                ${maps}
+              </select>
+              <br/>
+              <label for="Amigo">Amigo</label>
+              <select id="friendSelector" class="swal2-input" style="width: 60%; margin-left: 2em;">
+                ${friendsList}
+              </select>
+              `,
+        showCancelButton: true,
+        cancelButtonText: 'Atrás',
+        cancelButtonColor: "rgba(255, 50, 50, 0.9)",
+        confirmButtonText: 'Compartir',
+        confirmButtonColor: "rgba(25, 118, 210, 1)",
+        showLoaderOnConfirm: true,
+        preConfirm: () => {
+          // TODO insertar código para asociar el mapa x al amigo y
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      })
+    }
+  };
+
   const verSolicitudes = () => {
     if (session.info.isLoggedIn) {
       const userWebId = session.info.webId?.split('/profile')[0];
@@ -262,6 +327,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             Swal.fire({
               icon: 'info',
               title: 'No tienes solicitudes de amistad',
+              confirmButtonColor: "rgba(25, 118, 210, 1)",
               showConfirmButton: true,
               confirmButtonText: 'Aceptar'
             });
@@ -271,16 +337,18 @@ function TopBar(filterInfo: MapFilterInfo) {
             });
 
             Swal.fire({
-              title: 'Solicitudes de amistad',
+              title: '<p style="color:black; margin-bottom:0em;">Solicitudes de amistad</p>',
               html: `
                   <select id="user" class="swal2-input">
                   ${options}
                   </select>
                   `,
               showDenyButton: true,
-              showCancelButton: false,
-              confirmButtonText: 'Aceptar',
+              denyButtonColor: "rgba(255, 50, 50, 0.9)",
               denyButtonText: 'Rechazar',
+              showCancelButton: false,
+              confirmButtonColor: "rgba(25, 118, 210, 1)",
+              confirmButtonText: 'Aceptar',
             }).then((result) => {
               const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
 
@@ -310,6 +378,15 @@ function TopBar(filterInfo: MapFilterInfo) {
     }
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClickOptions = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleCloseOptions = () => {
+      setAnchorEl(null);
+    };
+
   return (
     <AppBar position="static" sx={{ borderBottom: "solid black 0.25em", width: "100%" }}>
       <Container sx={{ marginLeft: "1em", width: "100%", minWidth: "100%" }}>
@@ -318,26 +395,36 @@ function TopBar(filterInfo: MapFilterInfo) {
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
-          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories}></MapFilter>
+          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories} friendsURL={filterInfo.friendsURL} friendsNames={filterInfo.friendsNames}></MapFilter>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 
             <Button
-              key={"Nuevo Mapa"}
-              onClick={nuevoMapa}
+              id="fade-button"
+              aria-controls={open ? 'fade-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClickOptions}
               sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
-              focusRipple={false}
             >
-              {<strong>Nuevo Mapa</strong>}
+              <strong>Opciones</strong>
             </Button>
-            <Button
-              key={"Nuevo Amigo"}
-              onClick={nuevoAmigo}
-              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
-              focusRipple={false}
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                'aria-labelledby': 'fade-button',
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleCloseOptions}
+              TransitionComponent={Fade}
             >
-              {<strong>Nuevo Amigo</strong>}
-            </Button>
+              <MenuItem onClick={nuevoMapa}>Nuevo Mapa</MenuItem>
+              <MenuItem onClick={nuevoAmigo}>Nuevo Amigo</MenuItem>
+              <hr />
+              <MenuItem onClick={compartirMapa}>Compartir Mapa</MenuItem>
+            </Menu>
+
             <Button
               key={"Solicitudes"}
               onClick={verSolicitudes}
@@ -346,7 +433,6 @@ function TopBar(filterInfo: MapFilterInfo) {
             >
               <DraftsIcon fontSize="small" />
             </Button>
-
           </Box>
 
           <Box sx={{ flexGrow: 0, marginRight: "2em" }}>
