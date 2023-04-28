@@ -300,13 +300,8 @@ function TopBar(topBarInfo: TopBarInfo) {
       });
     } else {
       Swal.fire({
-        title: '<p style="color:black; margin-bottom:0em;">Seleccione un mapa y un amigo</p>',
+        title: '<p style="color:black; margin-bottom:0em;">Seleccione un amigo</p>',
         html: `
-              <label for="mapSelector">Mapa</label>
-              <select id="mapSelector" class="swal2-input" style="width: 60%; margin-left: 2.3em;">
-                ${maps}
-              </select>
-              <br/>
               <label for="Amigo">Amigo</label>
               <select id="friendSelector" class="swal2-input" style="width: 60%; margin-left: 2em;">
                 ${friendsList}
@@ -319,13 +314,11 @@ function TopBar(topBarInfo: TopBarInfo) {
         confirmButtonColor: "rgba(25, 118, 210, 1)",
         showLoaderOnConfirm: true,
         preConfirm: async () => {
-          const mapSelector = document.getElementById('mapSelector') as HTMLSelectElement;
           const friendSelector = document.getElementById('friendSelector') as HTMLSelectElement;
 
-          const selectedMap = mapSelector.value;
           const selectedFriend = friendSelector.value;
           console.log(selectedFriend)
-          await grantReadAccessToFriend(session,selectedFriend,selectedMap);
+          await grantReadAccessToFriend(session,selectedFriend);
         },
         allowOutsideClick: () => !Swal.isLoading()
       })
