@@ -29,6 +29,7 @@ export default function LateralMenu(props:MapInfo) {
     setOpenFriends(!openFriends);
   }
 
+
   return (
     <Paper sx={{ width: "100%", position: 'inherit', height: "100%", borderLeft: "solid black 0.25em" }}>
       <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "100%" }}>
@@ -39,7 +40,11 @@ export default function LateralMenu(props:MapInfo) {
           </MenuItem>
           <Divider sx={{ opacity: 1 }} />
           <Collapse in={openMaps} timeout="auto" unmountOnExit>
-            <MapListAux open={openMaps} session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames}></MapListAux>
+            <MapListAux open={openMaps} session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} 
+                        setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} 
+                        setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} mySelectedMap={props.mySelectedMap} 
+                        setMySelectedMap={props.setMySelectedMap} setMapUser={props.setMapUser} >
+            </MapListAux>
           </Collapse>
         </Box>
 
@@ -50,7 +55,11 @@ export default function LateralMenu(props:MapInfo) {
           </MenuItem>
           <Divider sx={{ opacity: 1 }} />
           <Collapse in={openFriends} timeout="auto" unmountOnExit>
-            <FriendsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames}></FriendsList>
+            <FriendsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} 
+                         setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} 
+                         setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} 
+                         mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap} setMapUser={props.setMapUser}  >
+            </FriendsList>
           </Collapse>
         </Box>
       </MenuList>

@@ -21,11 +21,20 @@ import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitu
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
-import { getMapFromPod, getMapsFromPod } from '../map/markUtils/MarkUtils';
+import { getMapsFromPod } from '../map/markUtils/MarkUtils';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar(filterInfo: MapFilterInfo) {
+export interface TopBarInfo{
+  selectedCategories:string[];
+  setSelectedCategories:any;
+  friendsURL:string[];
+  friendsNames:string[];
+  mapUser: string;
+  mapName?: string;
+}
+
+function TopBar(topBarInfo: TopBarInfo) {
   const { session } = useSession();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -275,10 +284,10 @@ function TopBar(filterInfo: MapFilterInfo) {
     //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
     //})
 
-    let friendsList= []
+    let friendsList:String[]= []
 
-    for(let i=0;i<filterInfo.friendsNames.length;i++){
-      friendsList.push(`<option value="${filterInfo.friendsURL[i]}">${filterInfo.friendsNames[i]}</option>`);
+    for(let i=0;i<topBarInfo.friendsNames.length;i++){
+      friendsList.push(`<option value="${topBarInfo.friendsURL[i]}">${topBarInfo.friendsNames[i]}</option>`);
     }
 
     if(maps.length == 0 || friendsList.length == 0) {
@@ -387,13 +396,33 @@ function TopBar(filterInfo: MapFilterInfo) {
   };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClickOptions = (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleCloseOptions = () => {
-      setAnchorEl(null);
-    };
+  const open = Boolean(anchorEl);
+  const handleClickOptions = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseOptions = () => {
+    setAnchorEl(null);
+  };
+
+  function usuarioMapa() {
+    console.log(topBarInfo);
+    if(topBarInfo.mapName === null || topBarInfo.mapName == undefined) {
+      return (
+        <div style={{ color: "#313131c7" }}>
+          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
+          <h3 style={{fontSize: "1.3em"}}>Sin mapa seleccionado</h3>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ color: "#313131c7" }}>
+          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
+          <h3 style={{fontSize: "1.3em"}}>{topBarInfo.mapUser} : {topBarInfo.mapName}</h3>
+        </div>        
+      );
+    }
+  }
+  
 
   return (
     <AppBar position="static" sx={{ borderBottom: "solid black 0.25em", width: "100%" }}>
@@ -403,7 +432,11 @@ function TopBar(filterInfo: MapFilterInfo) {
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
-          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories} friendsURL={filterInfo.friendsURL} friendsNames={filterInfo.friendsNames}></MapFilter>
+          <MapFilter selectedCategories={topBarInfo.selectedCategories} setSelectedCategories={topBarInfo.setSelectedCategories} friendsURL={topBarInfo.friendsURL} friendsNames={topBarInfo.friendsNames}></MapFilter>
+
+          <Box sx={{ width: '300px', display: { xs: 'none', md: 'flex' }, justifyContent: "center", margin: "1em 2em" }}>
+            {usuarioMapa()}
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 

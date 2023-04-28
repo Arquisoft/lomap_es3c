@@ -40,6 +40,9 @@ export interface MapInfo {
     setEditable: any;
     friendsURL:string[];
     friendsNames:string[];
+    mySelectedMap:number;
+    setMySelectedMap:any;
+    setMapUser:any;
 }
 
 function Map(props: MapInfo) {
