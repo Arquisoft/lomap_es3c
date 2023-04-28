@@ -42,7 +42,7 @@ api.post(
     const userData = new User({userName : userName, userWebId : userWebId, provider : provider});
     userData.save();
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).json();
   }
 )
 
