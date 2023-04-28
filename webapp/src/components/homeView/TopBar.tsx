@@ -268,14 +268,20 @@ function TopBar(filterInfo: MapFilterInfo) {
       return `<option value="${map}">${map}</option>`; // TODO cargar mapas
     })
 
-    const friendsURL = await getFriendsFromPod(session);
-    const friendsNames = await getFriendsNamesFromPod(friendsURL);
+    //const friendsURL = await getFriendsFromPod(session);
+    //const friendsNames = await getFriendsNamesFromPod(friendsURL);
 
-    const friends = friendsNames.map((friend) => {
-      return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
-    })
+    //const friends = friendsNames.map((friend) => {
+    //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
+    //})
 
-    if(maps.length == 0 || friends.length == 0) {
+    let friendsList= []
+
+    for(let i=0;i<filterInfo.friendsNames.length;i++){
+      friendsList.push(`<option value="${filterInfo.friendsURL[i]}">${filterInfo.friendsNames[i]}</option>`);
+    }
+
+    if(maps.length == 0 || friendsList.length == 0) {
       Swal.fire({
         icon: 'info',
         title: 'No tienes mapas/amigos',
@@ -294,7 +300,7 @@ function TopBar(filterInfo: MapFilterInfo) {
               <br/>
               <label for="Amigo">Amigo</label>
               <select id="friendSelector" class="swal2-input" style="width: 60%; margin-left: 2em;">
-                ${friends}
+                ${friendsList}
               </select>
               `,
         showCancelButton: true,
@@ -303,8 +309,14 @@ function TopBar(filterInfo: MapFilterInfo) {
         confirmButtonText: 'Compartir',
         confirmButtonColor: "rgba(25, 118, 210, 1)",
         showLoaderOnConfirm: true,
-        preConfirm: () => {
-          // TODO insertar código para asociar el mapa x al amigo y
+        preConfirm: async () => {
+          const mapSelector = document.getElementById('mapSelector') as HTMLSelectElement;
+          const friendSelector = document.getElementById('friendSelector') as HTMLSelectElement;
+
+          const selectedMap = mapSelector.value;
+          const selectedFriend = friendSelector.value;
+          console.log(selectedFriend)
+          await grantReadAccessToFriend(session,selectedFriend,selectedMap);
         },
         allowOutsideClick: () => !Swal.isLoading()
       })
@@ -391,7 +403,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
-          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories}></MapFilter>
+          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories} friendsURL={filterInfo.friendsURL} friendsNames={filterInfo.friendsNames}></MapFilter>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 

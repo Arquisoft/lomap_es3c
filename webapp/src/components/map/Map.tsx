@@ -5,7 +5,6 @@ import './Map.css';
 import { LatLng } from 'leaflet';
 import PlaceDrawer from './drawer/PointCreateDrawer';
 import {Session } from '@inrupt/solid-client-authn-browser';
-import { addMarkerToPod, overwriteFileInPod, saveImageInPod} from './markUtils/MarkUtils';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
 import createMapWindow from '../homeView/CreateMap';
@@ -13,12 +12,12 @@ import PointViewDrawer from './drawer/PointViewDrawer';
 import addMarker, { AddMarkerInfo } from './AddMarker';
 
 export interface MarkerInfo {
+    authorWebId:string;
     name: string;
     description:string;
-    comments: string;
-    score: number;
     categoria: string;
     images:File[] | string[];
+    review:any;
     coords: [number, number];
 }
 
@@ -39,6 +38,8 @@ export interface MapInfo {
     setSelectedCategories?:any;
     editable?: boolean;
     setEditable: any;
+    friendsURL:string[];
+    friendsNames:string[];
 }
 
 function Map(props: MapInfo) {
@@ -46,11 +47,11 @@ function Map(props: MapInfo) {
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
     const [selectedMarker, setSelectedMarker] = useState<MarkerInfo>({
+        authorWebId:"",
         name: "",
-        comments: "",
         description:"",
-        score: -1,
         categoria: "",
+        review:[],
         images:[],
         coords: [0, 0]
     });
@@ -106,7 +107,7 @@ function Map(props: MapInfo) {
         >
             <MapEventHandler onClick={mapOnClick} />
             <Markers session={props.session} marker={props.markers} selectedCategories={props.selectedCategories} setSelectedCategories={props.setSelectedCategories} setIsViewPointDrawerSelected={setIsViewPointDrawerSelected} setSelectedMarker={setSelectedMarker}></Markers>
-            <PointViewDrawer session={props.session} opened={isViewPointDrawerSelected} toggleDrawer={toggleViewPointDrawer} marker={selectedMarker}></PointViewDrawer>
+            <PointViewDrawer session={props.session} opened={isViewPointDrawerSelected} toggleDrawer={toggleViewPointDrawer} marker={selectedMarker} map={props.selectedMap}></PointViewDrawer>
             <PlaceDrawer opened={isCreateDrawerSelected} onSubmit={onSubmitAddMarker} toggleDrawer={toggleCreateDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
