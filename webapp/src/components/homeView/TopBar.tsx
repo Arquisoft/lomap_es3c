@@ -30,8 +30,6 @@ export interface TopBarInfo{
   setSelectedCategories:any;
   friendsURL:string[];
   friendsNames:string[];
-  mapUser: string;
-  mapName?: string;
 }
 
 function TopBar(topBarInfo: TopBarInfo) {
@@ -397,25 +395,6 @@ function TopBar(topBarInfo: TopBarInfo) {
     setAnchorEl(null);
   };
 
-  function usuarioMapa() {
-    console.log(topBarInfo);
-    if(topBarInfo.mapName === null || topBarInfo.mapName == undefined) {
-      return (
-        <div style={{ color: "#313131c7" }}>
-          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
-          <h3 style={{fontSize: "1.3em"}}>Sin mapa seleccionado</h3>
-        </div>
-      );
-    } else {
-      return (
-        <div style={{ color: "#313131c7" }}>
-          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
-          <h3 style={{fontSize: "1.3em"}}>{topBarInfo.mapUser} : {topBarInfo.mapName}</h3>
-        </div>        
-      );
-    }
-  }
-  
 
   return (
     <AppBar position="static" sx={{ borderBottom: "solid black 0.25em", width: "100%" }}>
@@ -426,10 +405,6 @@ function TopBar(topBarInfo: TopBarInfo) {
           </a>
 
           <MapFilter selectedCategories={topBarInfo.selectedCategories} setSelectedCategories={topBarInfo.setSelectedCategories} friendsURL={topBarInfo.friendsURL} friendsNames={topBarInfo.friendsNames}></MapFilter>
-
-          <Box sx={{ width: '300px', display: { xs: 'none', md: 'flex' }, justifyContent: "center", margin: "1em 2em" }}>
-            {usuarioMapa()}
-          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 

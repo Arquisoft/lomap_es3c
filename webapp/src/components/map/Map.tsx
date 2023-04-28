@@ -42,7 +42,6 @@ export interface MapInfo {
     friendsNames:string[];
     mySelectedMap:number;
     setMySelectedMap:any;
-    setMapUser:any;
 }
 
 function Map(props: MapInfo) {

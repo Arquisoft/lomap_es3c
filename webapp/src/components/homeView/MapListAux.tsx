@@ -22,7 +22,8 @@ export interface MapListState{
 
 function MapListAux(props: MapListState) {
     if (props.open) {
-        return (<MapsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap} setMapUser={props.setMapUser} ></MapsList>);
+        props.setMapUser("Mis mapas");
+        return (<MapsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap}></MapsList>);
     } else {
         return (<></>);
     }

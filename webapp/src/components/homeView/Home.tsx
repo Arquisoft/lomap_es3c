@@ -81,7 +81,7 @@ export const Home = () => {
   const [friendsNames, setFriendsNames] = useState<string[]>([]);
   
   const [mySelectedMap, setMySelectedMap] = useState(-1);
-  const [mapUser, setMapUser] = useState<string>("");
+
 
   useEffect(() => {
     showLoadingDialog();
@@ -122,16 +122,16 @@ export const Home = () => {
   
   return (
     <>
-      <TopBar selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} friendsURL={friendsURL} friendsNames={friendsNames} mapUser={mapUser} mapName={selectedMap} ></TopBar>
+      <TopBar selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} friendsURL={friendsURL} friendsNames={friendsNames} ></TopBar>
       <Content>
         <IzqBox>
           <SRoutes>
             <Route path='/' element={<Map session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap}
-             setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} editable={editable} setEditable={setEditable} friendsURL={friendsURL} friendsNames={friendsNames} mySelectedMap={mySelectedMap} setMySelectedMap={setMySelectedMap} setMapUser={setMapUser} />}/>
+             setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} editable={editable} setEditable={setEditable} friendsURL={friendsURL} friendsNames={friendsNames} mySelectedMap={mySelectedMap} setMySelectedMap={setMySelectedMap} />}/>
           </SRoutes>
         </IzqBox>
         <DerBox sx={{display: "flex", justifyContent: "left"}}>
-          <LateralMenu session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} editable={editable} setEditable={setEditable} friendsURL={friendsURL} friendsNames={friendsNames} mySelectedMap={mySelectedMap} setMySelectedMap={setMySelectedMap} setMapUser={setMapUser}  ></LateralMenu>
+          <LateralMenu session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap} setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} editable={editable} setEditable={setEditable} friendsURL={friendsURL} friendsNames={friendsNames} mySelectedMap={mySelectedMap} setMySelectedMap={setMySelectedMap} ></LateralMenu>
         </DerBox>
       </Content>
     </>

@@ -21,6 +21,8 @@ export default function LateralMenu(props:MapInfo) {
 
   const [openFriends, setOpenFriends] = useState(false);
 
+  const [mapUser, setMapUser] = useState<String>("");
+
   const handleCollapseMaps = () => {
     setOpenMaps(!openMaps);
   }
@@ -29,9 +31,32 @@ export default function LateralMenu(props:MapInfo) {
     setOpenFriends(!openFriends);
   }
 
+  function usuarioMapa() {
+    if(props.selectedMap === null || props.selectedMap == undefined) {
+      return (
+        <div style={{ color: "#313131c7" }}>
+          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
+          <h3 style={{fontSize: "1.3em"}}>Sin mapa seleccionado</h3>
+        </div>
+      );
+    } else {
+      return (
+        <div style={{ color: "#313131c7" }}>
+          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
+          <h3 style={{fontSize: "1.3em"}}>{mapUser} : {props.selectedMap}</h3>
+        </div>        
+      );
+    }
+  }
+
 
   return (
     <Paper sx={{ width: "100%", position: 'inherit', height: "100%", borderLeft: "solid black 0.25em" }}>
+      
+      <Box sx={{backgroundColor: 'rgba(25, 118, 210, 1)', display: { xs: 'none', md: 'flex' }, justifyContent: "center", borderBottom: "solid 3px black", padding: "1em" }}>
+            {usuarioMapa()}
+      </Box>
+
       <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "100%" }}>
         <Box>
           <MenuItem onClick={handleCollapseMaps}>
@@ -43,7 +68,7 @@ export default function LateralMenu(props:MapInfo) {
             <MapListAux open={openMaps} session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} 
                         setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} 
                         setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} mySelectedMap={props.mySelectedMap} 
-                        setMySelectedMap={props.setMySelectedMap} setMapUser={props.setMapUser} >
+                        setMySelectedMap={props.setMySelectedMap} setMapUser={setMapUser} >
             </MapListAux>
           </Collapse>
         </Box>
@@ -58,7 +83,7 @@ export default function LateralMenu(props:MapInfo) {
             <FriendsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} 
                          setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} 
                          setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} 
-                         mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap} setMapUser={props.setMapUser}  >
+                         mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap} setMapUser={setMapUser}  >
             </FriendsList>
           </Collapse>
         </Box>

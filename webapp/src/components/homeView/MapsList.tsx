@@ -37,7 +37,6 @@ export default function MapsList(mapLists:MapInfo) {
     mapLists.setMarkers(markers);
     mapLists.setSelectedMap(map);
     mapLists.setMySelectedMap(mapLists.sites.indexOf(map));
-    mapLists.setMapUser("Mis mapas");
   };
   
   function renderRow(props: ListChildComponentProps) {
