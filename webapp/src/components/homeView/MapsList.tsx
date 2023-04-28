@@ -22,7 +22,8 @@ export default function MapsList(mapLists:MapInfo) {
     const loadSites = async () => {
       // Simula una función asincrónica para cargar los sitios
       let maps = await getMapsFromPod(mapLists.session);
-      mapLists.setSites(maps);
+      let aux = maps.map(map=>{return decodeURIComponent(map)});
+      mapLists.setSites(aux);
     }
     if (session.info.isLoggedIn) {
       loadSites();
