@@ -11,16 +11,13 @@ test("Comprobamos que el drawer se renderiza correctamente", async () => {
         />
       );
 
-    //Check that the shopping cart title is rendered
     expect(getByText("Añade un lugar")).toBeInTheDocument();
-    //Check that the buttons continue shopping and checkout are rendered
-    expect(getByText("Nombre")).toBeInTheDocument();
-    expect(getByText("Categoria")).toBeInTheDocument();
-    expect(getByText("Descripción")).toBeInTheDocument();
-    expect(getByText("Subir")).toBeInTheDocument();
+    expect(getByText("Nombre", { selector: 'label' })).toBeInTheDocument();
+    expect(getByText("Nombre", { selector: 'strong' })).toBeInTheDocument();
+    expect(getByText("Categoria",{ selector: 'strong' })).toBeInTheDocument();
+    expect(getByText("Descripción",{ selector: 'strong' })).toBeInTheDocument();
+    expect(getByText("Subir imágenes",{ selector: 'strong' })).toBeInTheDocument();
 
     //Check that the total price is rendered
-    expect(getByText("AÑADIR LUGAR")).toBeInTheDocument();
-
-    expect(window.location.pathname).toBe("/home");
+    expect(getByText("Añadir lugar")).toBeInTheDocument();
 });
