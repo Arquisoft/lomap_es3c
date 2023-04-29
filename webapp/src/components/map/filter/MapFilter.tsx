@@ -45,7 +45,7 @@ function MapFilter(props:MapFilterInfo) {
   };
   
   return (
-    <div style={{overflowX:'auto', display: 'inline-flex', color: 'black', marginLeft: '2.5em', alignItems: 'center' }}>
+    <div style={{overflowX:'auto', display: 'inline-flex', color: 'black', marginLeft: '3em', alignItems: 'center', marginRight: '2.5em' }}>
       <h3 style={{ marginLeft: '0.5em', marginRight: '1em', fontSize: '1.1em', marginTop: '0.3em' }}><strong>CATEGORÍAS:</strong></h3>
       {Object.entries(isChecked).map(([key, value]) => {
         return (

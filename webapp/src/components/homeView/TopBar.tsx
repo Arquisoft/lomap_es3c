@@ -279,7 +279,7 @@ function TopBar(topBarInfo: TopBarInfo) {
     })
   };
 
-  const compartirMapa = async () => {
+  const compartirMapas = async () => {
     setAnchorEl(null); // cierra el mini-menú
 
     const maps = (await getMapsFromPod(session)).map((map) => {
@@ -417,7 +417,7 @@ function TopBar(topBarInfo: TopBarInfo) {
 
           <MapFilter selectedCategories={topBarInfo.selectedCategories} setSelectedCategories={topBarInfo.setSelectedCategories} friendsURL={topBarInfo.friendsURL} friendsNames={topBarInfo.friendsNames}></MapFilter>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "3em" }}>
 
             <Button
               id="fade-button"
@@ -425,7 +425,7 @@ function TopBar(topBarInfo: TopBarInfo) {
               aria-haspopup="true"
               aria-expanded={open ? 'true' : undefined}
               onClick={handleClickOptions}
-              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "3em" }}
+              sx={{ my: 2, color: 'black', display: 'block', fontSize: '1.1em', marginRight: "1.5em" }}
             >
               <strong>Opciones</strong>
             </Button>
@@ -442,7 +442,7 @@ function TopBar(topBarInfo: TopBarInfo) {
               <MenuItem onClick={nuevoMapa}>Nuevo Mapa</MenuItem>
               <MenuItem onClick={nuevoAmigo}>Nuevo Amigo</MenuItem>
               <hr />
-              <MenuItem onClick={compartirMapa}>Compartir Mapa</MenuItem>
+              <MenuItem onClick={compartirMapas}>Compartir Mapas</MenuItem>
             </Menu>
 
             <Button

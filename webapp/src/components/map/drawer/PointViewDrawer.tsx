@@ -82,25 +82,27 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     const list = () => (
         <Box sx={{
             width: 450,
-            backgroundColor: "rgba(25, 118, 210, 0.8)"
+            backgroundColor: "rgba(25, 118, 210, 0.8)",
         }}
             role="presentation"
         >
-            <h2 className='text-center'>Nombre: {props.marker.name}</h2>
-            <h3 className='text-center'>Categoria: {getViewCategory(props.marker.categoria)}</h3>
-            <h3>Coordenadas</h3>
-            <ul>
+            <h2 className='text-center'><strong>Nombre: </strong>{props.marker.name}</h2>
+            <h3 className='text-center' style={{fontSize: "1.25em"}}>Categoria: {getViewCategory(props.marker.categoria)}</h3>
+            <br/>
+            <h3 style={{marginLeft: "1em"}}>Coordenadas</h3>
+            <ul style={{marginLeft: "1.5em"}}>
                 <li>Latitud: {props.marker.coords[0]}</li>
                 <li>Longitud: {props.marker.coords[1]}</li>
             </ul>
             <ImageList
-                sx={{ width: 400, height: 300 }}
+                sx={{ width: 400, height: 300, marginLeft: "1em", paddingTop: "1em" }}
                 cols={3}
                 rowHeight={130}
             >
                 {imageListItems}
             </ImageList>
             <ReviewForm reviews={props.marker.review} handleSubmit={onSubmitReview} session={props.session}></ReviewForm>
+            <br/>
             <ReviewVista reviews={props.marker.review}></ReviewVista>
         </Box>
     );

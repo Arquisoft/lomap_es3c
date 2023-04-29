@@ -11,7 +11,7 @@ import { MapInfo} from '../map/Map';
 import { useState } from 'react';
 import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 
-const height = window.innerHeight * 0.37;
+const height = window.innerHeight * 0.30;
 
 export default function MapsList(mapLists:MapInfo) {
 
@@ -45,7 +45,7 @@ export default function MapsList(mapLists:MapInfo) {
     const isSelected = mapLists.mySelectedMap === index;
   
     return (
-      <ListItem style={{ ...style, backgroundColor: isSelected ? "#62b3ff" : "transparent" }} key={index} component="div" disablePadding>
+      <ListItem style={{ ...style, backgroundColor: isSelected ? "rgba(35, 128, 220, 0.9)" : "transparent" }} key={index} component="div" disablePadding>
         <ListItemButton onClick={() => clickMap(site)}>
           <ListItemText primary={site} />
         </ListItemButton>
