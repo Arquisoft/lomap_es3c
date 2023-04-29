@@ -80,7 +80,7 @@ export default function FriendsList(friendMap:FriendMapInfo) {
     return [''];
   }
 
-  const height = window.innerHeight * 0.37;
+  const height = window.innerHeight * 0.30;
 
   const clickFriend = async (index: number) => {
     const maps = await loadMapsForFriend(friendsList[index]);
