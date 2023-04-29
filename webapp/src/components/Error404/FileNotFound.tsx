@@ -11,7 +11,7 @@ function FileNotFound() {
         <h1 className="error-header">Error 404</h1>
         <p className="error-message">Lo siento, la página que buscas no existe.</p>
 
-        <button className="home-button" onClick={x => navigate('/home')}>Home</button>
+        <button className="home-button" onClick={x => navigate('/index')}>Página principal</button>
         
         </div>
     )

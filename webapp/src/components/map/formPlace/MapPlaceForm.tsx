@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import ComboBoxCategoria from './ComboBoxCategoria';
+import ComboBoxCategoria, { getInterCategory } from './ComboBoxCategoria';
 import SliderMapPlace from './SliderMapPlace';
 import { MarkerInfo } from '../Map';
 import { DrawerInfo } from '../drawer/PointCreateDrawer';
@@ -16,21 +16,10 @@ interface FormProps {
 function MapPlaceForm(props: FormProps): JSX.Element {
 
   const [selectedCategory, setSelectedCategory] = useState<string>('Tienda');
-  const [selectedScore, setSelectedScore] = useState<number>(5);
   const [filesArray, setFilesArray] = useState<File[]>([]);
-
-  const [isOpen, setIsOpen] = useState(false); // State to control the collapse
-
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleAutocompleteChange = (event: React.ChangeEvent<{}>, value: string | null) => {
     setSelectedCategory(value || ""); // Si el valor es null, establece una cadena vacía
-  };
-
-  const handleSliderChange = (e: Event, value: number) => {
-    setSelectedScore(value);
   };
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -49,11 +38,11 @@ function MapPlaceForm(props: FormProps): JSX.Element {
     const form = document.getElementById('formMarker') as HTMLFormElement;
     const formData = new FormData(form);
     let marker: MarkerInfo = {
+      authorWebId:"",
       name: formData.get('name') as string,
-      categoria: selectedCategory,
+      categoria: getInterCategory(selectedCategory),
+      review:[],
       description: formData.get('description') as string,
-      comments: formData.get('comments') as string,
-      score: isOpen?selectedScore:-1,
       images: filesArray,
       coords: [0, 0]
       // Aquí se deben agregar las propiedades del objeto nuevo
@@ -113,38 +102,6 @@ function MapPlaceForm(props: FormProps): JSX.Element {
             ref={inputRef}
             onChange={handleFileInputChange}
           />
-        </div>
-        <div className='text-center'>
-          <Button variant="contained" onClick={handleToggle} sx={{
-            my: 2,
-            backgroundColor: "black",
-            '&:hover': {
-              bgcolor: 'black',
-              color: 'white',
-            }
-          }}>Añadir Valoración</Button>
-          <Collapse in={isOpen}>
-            <div>
-              <Box sx={{ height: "1em" }} />
-              <div className='d-flex flex-column justify-content-center'>
-                <label htmlFor='comments' className='text-center'><strong>Comentarios</strong></label>
-                <TextField
-                  name='comments'
-                  id="comments"
-                  label="Comentarios"
-                  className='m-2'
-                  multiline
-                  maxRows={4}
-                  InputLabelProps={{ style: { color: 'black' }, focused: true }}
-                />
-              </div>
-              <Box sx={{ height: "1em" }} />
-              <div className='d-flex flex-column justify-content-center m-2'>
-                <label htmlFor='score' className='text-center'><strong>Puntuación</strong></label>
-                <SliderMapPlace id='score' onChange={handleSliderChange}></SliderMapPlace>
-              </div>
-            </div>
-          </Collapse>
         </div>
         <Box sx={{ height: "3em" }} />
         <div className='text-center'>

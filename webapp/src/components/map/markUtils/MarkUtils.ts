@@ -12,7 +12,7 @@ import { grantReadAccessToFriend } from "../../Amigos/podsFriends";
 let selectedMapFile: string;
 
 export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
-  const { name, categoria,description, images, coords } = marker;
+  const { name, categoria, description, images, coords } = marker;
 
   let auxImages = [];
 
@@ -35,7 +35,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
     "name": name,
     "author": {
       "@type": "Person",
-      "identifier": "_WebId_"
+      "identifier": (session.info.webId?.split('/profile')[0] || 'error')
     },
     "additionalType": categoria,
     "latitude": coords[0],
@@ -43,7 +43,7 @@ export async function createJSONLDPoint(session: Session, marker: MarkerInfo) {
     "description": description,
     "review": [],
     "image": auxImages,
-    "dateCreated": "_Marker's-Creation-Date_"
+    "dateCreated": Date.now()
   };
 
   // Lee el contenido del archivo JSON-LD como una cadena
@@ -78,9 +78,11 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
     const parsedContent = JSON.parse(selectedMapFile);
 
     const markers: MarkerInfo[] = parsedContent.spatialCoverage.map((marker: any) => ({
+      authorWebId: marker.author.identifier,
       name: marker.name,
-      categoria: marker.category,
+      categoria: marker.additionalType,
       images: marker.image,
+      review: marker.review,
       coords: [marker.latitude, marker.longitude]
     }));
 
@@ -88,6 +90,23 @@ export async function getMarkersOfMapFromPod(session: Session, mapName: string) 
   } catch (e) {
     console.error(e)
   }
+}
+
+export async function updateMarkerReview(session: Session, marker: MarkerInfo, selectedMap: string) {
+  await getMapFromPod(session, selectedMap, marker.authorWebId + "/private/lomap/");
+  try {
+    const parsedContent = JSON.parse(selectedMapFile);
+    for (const element of parsedContent.spatialCoverage) {
+      if (marker.name == element.name) {
+        element.review = marker.review;
+        break;
+      }
+    }
+    const updatedContent = JSON.stringify(parsedContent);
+
+    const updatedFile = new File([updatedContent], parsedContent.name, { type: "application/ld+json" });
+    await overwriteFileInPod(session, updatedFile, marker.authorWebId + "/private/lomap/" + selectedMap);
+  } catch (error) { }
 }
 
 export async function getMapsFromPod(session: Session) {
@@ -104,12 +123,6 @@ async function checkIfDatasetExists(session: Session, url: string) {
     dataset = await getSolidDataset(url, { fetch: session.fetch });
   } catch (e) {
     await createContainerAt(url, { fetch: session.fetch });
-    dataset = await getSolidDataset(url, { fetch: session.fetch });
-    await saveSolidDatasetAt(
-      url,
-      dataset,
-      { fetch: session.fetch }  // fetch function from authenticated session
-    );
     dataset = await getSolidDataset(url, { fetch: session.fetch });
   }
   return dataset;
@@ -153,8 +166,6 @@ export async function createMap(session: Session, mapName: string) {
 
   await overwriteFileInPod(session, file, getMapUrl(session) + mapName);
 
-  //await grantReadAccessToFriend(session, "https://lomapes3c.inrupt.net/profile/card#me", mapName);
-
   return true;
 }
 
@@ -170,14 +181,13 @@ export async function getMapsFriendFromPod(session: Session, friendUrl: string) 
 }
 
 async function getValidUrls(session: Session, url: string, urls2: string[]) {
-  let urls = await getUrlsOfDataset(session, url);
+  try {
+    let urls = await getUrlsOfDataset(session, url);
 
-  await Promise.all(urls.map(async (element) => {
-    try {
-      await getFile(element, { fetch: session.fetch });
+    await Promise.all(urls.map(async (element) => {
       urls2.push(element.split("/lomap/")[1]);
-    } catch (e) { }
-  }));
+    }));
+  } catch (e) { }
 }
 
 
@@ -194,26 +204,8 @@ export async function overwriteFileInPod(session: Session, file: File, url?: str
   }
 }
 
-export async function saveImageInPod(session: Session, file: File, fileName: string) {
-  // Guardar los cambios en el pod
-  try {
-    await saveFileInContainer(
-      getImageUrl(session),
-      file,
-      { contentType: file.type, slug: fileName, fetch: session.fetch }
-    );
-  } catch (e) {
-    await createContainerAt(getImageUrl(session), { fetch: session.fetch });
-    await saveFileInContainer(
-      getImageUrl(session),
-      file,
-      { contentType: file.type, slug: fileName, fetch: session.fetch }
-    );
-  }
-}
-
-export async function getMapFromPod(session: Session, mapId: string) {
-  const urlContainer = getMapUrl(session);
+export async function getMapFromPod(session: Session, mapId: string, url?: string) {
+  const urlContainer = getMapUrl(session, url);
   try {
     let mapUrl = urlContainer + mapId; //TODO: Cambiar public por private
     let mapFile = await getFile(mapUrl, { fetch: session.fetch });
@@ -231,9 +223,6 @@ export async function getMapFromPod(session: Session, mapId: string) {
 
 export function getMapUrl(session: Session, baseUrl?: string) {
   return baseUrl !== undefined ? baseUrl : (session.info.webId?.split('/profile')[0] + '/private/lomap/' || '');
-}
-function getImageUrl(session: Session) {
-  return (session.info.webId?.split('/profile')[0] + '/private/lomapImages/' || '');
 }
 
 export async function getImageFromPod(session: Session, url: string) {

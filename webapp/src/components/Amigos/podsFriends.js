@@ -73,7 +73,7 @@ export async function getFriendsNamesFromPod(friendsUrls) {
   } catch (error) {
     console.log(error)
   }
-  
+
   return ['']
 }
 
@@ -82,7 +82,7 @@ export async function getFriendsMapsFromPod(friendUrl, session) {
   //const mapaAmigoUrl = friendUrl.replace("/profile/card#me", "/private/lomap/");
 
   try {
-    let res = await getMapsFriendFromPod(session,friendUrl);
+    let res = await getMapsFriendFromPod(session, friendUrl);
 
     return res;
 
@@ -102,9 +102,11 @@ export async function getMarkersOfFriendMapFromPod(session, friendUrl, mapName) 
   const parsedContent = JSON.parse(content);
 
   const markers = parsedContent.spatialCoverage.map((marker) => ({
+    authorWebId: marker.author.identifier,
     name: marker.name,
-    comments: marker.comment,
+    categoria: marker.additionalType,
     images: marker.image,
+    review: marker.review,
     coords: [marker.latitude, marker.longitude]
   }));
 
@@ -158,32 +160,32 @@ export async function addToKnowInPod(session, nuevoConocido) {
   }
 }
 
-export async function grantReadAccessToFriend(session, friendUrl, mapName) {
+export async function grantReadAccessToFriend(session, friendUrl) {
+  let urls = [session.info.webId.replace("/profile/card#me", "/private/lomap/")];
 
-  let urlMapa = session.info.webId.replace("/profile/card#me", "/private/lomapImages/");
+  for (let url of urls) {
+    console.log(url)
+    const recurso = await getSolidDatasetWithAcl(url, { fetch: session.fetch });
 
-  const recurso = await getSolidDatasetWithAcl(urlMapa, { fetch: session.fetch });
+    let acl;
+    if (hasResourceAcl(recurso)) {
+      acl = getResourceAcl(recurso);
+    } else {
+      acl = createAclFromFallbackAcl(recurso);
+    }
 
-  let acl;
-  if (hasResourceAcl(recurso)) {
-    acl = getResourceAcl(recurso);
-  } else {
-    acl = createAclFromFallbackAcl(recurso);
+    let nuevoAcl = setAgentResourceAccess(
+      acl,
+      friendUrl,
+      { read: true, append: false, write: true, control: false }
+    );
+
+    nuevoAcl = setAgentDefaultAccess(
+      nuevoAcl,
+      friendUrl,
+      { read: true, append: false, write: true, control: false }
+    );
+
+    await saveAclFor(recurso, nuevoAcl, { fetch: session.fetch });
   }
-
-  let nuevoAcl = setAgentResourceAccess(
-    acl,
-    friendUrl,
-    { read: true, append: false, write: false, control: false }
-  );
-
-  nuevoAcl = setAgentDefaultAccess(
-    nuevoAcl,
-    friendUrl,
-    { read: true, append: false, write: false, control: false }
-  );
-
-  await saveAclFor(recurso, nuevoAcl, { fetch: session.fetch });
-
-  console.log("Done")
 }

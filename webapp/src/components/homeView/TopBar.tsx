@@ -21,11 +21,18 @@ import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitu
 import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
-import { getMapFromPod, getMapsFromPod } from '../map/markUtils/MarkUtils';
+import { getMapsFromPod } from '../map/markUtils/MarkUtils';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-function TopBar(filterInfo: MapFilterInfo) {
+export interface TopBarInfo{
+  selectedCategories:string[];
+  setSelectedCategories:any;
+  friendsURL:string[];
+  friendsNames:string[];
+}
+
+function TopBar(topBarInfo: TopBarInfo) {
   const { session } = useSession();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -275,9 +282,11 @@ function TopBar(filterInfo: MapFilterInfo) {
     //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
     //})
 
-    const friendsList = filterInfo.friendsNames.map((friendName) => {
-      return `<option value="${friendName}">${friendName}</option>`;
-    })
+    let friendsList:String[]= []
+
+    for(let i=0;i<topBarInfo.friendsNames.length;i++){
+      friendsList.push(`<option value="${topBarInfo.friendsURL[i]}">${topBarInfo.friendsNames[i]}</option>`);
+    }
 
     if(maps.length == 0 || friendsList.length == 0) {
       Swal.fire({
@@ -289,13 +298,8 @@ function TopBar(filterInfo: MapFilterInfo) {
       });
     } else {
       Swal.fire({
-        title: '<p style="color:black; margin-bottom:0em;">Seleccione un mapa y un amigo</p>',
+        title: '<p style="color:black; margin-bottom:0em;">Seleccione un amigo</p>',
         html: `
-              <label for="mapSelector">Mapa</label>
-              <select id="mapSelector" class="swal2-input" style="width: 60%; margin-left: 2.3em;">
-                ${maps}
-              </select>
-              <br/>
               <label for="Amigo">Amigo</label>
               <select id="friendSelector" class="swal2-input" style="width: 60%; margin-left: 2em;">
                 ${friendsList}
@@ -307,8 +311,12 @@ function TopBar(filterInfo: MapFilterInfo) {
         confirmButtonText: 'Compartir',
         confirmButtonColor: "rgba(25, 118, 210, 1)",
         showLoaderOnConfirm: true,
-        preConfirm: () => {
-          // TODO insertar código para asociar el mapa x al amigo y
+        preConfirm: async () => {
+          const friendSelector = document.getElementById('friendSelector') as HTMLSelectElement;
+
+          const selectedFriend = friendSelector.value;
+          console.log(selectedFriend)
+          await grantReadAccessToFriend(session,selectedFriend);
         },
         allowOutsideClick: () => !Swal.isLoading()
       })
@@ -379,13 +387,14 @@ function TopBar(filterInfo: MapFilterInfo) {
   };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const handleClickOptions = (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleCloseOptions = () => {
-      setAnchorEl(null);
-    };
+  const open = Boolean(anchorEl);
+  const handleClickOptions = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseOptions = () => {
+    setAnchorEl(null);
+  };
+
 
   return (
     <AppBar position="static" sx={{ borderBottom: "solid black 0.25em", width: "100%" }}>
@@ -395,7 +404,7 @@ function TopBar(filterInfo: MapFilterInfo) {
             <ImageComponent src="/barLogo.png" alt="LoMap es3c" />
           </a>
 
-          <MapFilter selectedCategories={filterInfo.selectedCategories} setSelectedCategories={filterInfo.setSelectedCategories} friendsURL={filterInfo.friendsURL} friendsNames={filterInfo.friendsNames}></MapFilter>
+          <MapFilter selectedCategories={topBarInfo.selectedCategories} setSelectedCategories={topBarInfo.setSelectedCategories} friendsURL={topBarInfo.friendsURL} friendsNames={topBarInfo.friendsNames}></MapFilter>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right", marginRight: "5em" }}>
 

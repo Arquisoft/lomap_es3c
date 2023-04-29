@@ -8,10 +8,30 @@ import Swal from 'sweetalert2';
 import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod, getMarkersOfFriendMapFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
 import { getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
-import { MapInfo } from '../map/Map';
+import { Session } from '@inrupt/solid-client-authn-browser';
 //import { pruebaBBDD } from '../../api/api';
 
-export default function FriendsList(friendMap:MapInfo) {
+export interface FriendMapInfo {
+  children: [];
+  session: Session;
+  markers: any;
+  setMarkers: any;
+  selectedMap: any;
+  setSelectedMap: any;
+  sites: string[];
+  setSites: any;
+  selectedCategories?:string[];
+  setSelectedCategories?:any;
+  editable?: boolean;
+  setEditable: any;
+  friendsURL:string[];
+  friendsNames:string[];
+  mySelectedMap:number;
+  setMySelectedMap:any;
+  setMapUser:any;
+}
+
+export default function FriendsList(friendMap:FriendMapInfo) {
   //const pruebaBBDD = () => {
     // BBDD Conf 3/6 - Invocación GUI
     //let data = "PRUEBA_BBDD";
@@ -93,7 +113,8 @@ export default function FriendsList(friendMap:MapInfo) {
                   console.error("Buena tarde")
               });            
             friendMap.setSelectedMap(value);
-
+            friendMap.setMySelectedMap(-1); 
+            friendMap.setMapUser(friendsNamesList[index]);
             Swal.close();
           }
         })
