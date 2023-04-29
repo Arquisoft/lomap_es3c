@@ -12,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
 import { Button, Fade } from '@mui/material';
-import { TextEncoder } from 'text-encoding';
 import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
@@ -26,11 +25,11 @@ import { getMapsFromPod } from '../map/markUtils/MarkUtils';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
-export interface TopBarInfo{
-  selectedCategories:string[];
-  setSelectedCategories:any;
-  friendsURL:string[];
-  friendsNames:string[];
+export interface TopBarInfo {
+  selectedCategories: string[];
+  setSelectedCategories: any;
+  friendsURL: string[];
+  friendsNames: string[];
 }
 
 function TopBar(topBarInfo: TopBarInfo) {
@@ -98,16 +97,21 @@ function TopBar(topBarInfo: TopBarInfo) {
   };
 
   async function addBioToPod(session: Session, bio: string): Promise<void> {
-    // Obtener la URL del archivo de biografía en la carpeta pública
-    const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
+    try {
+      // Obtener la URL del archivo de biografía en la carpeta pública
+      const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
 
-    // Crear un objeto Blob a partir del contenido de la biografía
-    const blob = new Blob([bio], { type: "text/plain" });
+      // Crear un objeto Blob a partir del contenido de la biografía
+      const blob = new Blob([bio], { type: "text/plain" });
 
-    // Sobrescribir el archivo de biografía en la carpeta pública con el nuevo contenido
-    await overwriteFile(bioFileUrl, blob, { fetch: session.fetch });
+      // Sobrescribir el archivo de biografía en la carpeta pública con el nuevo contenido
 
-    console.log(`La biografía ha sido actualizada en la URL: ${bioFileUrl}`);
+      await overwriteFile(bioFileUrl, blob, { fetch: session.fetch });
+
+      console.log(`La biografía ha sido actualizada en la URL: ${bioFileUrl}`);
+    } catch (error) {
+
+    }
   }
 
   async function getBioFromPod(session: Session): Promise<string> {
@@ -129,10 +133,16 @@ function TopBar(topBarInfo: TopBarInfo) {
   const miCuenta = async () => {
     //TODO funcionalidad relativa a la cuenta del usuario
     handleCloseUserMenu();
-    
+
     const webId = session.info.webId;
     const arrayWebId = [webId];
-    const name = await getFriendsNamesFromPod(arrayWebId);
+    let name;
+    try{
+      name = await getFriendsNamesFromPod(arrayWebId);
+    }catch(error){
+      name ="error";
+    }
+    
 
     Swal.fire({
       title: '<p style="color:black; margin-bottom:0.25em;">Mi cuenta</p>',
@@ -283,13 +293,13 @@ function TopBar(topBarInfo: TopBarInfo) {
     //  return `<option value="${friend}">${friend}</option>`; // TODO cargar amigos
     //})
 
-    let friendsList:String[]= []
+    let friendsList: String[] = []
 
-    for(let i=0;i<topBarInfo.friendsNames.length;i++){
+    for (let i = 0; i < topBarInfo.friendsNames.length; i++) {
       friendsList.push(`<option value="${topBarInfo.friendsURL[i]}">${topBarInfo.friendsNames[i]}</option>`);
     }
 
-    if(maps.length == 0 || friendsList.length == 0) {
+    if (maps.length == 0 || friendsList.length == 0) {
       Swal.fire({
         icon: 'info',
         title: 'No tienes mapas/amigos',
@@ -317,7 +327,7 @@ function TopBar(topBarInfo: TopBarInfo) {
 
           const selectedFriend = friendSelector.value;
           console.log(selectedFriend)
-          await grantReadAccessToFriend(session,selectedFriend);
+          await grantReadAccessToFriend(session, selectedFriend);
         },
         allowOutsideClick: () => !Swal.isLoading()
       })
