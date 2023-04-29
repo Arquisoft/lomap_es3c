@@ -12,6 +12,13 @@ const api:Router = express.Router()
 // IMPLEMENTAR MÉTODOS
 
 api.get(
+  "/test",
+  async (req: Request, res: Response): Promise<Response> => {
+    return res.status(200).json();
+  }
+);
+
+api.get(
   "/user/isRegistered",
   async (req: Request, res: Response): Promise<Response> => {
     try {
@@ -40,9 +47,10 @@ api.post(
     let userWebId = req.body.userWebId;
     let provider = req.body.provider;
     const userData = new User({userName : userName, userWebId : userWebId, provider : provider});
-    userData.save();
+    // Insertar el usuario en la base de datos
+    await userData.save();
     // Manejar el retorno
-    return res.status(200).json();
+    return res.status(200).send({ added : true });
   }
 )
 
@@ -97,9 +105,10 @@ api.post(
     let receiverName = req.body.receiverName;
     let receiverProvider = req.body.receiverProvider;
     const solicitudeData = new Solicitude({senderName : senderName, senderProvider : senderProvider, receiverName : receiverName, receiverProvider: receiverProvider});
-    solicitudeData.save();
+    // Insertar la solicitud en la base de datos
+    await solicitudeData.save();
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).send({ added: true });
   }
 )
 
@@ -129,7 +138,7 @@ api.post(
     let receiverProvider = req.body.receiverProvider;
     await Solicitude.deleteOne({senderName, senderProvider, receiverName, receiverProvider});
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).send({ deleted: true });
   }
 )
 
@@ -140,7 +149,7 @@ api.post(
     let userWebId = req.body.userWebId;
     await User.deleteOne({userWebId : userWebId});
     // Manejar el retorno
-    return res.status(200).json();
+    return res.status(200).send({ deleted: true });
   }
 )
 
