@@ -17,7 +17,5 @@ test("Comprobamos que el drawer se renderiza correctamente", async () => {
     expect(getByText("Categoria",{ selector: 'strong' })).toBeInTheDocument();
     expect(getByText("Descripción",{ selector: 'strong' })).toBeInTheDocument();
     expect(getByText("Subir imágenes",{ selector: 'strong' })).toBeInTheDocument();
-
-    //Check that the total price is rendered
     expect(getByText("Añadir lugar")).toBeInTheDocument();
 });

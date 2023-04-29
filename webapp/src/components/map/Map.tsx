@@ -115,7 +115,5 @@ function Map(props: MapInfo) {
             />
         </MapContainer >
     );
-
-
 }
 export default Map;
