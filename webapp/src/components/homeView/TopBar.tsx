@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ImageComponent from '../Image';
 import Swal from 'sweetalert2';
 import { Button, Fade } from '@mui/material';
+import { TextEncoder } from 'text-encoding';
 import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
