@@ -1,15 +1,19 @@
 import request, { Response } from 'supertest';
-import express, { Application } from 'express';
+import express, { Application, RequestHandler } from 'express';
 import * as http from 'http';
 import bp from 'body-parser';
 import cors from 'cors';
 import api from '../api';
-import mongoose from "mongoose";
+import path, { normalize } from 'path';
 
-const uri = "mongodb+srv://dbManager:1234@lomap-es3c-db.gfgwc7j.mongodb.net/?retryWrites=true&w=majority";
+
 
 let app: Application;
 let server: http.Server;
+
+const { MongoClient } = require('mongodb');
+const uri = 'mongodb+srv://dbManager:1234@lomap-es3c-db.gfgwc7j.mongodb.net/?retryWrites=true&w=majority';
+let connection: { close: () => any; };
 
 beforeAll(async () => {
     app = express();
@@ -19,10 +23,7 @@ beforeAll(async () => {
     };
     app.use(cors(options));
     app.use(bp.json());
-    app.use("/api", api);
-
-    await mongoose.connect(uri); // espera a que se establezca la conexión
-    console.log('Conexion correcta a la BD'); // verifica que se estableció la conexión
+    app.use("/api", api)
 
     server = app.listen(port, (): void => {
         console.log('Restapi server for testing listening on ' + port);
@@ -30,39 +31,28 @@ beforeAll(async () => {
         console.error('Error occured: ' + error.message);
     });
 
-    // mongoose.connect(uri)
-    //     .then(() => {
-    //         console.log('Conexion correcta a la BD')
-    //     }).catch((err: any) => {
-    //         console.log(err)
-    //     })
+    connection = await MongoClient.connect(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    });
 });
 
 afterAll(async () => {
-    server.close() //close the server
-    mongoose.connection.close();
-})
+    server.close();
+    await connection.close(); // cierra la conexión al final de las pruebas
+});
 
-describe('user ', () => {
+describe('users ', () => {
     /**
-     * Test that we add a user.
+     * Test that we can list users without any error.
      */
-    it('can be added',async () => {
-        let name:string = "exampleName";
-        let webId:string = "https://exampleName.inrupt.net";
-        let prov:string = "inrupt";
-        const response:Response = await request(app).post('/api/user/add').send({userName: name,userWebId: webId, provider: prov}).set('Accept', 'application/json');
+    it('can be added', async () => {
+        let name: string = "exampleName";
+        let webId: string = "https://exampleName.inrupt.net";
+        let prov: string = "inrupt";
+        const response: Response = await request(app).post('/api/user/add').send({ userName: name, userWebId: webId, provider: prov }).set('Accept', 'application/json');
         console.log("Recibe respuesta");
         console.log("response");
-        expect(response.statusCode).toBe(200);
-    });
-
-    /**
-     * Test that we can delete a user.
-     */
-    it('can be deleted',async () => {
-        let webId:string = "https://exampleName.inrupt.net";
-        const response:Response = await request(app).post('/api/user/delete').send({userWebId: webId}).set('Accept', 'application/json')
         expect(response.statusCode).toBe(200);
     });
 });

@@ -140,7 +140,7 @@ api.post(
     let userWebId = req.body.userWebId;
     await User.deleteOne({userWebId : userWebId});
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).json();
   }
 )
 
