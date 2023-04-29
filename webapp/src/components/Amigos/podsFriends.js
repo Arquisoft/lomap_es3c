@@ -31,14 +31,14 @@ export async function getFriendsFromPod(session) {
     if (profileThing != null) {
       var conocidos = getUrlAll(profileThing, FOAF.knows);
 
-      var amigos = Array();
+      var amigos = [];
       for (var i = 0; i < conocidos.length; i++) {
         let profileConocidoDataset = await getSolidDataset(conocidos[i]);
         let profileConocidoThing = getThing(profileConocidoDataset, conocidos[i]);
         if (profileConocidoThing != null) {
           var conocidosDelConocido = getUrlAll(profileConocidoThing, FOAF.knows);
           for (var j = 0; j < conocidosDelConocido.length; j++) {
-            if (conocidosDelConocido[j] == webId) {
+            if (conocidosDelConocido[j] === webId) {
               amigos.push(conocidos[i]);
             }
           }
@@ -58,7 +58,7 @@ export async function getFriendsFromPod(session) {
 export async function getFriendsNamesFromPod(friendsUrls) {
 
   try {
-    var nombreAmigos = Array();
+    let nombreAmigos = [];
     for (var i = 0; i < friendsUrls.length; i++) {
       //console.log(friendsUrls[i])
       let profileAmigoDataset = await getSolidDataset(friendsUrls[i]);
@@ -67,8 +67,9 @@ export async function getFriendsNamesFromPod(friendsUrls) {
         nombreAmigos.push(getStringNoLocale(profileAmigoThing, FOAF.name));
       }
     }
-    //console.log(nombreAmigos)
-    return nombreAmigos
+    
+    let amigosFiltrados = nombreAmigos.filter(nombre => nombre !== null).map(nombre => nombre.toString());
+    return amigosFiltrados;
 
   } catch (error) {
     console.log(error)
@@ -128,7 +129,7 @@ export async function addToKnowInPod(session, nuevoConocido) {
       var sonAmigos = false;
       var conocidos = getUrlAll(profileThing, FOAF.knows);
       for (var i = 0; i < conocidos.length; i++) {
-        if (conocidos[i] == nuevoConocido) {
+        if (conocidos[i] === nuevoConocido) {
           console.log("ya es amigo");
           sonAmigos = true;
         }

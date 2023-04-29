@@ -3,14 +3,13 @@ import TopBar from './TopBar';
 import LateralMenu from './LateralMenu';
 import Map, { MarkerInfo } from '../map/Map';
 import { Box, styled } from '@mui/material';
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { useSession } from '@inrupt/solid-ui-react';
 import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-authn-browser";
 import { checkRegister, registerUser } from '../../api/api';
 import Swal from 'sweetalert2';
 import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
-import { useNavigate } from 'react-router-dom';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -48,17 +47,6 @@ async function handleRedirectAfterIdentification() {
   }
 }
 
-const readCookie = (name: string) => {
-  try {
-    let cookies = document.cookie.split('; ');
-    let selectedCookie = cookies.find(cookie => cookie.startsWith(name + '='));
-    let valueCookie = selectedCookie?.split('=')[1];
-    return valueCookie;
-  } catch (e: any) {
-    return "";
-  }
-}
-
 export const Home = () => {
 
   const navigate = useNavigate();
@@ -81,11 +69,6 @@ export const Home = () => {
   const [friendsNames, setFriendsNames] = useState<string[]>([]);
   
   const [mySelectedMap, setMySelectedMap] = useState(-1);
-
-
-  useEffect(() => {
-    showLoadingDialog();
-  }, []);
 
   const showLoadingDialog = async () => {
     setTimeout(() => {
@@ -112,6 +95,12 @@ export const Home = () => {
       }
     }, 1000);
   }
+  
+  useEffect(() => {
+    showLoadingDialog();
+  }, []);
+
+  
 
   const loadFriends = async () => {
     const friendsURLResult = await getFriendsFromPod(session);

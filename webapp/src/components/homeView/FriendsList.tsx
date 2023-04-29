@@ -5,9 +5,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import Swal from 'sweetalert2';
-import { getFriendsFromPod, getFriendsMapsFromPod, getFriendsNamesFromPod, getMarkersOfFriendMapFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
+import { getFriendsMapsFromPod, getMarkersOfFriendMapFromPod } from '../Amigos/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
-import { getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 import { Session } from '@inrupt/solid-client-authn-browser';
 //import { pruebaBBDD } from '../../api/api';
 
@@ -48,13 +47,6 @@ export default function FriendsList(friendMap:FriendMapInfo) {
       if (session.info.isLoggedIn) {
         setFriendsList(friendMap.friendsURL)
         setFriendsNamesList(friendMap.friendsNames);
-
-        //const friends = await getFriendsFromPod(session);
-        //setFriendsList(friends);
-        //const friendsNames = await getFriendsNamesFromPod(friends);
-        //setFriendsNamesList(friendsNames);
-
-        //const friendsNames = friends.map(friend => friend.split("//")[1].split(".inrupt.net")[0]);
       } else {
         setFriendsList([]);
         setFriendsNamesList([]);
@@ -62,7 +54,7 @@ export default function FriendsList(friendMap:FriendMapInfo) {
     };
 
     loadFriends();
-  }, [session]);
+  }, [session, friendMap.friendsNames, friendMap.friendsURL]);
 
   const loadMapsForFriend = async (friend: string) => {
     Swal.fire({
