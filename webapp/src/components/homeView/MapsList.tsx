@@ -13,7 +13,6 @@ import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUti
 
 const height = window.innerHeight * 0.37;
 
-
 export default function MapsList(mapLists:MapInfo) {
 
   const {session} = useSession();
@@ -37,15 +36,16 @@ export default function MapsList(mapLists:MapInfo) {
     let markers = await getMarkersOfMapFromPod(session,map);
     mapLists.setMarkers(markers);
     mapLists.setSelectedMap(map);
+    mapLists.setMySelectedMap(mapLists.sites.indexOf(map));
   };
   
-
   function renderRow(props: ListChildComponentProps) {
     const { index, style } = props;
     const site = mapLists.sites[index];
+    const isSelected = mapLists.mySelectedMap === index;
   
     return (
-      <ListItem style={style} key={index} component="div" disablePadding>
+      <ListItem style={{ ...style, backgroundColor: isSelected ? "#62b3ff" : "transparent" }} key={index} component="div" disablePadding>
         <ListItemButton onClick={() => clickMap(site)}>
           <ListItemText primary={site} />
         </ListItemButton>

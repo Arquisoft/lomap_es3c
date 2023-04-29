@@ -1,60 +1,22 @@
 import express, { Request, Response, Router } from 'express';
-import {check} from 'express-validator';
-//import Prueba from './src/pruebaSchema';
 import User from './src/userSchema';
 import Solicitude from './src/solicitudeSchema';
-import UserFind from './src/userFindSchema';
 
 const mongoose = require('mongoose');
 
 const api:Router = express.Router()
 
-interface User {
-    name: string;
-    email: string;
-}
-
-//This is not a restapi as it mantains state but it is here for
-//simplicity. A database should be used instead.
-let users: Array<User> = [];
-
-api.get(
-    "/users/list",
-    async (req: Request, res: Response): Promise<Response> => {
-        return res.status(200).send(users);
-    }
-);
-
-api.post(
-  "/users/add",[
-    check('name').isLength({ min: 1 }).trim().escape(),
-    check('email').isEmail().normalizeEmail(),
-  ],
-  async (req: Request, res: Response): Promise<Response> => {
-    let name = req.body.name;
-    let email = req.body.email;
-    let user: User = {name:name,email:email}
-    users.push(user);
-    return res.sendStatus(200);
-  }
-);
 
 // BBDD Conf 5/6 - Método que implementa el GET/POST
-/*
-api.post(
-  "/prueba/bbdd",
-  async (req: Request, res: Response): Promise<Response> => {
-    // Hacer la llamada
-    let data = req.body.data;
-    const pruebaData = new Prueba({data : data});
-    pruebaData.save();
-    // Manejar el retorno
-    return res.status(200).send({back: "Prueba Hecha"});
-  }
-)
-*/
 
-// IMPLEMENTAR RESTO DE MÉTODOS
+// IMPLEMENTAR MÉTODOS
+
+api.get(
+  "/test",
+  async (req: Request, res: Response): Promise<Response> => {
+    return res.status(200).json();
+  }
+);
 
 api.get(
   "/user/isRegistered",
@@ -85,9 +47,10 @@ api.post(
     let userWebId = req.body.userWebId;
     let provider = req.body.provider;
     const userData = new User({userName : userName, userWebId : userWebId, provider : provider});
-    userData.save();
+    // Insertar el usuario en la base de datos
+    await userData.save();
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).send({ added : true });
   }
 )
 
@@ -142,9 +105,10 @@ api.post(
     let receiverName = req.body.receiverName;
     let receiverProvider = req.body.receiverProvider;
     const solicitudeData = new Solicitude({senderName : senderName, senderProvider : senderProvider, receiverName : receiverName, receiverProvider: receiverProvider});
-    solicitudeData.save();
+    // Insertar la solicitud en la base de datos
+    await solicitudeData.save();
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).send({ added: true });
   }
 )
 
@@ -174,7 +138,7 @@ api.post(
     let receiverProvider = req.body.receiverProvider;
     await Solicitude.deleteOne({senderName, senderProvider, receiverName, receiverProvider});
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).send({ deleted: true });
   }
 )
 
@@ -185,7 +149,7 @@ api.post(
     let userWebId = req.body.userWebId;
     await User.deleteOne({userWebId : userWebId});
     // Manejar el retorno
-    return res.status(200);
+    return res.status(200).send({ deleted: true });
   }
 )
 
