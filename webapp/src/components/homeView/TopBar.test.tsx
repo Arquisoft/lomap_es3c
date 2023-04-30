@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from "@testing-library/react";
+import { fireEvent, getByText, render, waitFor } from "@testing-library/react";
 import TopBar from "./TopBar";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Session } from "@inrupt/solid-client-authn-browser";
@@ -14,74 +14,119 @@ jest.mock("@inrupt/solid-ui-react", () => ({
     session: {
       info: {
         webId: myWebId,
-        isLoggedIn:true,
+        isLoggedIn: true,
       },
     },
   }),
 }));
 
 jest.mock('../map/markUtils/MarkUtils', () => ({
-  getMapsFromPod:  (session:Session) =>{return Promise.resolve(["mapa"]);},
+  getMapsFromPod: (session: Session) => { return Promise.resolve(["mapa"]); },
 }));
 
 jest.mock('../Amigos/podsFriends', () => ({
   getFriendsNamesFromPod: jest.fn(),
-  getFriendsFromPod: () =>{return Promise.resolve(["https://podes3c.inrupt.net"]);},
-  addToKnowInPod:jest.fn()
+  getFriendsFromPod: () => { return Promise.resolve(["https://podes3c.inrupt.net"]); },
+  addToKnowInPod: jest.fn()
 }));
 
 jest.mock("../../api/api", () => ({
   existsUser: (receiverName: string, receiverProvider: string) => {
-    if(receiverName =="noexistomapes3c"){
+    if (receiverName == "noexistomapes3c") {
       return Promise.resolve(false);
-    }else{
+    } else {
       return Promise.resolve(true);
     }
-    },
+  },
   existsSolicitude: (receiverName: string, receiverProvider: string, senderName: string, senderProvider: string) => {
-    if(receiverName =="lomapes3c"){
+    if (receiverName == "lomapes3c") {
       return Promise.resolve(true);
-    }else{
+    } else {
       return Promise.resolve(false);
     }
   },
-  getSolicitudes: (userName:string, provider:string) =>{
-    return Promise.resolve([{senderName:"podes3c",senderProvider:"Inrupt"}]);
+  getSolicitudes: (userName: string, provider: string) => {
+    return Promise.resolve([{ senderName: "podes3c", senderProvider: "Inrupt" }]);
   },
-  deleteSolicitude:jest.fn()
+  deleteSolicitude: jest.fn()
 }));
 
-test("Comprobamos que el componente se renderiza correctamente", async () => {
-
+function renderAndCheckCorrectRender() {
   const { getByText } = render(
     <Router>
       <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
     </Router>
   );
   expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
-});
+  return getByText;
+}
 
-test("Comprobamos el acceso al apartado Mi perfil y botón guardar", async () => {
-
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
-
+function checkAccessOnProfileOptions(getByText: any, option: string, index: number) {
   const buttons = document.querySelectorAll('button');
-  const lastButton = buttons[buttons.length - 1];
+  const lastButton = buttons[buttons.length - index];
   expect(lastButton).toBeInTheDocument();
   fireEvent.click(lastButton);
-  const miPerfil = getByText("Mi Perfil");
-  const liMiPerfil = miPerfil.parentElement;
-  if (liMiPerfil) {
-    const span = liMiPerfil.querySelector('span');
+  const miCuenta = getByText(option);
+  const liMiCuenta = miCuenta.parentElement;
+  if (liMiCuenta) {
+    const span = liMiCuenta.querySelector('span');
     if (span) {
       fireEvent.click(span);
     }
   }
+}
+
+async function getToFriendsPlace(getByText: any) {
+  const buttons = document.querySelectorAll('button');
+  const optionsButton = buttons[buttons.length - 3];
+  expect(optionsButton).toBeInTheDocument();
+  fireEvent.click(optionsButton);
+  const nuevoAmigo = getByText("Nuevo Amigo");
+  if (nuevoAmigo) {
+    const span = nuevoAmigo.querySelector('span');
+    if (span) {
+      fireEvent.click(span);
+    }
+  }
+  await waitFor(() => expect(getByText('Introduzca el nombre del usuario')).toBeInTheDocument());
+}
+
+function fillAddFriend(getByText: any, name: string) {
+  expect(getByText("Introduzca el nombre del usuario", { selector: 'p' })).toBeInTheDocument();
+
+  const inputAmigo = document.getElementById("userName");
+
+  if (inputAmigo) {
+    fireEvent.change(inputAmigo, { target: { value: name } });
+  }
+
+  const botonAnadir = getByText("Enviar solicitud");
+  expect(botonAnadir).toBeInTheDocument();
+  fireEvent.click(botonAnadir);
+}
+
+function handleFriendRequest(getByText: any, handle: string) {
+  expect(getByText("Solicitudes de amistad", { selector: 'p' })).toBeInTheDocument();
+
+  expect(getByText("podes3c (Inrupt)", { selector: 'option' })).toBeInTheDocument();
+
+  const botonRechazar = getByText(handle);
+  expect(botonRechazar).toBeInTheDocument();
+  fireEvent.click(botonRechazar);
+}
+
+//####################################################################################################
+
+test("Comprobamos que el componente se renderiza correctamente", async () => {
+  renderAndCheckCorrectRender();
+});
+
+test("Comprobamos el acceso al apartado Mi perfil y botón guardar", async () => {
+
+  const getByText = renderAndCheckCorrectRender();
+
+  checkAccessOnProfileOptions(getByText, "Mi Perfil", 1);
+
   await waitFor(() => expect(getByText('Biografía')).toBeInTheDocument());
   try {
     expect(getByText("Biografía", { selector: 'h5' })).toBeInTheDocument();
@@ -96,25 +141,10 @@ test("Comprobamos el acceso al apartado Mi perfil y botón guardar", async () =>
 
 test("Comprobamos el acceso al apartado Mi cuenta y botón desactivar cuenta", async () => {
 
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
+  const getByText = renderAndCheckCorrectRender();
 
-  const buttons = document.querySelectorAll('button');
-  const lastButton = buttons[buttons.length - 1];
-  expect(lastButton).toBeInTheDocument();
-  fireEvent.click(lastButton);
-  const miCuenta = getByText("Mi Cuenta");
-  const liMiCuenta = miCuenta.parentElement;
-  if (liMiCuenta) {
-    const span = liMiCuenta.querySelector('span');
-    if (span) {
-      fireEvent.click(span);
-    }
-  }
+  checkAccessOnProfileOptions(getByText, "Mi Cuenta", 1);
+
   await waitFor(() => expect(getByText('Mi Cuenta')).toBeInTheDocument());
   expect(getByText("Mi Cuenta", { selector: 'p' })).toBeInTheDocument();
   const botonDesactivar = getByText("Desactivar cuenta");
@@ -124,28 +154,12 @@ test("Comprobamos el acceso al apartado Mi cuenta y botón desactivar cuenta", a
   expect(window.location.pathname).toBe('/');
 });
 
-
 test("Añadimos un nuevo amigo no existente", async () => {
 
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
+  const getByText = renderAndCheckCorrectRender();
 
-  const buttons = document.querySelectorAll('button');
-  const optionsButton = buttons[buttons.length - 3];
-  expect(optionsButton).toBeInTheDocument();
-  fireEvent.click(optionsButton);
-  const nuevoAmigo = getByText("Nuevo Amigo");
-  if (nuevoAmigo) {
-    const span = nuevoAmigo.querySelector('span');
-    if (span) {
-      fireEvent.click(span);
-    }
-  }
-  await waitFor(() => expect(getByText('Introduzca el nombre del usuario')).toBeInTheDocument());
+  await getToFriendsPlace(getByText);
+
   try {
     expect(getByText("Introduzca el nombre del usuario", { selector: 'p' })).toBeInTheDocument();
 
@@ -166,37 +180,11 @@ test("Añadimos un nuevo amigo no existente", async () => {
 });
 
 test("Añadimos un nuevo amigo no vacio y la solicitud ya existe", async () => {
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
+  const getByText = renderAndCheckCorrectRender();
 
-  const buttons = document.querySelectorAll('button');
-  const optionsButton = buttons[buttons.length - 3];
-  expect(optionsButton).toBeInTheDocument();
-  fireEvent.click(optionsButton);
-  const nuevoAmigo = getByText("Nuevo Amigo");
-  if (nuevoAmigo) {
-    const span = nuevoAmigo.querySelector('span');
-    if (span) {
-      fireEvent.click(span);
-    }
-  }
-  await waitFor(() => expect(getByText('Introduzca el nombre del usuario')).toBeInTheDocument());
+  await getToFriendsPlace(getByText);
   try {
-    expect(getByText("Introduzca el nombre del usuario", { selector: 'p' })).toBeInTheDocument();
-
-    const inputAmigo = document.getElementById("userName");
-
-    if (inputAmigo) {
-      fireEvent.change(inputAmigo, { target: { value: "lomapes3c" } });
-    }
-
-    const botonAnadir = getByText("Enviar solicitud");
-    expect(botonAnadir).toBeInTheDocument();
-    fireEvent.click(botonAnadir);
+    fillAddFriend(getByText, "lomapes3c");
     await waitFor(() => expect(getByText('Ya existe una solicitud pendiente')).toBeInTheDocument());
   } catch (error) {
 
@@ -205,37 +193,12 @@ test("Añadimos un nuevo amigo no vacio y la solicitud ya existe", async () => {
 });
 
 test("Añadimos un nuevo amigo no vacio, la solicitud no existente y ya sois amigos", async () => {
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
+  const getByText = renderAndCheckCorrectRender();
 
-  const buttons = document.querySelectorAll('button');
-  const optionsButton = buttons[buttons.length - 3];
-  expect(optionsButton).toBeInTheDocument();
-  fireEvent.click(optionsButton);
-  const nuevoAmigo = getByText("Nuevo Amigo");
-  if (nuevoAmigo) {
-    const span = nuevoAmigo.querySelector('span');
-    if (span) {
-      fireEvent.click(span);
-    }
-  }
+  await getToFriendsPlace(getByText);
   await waitFor(() => expect(getByText('Introduzca el nombre del usuario')).toBeInTheDocument());
   try {
-    expect(getByText("Introduzca el nombre del usuario", { selector: 'p' })).toBeInTheDocument();
-
-    const inputAmigo = document.getElementById("userName");
-
-    if (inputAmigo) {
-      fireEvent.change(inputAmigo, { target: { value: "podes3c" } });
-    }
-
-    const botonAnadir = getByText("Enviar solicitud");
-    expect(botonAnadir).toBeInTheDocument();
-    fireEvent.click(botonAnadir);
+    fillAddFriend(getByText, "podes3c");
     await waitFor(() => expect(getByText('Ya existe una solicitud pendiente')).toBeInTheDocument());
   } catch (error) {
 
@@ -244,37 +207,12 @@ test("Añadimos un nuevo amigo no vacio, la solicitud no existente y ya sois ami
 });
 
 test("Añadimos un nuevo amigo no vacio, la solicitud no existente y no sois amigos", async () => {
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
+  const getByText = renderAndCheckCorrectRender();
 
-  const buttons = document.querySelectorAll('button');
-  const optionsButton = buttons[buttons.length - 3];
-  expect(optionsButton).toBeInTheDocument();
-  fireEvent.click(optionsButton);
-  const nuevoAmigo = getByText("Nuevo Amigo");
-  if (nuevoAmigo) {
-    const span = nuevoAmigo.querySelector('span');
-    if (span) {
-      fireEvent.click(span);
-    }
-  }
+  await getToFriendsPlace(getByText);
   await waitFor(() => expect(getByText('Introduzca el nombre del usuario')).toBeInTheDocument());
   try {
-    expect(getByText("Introduzca el nombre del usuario", { selector: 'p' })).toBeInTheDocument();
-
-    const inputAmigo = document.getElementById("userName");
-
-    if (inputAmigo) {
-      fireEvent.change(inputAmigo, { target: { value: "noamigoes3c" } });
-    }
-
-    const botonAnadir = getByText("Enviar solicitud");
-    expect(botonAnadir).toBeInTheDocument();
-    fireEvent.click(botonAnadir);
+    fillAddFriend(getByText, "noamigoes3c");
     await waitFor(() => expect(getByText('Ya existe una solicitud pendiente')).toBeInTheDocument());
   } catch (error) {
 
@@ -282,14 +220,7 @@ test("Añadimos un nuevo amigo no vacio, la solicitud no existente y no sois ami
 
 });
 
-test("Compartir mapa con un amigo", async () => {
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
-
+function getToSharePlace(getByText: any) {
   const buttons = document.querySelectorAll('button');
   const optionsButton = buttons[buttons.length - 3];
   expect(optionsButton).toBeInTheDocument();
@@ -301,6 +232,12 @@ test("Compartir mapa con un amigo", async () => {
       fireEvent.click(span);
     }
   }
+}
+
+test("Compartir mapa con un amigo", async () => {
+  const getByText = renderAndCheckCorrectRender();
+
+  getToSharePlace(getByText);
   await waitFor(() => expect(getByText('Seleccione un amigo')).toBeInTheDocument());
   try {
     expect(getByText("Seleccione un amigo", { selector: 'p' })).toBeInTheDocument();
@@ -316,14 +253,7 @@ test("Compartir mapa con un amigo", async () => {
 
 });
 
-test("Aceptar solicitud de amistad", async () => {
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
-
+function getToFriendRequestPlace(getByText: any) {
   const buttons = document.querySelectorAll('button');
   const friendRequestButton = buttons[buttons.length - 2];
   expect(friendRequestButton).toBeInTheDocument();
@@ -331,15 +261,15 @@ test("Aceptar solicitud de amistad", async () => {
   if (span) {
     fireEvent.click(span);
   }
+}
+
+test("Aceptar solicitud de amistad", async () => {
+  const getByText = renderAndCheckCorrectRender();
+
+  getToFriendRequestPlace(getByText);
   await waitFor(() => expect(getByText('Solicitudes de amistad', { selector: 'p' })).toBeInTheDocument());
   try {
-    expect(getByText("Solicitudes de amistad", { selector: 'p' })).toBeInTheDocument();
-
-    expect(getByText("podes3c", { selector: 'option' })).toBeInTheDocument();
-
-    const botonAceptar = getByText("Aceptar");
-    expect(botonAceptar).toBeInTheDocument();
-    fireEvent.click(botonAceptar);
+    handleFriendRequest(getByText,"Aceptar");
 
     await waitFor(() => expect(getByText('Usuario podes3c aceptado', { selector: 'p' })).toBeInTheDocument());
   } catch (error) {
@@ -349,30 +279,13 @@ test("Aceptar solicitud de amistad", async () => {
 });
 
 test("Rechazar solicitud de amistad", async () => {
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
+  const getByText = renderAndCheckCorrectRender();
 
-  const buttons = document.querySelectorAll('button');
-  const friendRequestButton = buttons[buttons.length - 2];
-  expect(friendRequestButton).toBeInTheDocument();
-  const span = friendRequestButton.querySelector('span');
-  if (span) {
-    fireEvent.click(span);
-  }
+  getToFriendRequestPlace(getByText);
   await waitFor(() => expect(getByText('Solicitudes de amistad', { selector: 'p' })).toBeInTheDocument());
   try {
-    expect(getByText("Solicitudes de amistad", { selector: 'p' })).toBeInTheDocument();
+    handleFriendRequest(getByText,"Rechazar");
 
-    expect(getByText("podes3c (Inrupt)", { selector: 'option' })).toBeInTheDocument();
-
-    const botonRechazar = getByText("Rechazar");
-    expect(botonRechazar).toBeInTheDocument();
-    fireEvent.click(botonRechazar);
-    
 
     await waitFor(() => expect(getByText('Usuario podes3c rechazado', { selector: 'p' })).toBeInTheDocument());
   } catch (error) {
