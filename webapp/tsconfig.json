@@ -1,15 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "lib": [
-      "es6",
       "dom",
       "dom.iterable",
-      "esnext",
-      "es2015",
-      "es2017",
-      "es2018",
-      "esnext.asynciterable"
+      "esnext"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -27,6 +22,7 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src","e2e"
+    "src",
+    "e2e"
   ]
 }

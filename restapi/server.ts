@@ -2,7 +2,7 @@ import express, { Application, RequestHandler } from "express";
 import cors from 'cors';
 import bp from 'body-parser';
 import promBundle from 'express-prom-bundle';
-import api from "./src/api"; 
+import api from "./api"; 
 
 const app: Application = express();
 const port: number = 5000;

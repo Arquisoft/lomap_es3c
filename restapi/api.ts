@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from 'express';
-import User from './userSchema';
-import Solicitude from './solicitudeSchema';
+import User from './src/userSchema';
+import Solicitude from './src/solicitudeSchema';
 
 const mongoose = require('mongoose');
 
