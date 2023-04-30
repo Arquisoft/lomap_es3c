@@ -102,7 +102,6 @@ export default function FriendsList(friendMap:FriendMapInfo) {
             friendMap.setEditable(false);
             getMarkersOfFriendMapFromPod(session, friendsList[index],value).then((markers) => {
               friendMap.setMarkers(markers);}).catch((error)=>{
-                  console.error("Buena tarde")
               });            
             friendMap.setSelectedMap(value);
             friendMap.setMySelectedMap(-1); 

@@ -1,4 +1,4 @@
-import { createContainerAt, getContainedResourceUrlAll, getFile, getSolidDataset, overwriteFile } from "@inrupt/solid-client";
+import { createContainerAt, getContainedResourceUrlAll, getFile, getSolidDataset, overwriteFile, solidDatasetAsMarkdown } from "@inrupt/solid-client";
 import { JsonLdDocument } from "jsonld";
 import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
@@ -112,7 +112,7 @@ export async function getMapsFromPod(session: Session) {
   return urls.map(url => url.split("/lomap/")[1]);
 }
 
-async function checkIfDatasetExists(session: Session, url: string) {
+export async function checkIfDatasetExists(session: Session, url: string) {
   let dataset;
   try {
     dataset = await getSolidDataset(url, { fetch: session.fetch });
