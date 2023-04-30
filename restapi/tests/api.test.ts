@@ -3,10 +3,10 @@ import express, { Application, RequestHandler } from 'express';
 import { Server } from "http";
 import bp from 'body-parser';
 import cors from 'cors';
-import api from '../api';
+import api from '../src/api';
 import path, { normalize } from 'path';
 import promBundle from "express-prom-bundle";
-import apiUser from "../api";
+import apiUser from "../src/api";
 import mongoose from 'mongoose';
 
 const app: Application = express();
