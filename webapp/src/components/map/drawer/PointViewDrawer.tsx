@@ -6,6 +6,7 @@ import ReviewForm from "../formPlace/ReviewForm";
 import ReviewVista from "../formPlace/ReviewVista";
 import { updateMarkerReview } from "../../../solid/MarkUtils";
 import { getViewCategory } from "../formPlace/ComboBoxCategoria";
+import { fetchImages, onSubmitReviewHelper, toggleDrawerHelper } from "../../../helper/PointViewDrawerHelper";
 
 export interface PointViewDrawerInfo {
     session: Session;
@@ -24,20 +25,8 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     const [imageListItems, setImageListItems] = useState<JSX.Element[]>([]);
 
     useEffect(() => {
-        const fetchImages = async () => {
-            const items: JSX.Element[] = [];
-            for (const img of props.marker.images) {
-                const imageListItem = await fetchImage(img as string);
-                items.push(imageListItem);
-            }
-            setImageListItems(items);
-        };
-        fetchImages();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state]);
-
-    useEffect(() => {
         setState(props.opened);
+        fetchImages(props.marker.images,fetchImage,setImageListItems);
     }, [props.opened]);
 
     const fetchImage = async (img: string) => {
@@ -54,32 +43,11 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     };
 
     const onSubmitReview = async (review: any) => {
-        if (props.marker.review === undefined) {
-            props.marker.review = [];
-        }
-        props.marker.review.push(review);
-        await updateMarkerReview(props.session, props.marker, props.map);
-        setState(false);
-        props.toggleDrawer(false);
+        await onSubmitReviewHelper(props.marker,props.session,props.map,setState,toggleDrawer,review);
     }
 
     //En funcion del booleano desplegamos u ocultamos el menu lateral
-    const toggleDrawer =
-        (open: boolean) =>
-            (event: React.KeyboardEvent | React.MouseEvent) => {
-                if (
-                    event.type === 'keydown' &&
-                    ((event as React.KeyboardEvent).key === 'Tab' ||
-                        (event as React.KeyboardEvent).key === 'Shift')
-                ) {
-                    return;
-                }
-                if(open){
-                    
-                }
-                setState(open);
-                props.toggleDrawer(open);
-            };
+    const toggleDrawer = toggleDrawerHelper(setState,props.toggleDrawer);
 
     //Mostramos la vista con la informacion del punto
     const list = () => (

@@ -28,7 +28,13 @@ const marker: MarkerInfo = {
 jest.mock('../../../solid/MarkUtils', () => ({
   updateMarkerReview: (session: Session, marker: MarkerInfo, selectedMap: string) =>jest.fn(),
 }));
-/*
+
+jest.mock('../../../helper/PointViewDrawerHelper', () => ({
+  fetchImages: (images:string[] | File[],fetchImage:any,setImageListItems:any) =>jest.fn(),
+  onSubmitReviewHelper:(marker:any,session:Session,map:string,setState:any,toggleDrawer:any,review: any) =>jest.fn(),
+  toggleDrawerHelper:(setState: any, toggleDrawer: any)=>jest.fn()
+}));
+
 test("Comprobamos que el drawer se renderiza correctamente", async () => {
 
   let opened=true;
@@ -49,13 +55,16 @@ test("Comprobamos que el drawer se renderiza correctamente", async () => {
   expect(getByText("Me gusta el sitio", { selector: 'p' })).toBeInTheDocument();
   expect(getByText("Añadir Valoración")).toBeInTheDocument();
 });
-/*
+
 test("Comprobamos que la review se crea correctamente", async () => {
 
   let opened=true;
+  let session = new Session();
+  session.info.webId="https://israel11.inrupt.net";
+  session.info.isLoggedIn=true;
 
   const { getByText } = render(
-    <PointViewDrawer session={{} as Session} opened={opened} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
+    <PointViewDrawer session={session as Session} opened={opened} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
   );
   let botonValoracion = getByText("Añadir Valoración");
   expect(botonValoracion).toBeInTheDocument();
@@ -69,4 +78,4 @@ test("Comprobamos que la review se crea correctamente", async () => {
   let botonConfirmar = getByText("Confirmar");
   fireEvent.click(botonConfirmar);
 });
-*/
+
