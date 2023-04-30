@@ -30,17 +30,15 @@ export default function LateralMenu(props:MapInfo) {
   function usuarioMapa() {
     if(props.selectedMap === null || props.selectedMap === undefined) {
       return (
-        <div style={{ color: "#313131c7" }}>
-          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
-          <h3 style={{fontSize: "1.3em"}}>Sin mapa seleccionado</h3>
+        <div style={{ color: "black" }}>
+          <p style={{ fontSize: "1.1em", marginBottom: "0em" }}><strong><i>Ningún mapa seleccionado</i></strong></p>
         </div>
       );
     } else {
       return (
-        <div style={{ color: "#313131c7" }}>
-          <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>
-          <h3 style={{fontSize: "1.3em"}}>{mapUser} : {props.selectedMap}</h3>
-        </div>        
+        <div style={{ color: "black" }}>
+          <p style={{ fontSize: "1.1em", marginBottom: "0em" }}><strong>Mapa: <i>{props.selectedMap}</i></strong></p>
+        </div>    
       );
     }
   }
@@ -53,7 +51,7 @@ export default function LateralMenu(props:MapInfo) {
             {usuarioMapa()}
       </Box>
 
-      <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "100%" }}>
+      <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "90%" }}>
         <Box>
           <MenuItem onClick={handleCollapseMaps}>
             <ListItemText><strong>MIS MAPAS</strong></ListItemText>

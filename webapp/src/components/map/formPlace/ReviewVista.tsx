@@ -6,16 +6,18 @@ export interface ReviewProps {
 
 function ReviewVista(props:ReviewProps){
 
+  let reviewKey =1;
+
     if(props.reviews !== undefined){
         return (
-            <div className='text-center'>
+            <div className='text-center' style={{borderTop: "black 0.1em solid"}}>
               {props.reviews.map((review: { id: React.Key | null | undefined; author: { identifier: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }; reviewBody: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; reviewRating: { ratingValue: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }; datePublished: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
-                <div key={review.id} className='mb-3'>
+                <div key={reviewKey++} className='mb-3'>
                   <div>
-                  <h4>{review.author.identifier}</h4>
-                  <p>Published: {review.datePublished}</p>
-                  <p>Rating: {review.reviewRating.ratingValue}</p>
-                  <p>{review.reviewBody}</p>
+                    <br/>
+                    <h4>{review.author.identifier}</h4>
+                    <p>Date: {review.datePublished} - Rating:  {review.reviewRating.ratingValue}</p>
+                    <p>{review.reviewBody}</p>
                   </div>
                 </div>
               ))}

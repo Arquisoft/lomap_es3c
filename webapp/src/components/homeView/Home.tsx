@@ -93,7 +93,7 @@ export const Home = () => {
           showConfirmButton: false
         });
       }
-    }, 1000);
+    }, 1500);
   }
   
   useEffect(() => {

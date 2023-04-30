@@ -60,13 +60,13 @@ function MapPlaceForm(props: FormProps): JSX.Element {
       <Box sx={{ height: "1em" }} />
       <h2 className='text-center mb-5'><i>Añade un lugar</i></h2>
       <form name="addPlace" id='formMarker' onSubmit={handleSubmit}>
-        <div className='d-flex flex-column justify-content-center'>
+        <div className='d-flex flex-column justify-content-center' style={{ marginLeft: "0.5em" }}>
           <label htmlFor='place-name' className='text-center'><strong>Nombre</strong></label>
           <TextField
             InputLabelProps={{ style: { color: 'black' }, focused: true }} id="place-name" name='name' className='m-2' label="Nombre" variant="outlined" />
         </div>
         <Box sx={{ height: "1em" }} />
-        <div className='d-flex flex-column justify-content-center'>
+        <div className='d-flex flex-column justify-content-center' style={{ marginLeft: "0.5em" }}>
           <label htmlFor='combobox-category' className='text-center'><strong>Categoria</strong></label>
           <ComboBoxCategoria
             id="combobox-category"
@@ -75,7 +75,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
           />
         </div>
         <Box sx={{ height: "1em" }} />
-        <div className='d-flex flex-column justify-content-center'>
+        <div className='d-flex flex-column justify-content-center' style={{ marginLeft: "0.5em" }}>
                 <label htmlFor='description' className='text-center'><strong>Descripción</strong></label>
                 <TextField
                   name='description'
@@ -88,7 +88,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
                 />
               </div>
         <Box sx={{ height: "1em" }} />
-        <div className='d-flex flex-column justify-content-center'>
+        <div className='d-flex flex-column justify-content-center' style={{ alignItems: "center" }}>
           <label htmlFor='image-button' className='text-center'><strong>Subir imágenes</strong></label>
           <input
             id='image-button'
