@@ -49,6 +49,7 @@ export default function LateralMenu(props:MapInfo) {
       
       <Box sx={{backgroundColor: 'rgba(25, 118, 210, 1)', display: { xs: 'none', md: 'flex' }, justifyContent: "center", borderBottom: "solid 3px black", padding: "1em" }}>
             {usuarioMapa()}
+            <div>{mapUser}</div>
       </Box>
 
       <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "90%" }}>
