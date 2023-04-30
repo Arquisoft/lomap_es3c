@@ -27,7 +27,6 @@ export interface FriendMapInfo {
   friendsNames:string[];
   mySelectedMap:number;
   setMySelectedMap:any;
-  setMapUser:any;
 }
 
 export default function FriendsList(friendMap:FriendMapInfo) {
@@ -106,7 +105,6 @@ export default function FriendsList(friendMap:FriendMapInfo) {
               });            
             friendMap.setSelectedMap(value);
             friendMap.setMySelectedMap(-1); 
-            friendMap.setMapUser(friendsNamesList[index]);
             Swal.close();
           }
         })

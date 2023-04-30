@@ -17,12 +17,10 @@ export interface MapListState{
     friendsNames:string[];
     mySelectedMap:number;
     setMySelectedMap:any;
-    setMapUser:any;
 }
 
 function MapListAux(props: MapListState) {
     if (props.open) {
-        props.setMapUser("Mis mapas");
         return (<MapsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap}></MapsList>);
     } else {
         return (<></>);
