@@ -1,7 +1,7 @@
 export default {
     collectCoverage: true,
     setupFilesAfterEnv: ['./src/setupTests.ts'],
-    collectCoverageFrom: ["src/**/*.{tsx}"],
+    collectCoverageFrom: ["src/components/*.{tsx}"],
     transform: {
         "^.+\\.tsx?$": "ts-jest"
     },
