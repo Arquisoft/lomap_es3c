@@ -11,6 +11,7 @@ import { checkRegister, registerUser } from '../../api/api';
 import Swal from 'sweetalert2';
 import { getFriendsFromPod, getFriendsNamesFromPod } from '../../solid/podsFriends';
 import MapView from '../map/Map';
+import { loadFriendsHelper, showLoadingDialogHelper } from '../../helper/HomeHelper';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -72,43 +73,15 @@ export const Home = () => {
   const [mySelectedMap, setMySelectedMap] = useState(-1);
 
   const showLoadingDialog = async () => {
-    setTimeout(() => {
-      if(!session.info.isLoggedIn) {
-        navigate('/');
-        Swal.close();
-        Swal.fire({
-          title: '¡ALTO AHÍ!',
-          icon: 'error',
-          text: 'Intentar acceder ilícitamente a un sitio web está feo',
-          timer: 5000,
-          showConfirmButton: false
-        });
-      } else {
-        loadFriends();
-        Swal.fire({
-          title: 'Cargando...',
-          text: 'Espere un instante mientras preparamos todo',
-          timer: 5000,
-          timerProgressBar: true,
-          allowOutsideClick: false,
-          showConfirmButton: false
-        });
-      }
-    }, 3500);
+    setTimeout(() => showLoadingDialogHelper(session,navigate,loadFriends), 3500);
   }
   
   useEffect(() => {
     showLoadingDialog();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  
-
   const loadFriends = async () => {
-    const friendsURLResult = await getFriendsFromPod(session);
-    setFriendsURL(friendsURLResult);
-    const friendsNamesResult = await getFriendsNamesFromPod(friendsURLResult);
-    setFriendsNames(friendsNamesResult);
+    loadFriendsHelper(session,setFriendsURL,setFriendsNames);
   }
   
   return (

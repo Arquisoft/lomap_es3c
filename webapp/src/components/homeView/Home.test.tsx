@@ -16,16 +16,8 @@ jest.mock("@inrupt/solid-client-authn-browser", () => ({
 
 describe('Home', () => {
     test("Comprobamos que el componente se renderiza correctamente", async () => {
-        let getByText = await renderAndCheck();
+        await renderAndCheck();
     });
-
-    /*
-    test("Comprobamos que aparece el aviso al no estar logeado", async () => {
-        let getByText = await renderAndCheck();
-
-        await waitFor(() => expect(getByText("Intentar acceder ilícitamente a un sitio web está feo")).toBeInTheDocument());
-    });
-    */
 
 });
 
