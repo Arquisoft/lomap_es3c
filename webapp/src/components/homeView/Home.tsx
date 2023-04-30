@@ -1,7 +1,7 @@
 import '../../App.css';
 import TopBar from './TopBar';
 import LateralMenu from './LateralMenu';
-import Map, { MarkerInfo } from '../map/Map';
+import  { MarkerInfo } from '../map/Map';
 import { Box, styled } from '@mui/material';
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-
 import { checkRegister, registerUser } from '../../api/api';
 import Swal from 'sweetalert2';
 import { getFriendsFromPod, getFriendsNamesFromPod } from '../../solid/podsFriends';
+import MapView from '../map/Map';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -116,7 +117,7 @@ export const Home = () => {
       <Content>
         <IzqBox>
           <SRoutes>
-            <Route path='/' element={<Map session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap}
+            <Route path='/' element={<MapView session={session} markers={markers} setMarkers={setMarkers} selectedMap={selectedMap}
              setSelectedMap={setSelectedMap} sites={sites} setSites={setSites} selectedCategories={selectedCategories} setSelectedCategories={setSelectedCategories} editable={editable} setEditable={setEditable} friendsURL={friendsURL} friendsNames={friendsNames} mySelectedMap={mySelectedMap} setMySelectedMap={setMySelectedMap} />}/>
           </SRoutes>
         </IzqBox>

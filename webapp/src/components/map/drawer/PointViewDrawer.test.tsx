@@ -46,7 +46,6 @@ test("Comprobamos que el drawer se renderiza correctamente", async () => {
     <PointViewDrawer session={session} opened={opened} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
   );
 
-  //expect(getByText("Nombre: ", { selector: 'strong' })).toBeInTheDocument();
   expect(getByText("Categoria: Tienda", { selector: 'h3' })).toBeInTheDocument();
   expect(getByText("Coordenadas", { selector: 'h3' })).toBeInTheDocument();
   expect(getByText("Latitud: 2", { selector: 'li' })).toBeInTheDocument();
