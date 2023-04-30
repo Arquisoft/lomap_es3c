@@ -1,9 +1,9 @@
 export default {
     collectCoverage: true,
-    setupFilesAfterEnv: ['./src/setupTests.ts'],
     collectCoverageFrom: ["src/components/*.{tsx}"],
+    setupFilesAfterEnv: ['./src/setupTests.ts'],
     transform: {
-        "^.+\\.tsx?$": "ts-jest"
+        "^.+\\.tsx$": "ts-jest"
     },
     testTimeout:150000,
 }
