@@ -74,7 +74,9 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
                 ) {
                     return;
                 }
-
+                if(open){
+                    
+                }
                 setState(open);
                 props.toggleDrawer(open);
             };
