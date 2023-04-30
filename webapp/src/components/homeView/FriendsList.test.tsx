@@ -2,6 +2,8 @@ import { Session } from "@inrupt/solid-client-authn-browser";
 import FriendsList from "./FriendsList";
 import { fireEvent, render, waitFor } from "@testing-library/react";
 
+window.scrollTo = jest.fn();
+
 jest.mock("@inrupt/solid-ui-react", () => ({
     useSession: () => ({
       session: {
