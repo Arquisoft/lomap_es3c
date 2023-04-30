@@ -52,7 +52,7 @@ export default function LateralMenu(props:MapInfo) {
 
       <MenuList dense sx={{ backgroundColor: 'rgba(25, 118, 210, 1)', height: "90%" }}>
         <Box>
-          <MenuItem onClick={handleCollapseMaps}>
+          <MenuItem id="misMapas" onClick={handleCollapseMaps}>
             <ListItemText><strong>MIS MAPAS</strong></ListItemText>
             {openMaps ? <FaChevronDown /> : <FaChevronUp />}
           </MenuItem>
@@ -67,7 +67,7 @@ export default function LateralMenu(props:MapInfo) {
         </Box>
 
         <Box sx={{ borderTop: "solid black 0.25em", paddingTop: "0.5em" }}>
-          <MenuItem onClick={handleCollapseFriends}>
+          <MenuItem id="misAmigos" onClick={handleCollapseFriends}>
             <ListItemText><strong>MIS AMIGOS</strong></ListItemText>
             {openFriends ? <FaChevronDown /> : <FaChevronUp />}
           </MenuItem>
