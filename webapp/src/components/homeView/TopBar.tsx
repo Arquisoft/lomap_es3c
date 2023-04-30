@@ -136,11 +136,10 @@ function TopBar(topBarInfo: TopBarInfo) {
 
     const webId = session.info.webId;
     const arrayWebId = [webId];
-    let name;
+    let name:any="error";
     try{
       name = await getFriendsNamesFromPod(arrayWebId);
     }catch(error){
-      name ="error";
     }
     
 
@@ -158,7 +157,7 @@ function TopBar(topBarInfo: TopBarInfo) {
       confirmButtonColor: 'rgba(25, 118, 210, 1)',
       cancelButtonText: 'Atrás',
       cancelButtonColor: 'rgba(255, 50, 50, 0.9)',
-      showLoaderOnConfirm: true,
+      showLoaderOnConfirm: false,
       width: '60%',
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
@@ -227,52 +226,54 @@ function TopBar(topBarInfo: TopBarInfo) {
             `ERROR: Usuario o proveedor vacío`
           )
         } else {
-          existsUser(receiverName, receiverProvider).then((exists) => {
-            if (exists) {
-              const sender = session.info.webId;
-              if (sender) {
-                const senderName = sender.split('//')[1].split('.')[0];
-                const senderProvider = sender.split('//')[1].split('.')[1];
-                existsSolicitude(receiverName, receiverProvider, senderName, senderProvider).then(async (exists) => {
-                  if (exists) {
-                    Swal.fire({
-                      icon: 'error',
-                      text: "Ya existe una solicitud pendiente",
-                      showConfirmButton: false,
-                      timer: 2000
-                    })
-                  } else {
-                    const isFriend = await areFriends(receiverName);
-                    if (isFriend) {
+            existsUser(receiverName, receiverProvider).then((exists) => {
+              if (exists) {
+                const sender = session.info.webId;
+                if (sender) {
+                  const senderName = sender.split('//')[1].split('.')[0];
+                  const senderProvider = sender.split('//')[1].split('.')[1];
+                  
+                  existsSolicitude(receiverName, receiverProvider, senderName, senderProvider).then(async (exists) => {
+                    if (exists) {
                       Swal.fire({
                         icon: 'error',
-                        text: "El usuario ya es tu amigo",
+                        text: "Ya existe una solicitud pendiente",
                         showConfirmButton: false,
                         timer: 2000
                       })
                     } else {
-                      Swal.fire({
-                        icon: 'success',
-                        text: 'Solicitud enviada a ' + receiverName + " (" + receiverProvider + ")",
-                        showConfirmButton: false,
-                        timer: 2000
-                      })
-
-                      registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
-                      addToKnowInPod(session, "https://" + receiverName + "." + receiverProvider + ".net/profile/card#me");
+                      const isFriend = await areFriends(receiverName);
+                      if (isFriend) {
+                        Swal.fire({
+                          icon: 'error',
+                          text: "El usuario ya es tu amigo",
+                          showConfirmButton: false,
+                          timer: 2000
+                        })
+                      } else {
+                        Swal.fire({
+                          icon: 'success',
+                          text: 'Solicitud enviada a ' + receiverName + " (" + receiverProvider + ")",
+                          showConfirmButton: false,
+                          timer: 2000
+                        })
+  
+                        registerSolicitude(receiverName, receiverProvider, senderName, senderProvider);
+                        addToKnowInPod(session, "https://" + receiverName + "." + receiverProvider + ".net/profile/card#me");
+                      }
                     }
-                  }
-                });
+                  }).catch((err)=>{});
+                }
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  text: "El usuario introducido no existe",
+                  showConfirmButton: false,
+                  timer: 2000
+                })
               }
-            } else {
-              Swal.fire({
-                icon: 'error',
-                text: "El usuario introducido no existe",
-                showConfirmButton: false,
-                timer: 2000
-              })
-            }
-          })
+            }).catch((err)=>{
+            })
         }
       },
       allowOutsideClick: () => !Swal.isLoading()
@@ -327,7 +328,12 @@ function TopBar(topBarInfo: TopBarInfo) {
 
           const selectedFriend = friendSelector.value;
           console.log(selectedFriend)
-          await grantReadAccessToFriend(session, selectedFriend);
+          try{
+            await grantReadAccessToFriend(session, selectedFriend);
+          }catch(error){
+            
+          }
+          
         },
         allowOutsideClick: () => !Swal.isLoading()
       })
@@ -339,7 +345,6 @@ function TopBar(topBarInfo: TopBarInfo) {
       const userWebId = session.info.webId?.split('/profile')[0];
       const userName = userWebId?.split('//')[1].split('.')[0];
       const provider = userWebId?.split('//')[1].split('.')[1];
-
       if (userName != null && provider != null) {
         getSolicitudes(userName, provider).then((solicitudes) => {
           if (solicitudes.length == 0) {
@@ -370,7 +375,6 @@ function TopBar(topBarInfo: TopBarInfo) {
               confirmButtonText: 'Aceptar',
             }).then((result) => {
               const user = (Swal.getPopup()?.querySelector('#user') as HTMLInputElement).value;
-
               if (result.isConfirmed) {
                 Swal.fire({
                   icon: 'success',
@@ -390,6 +394,7 @@ function TopBar(topBarInfo: TopBarInfo) {
                   deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
                 });
               }
+            }).catch((error) =>{
             })
           }
         })
