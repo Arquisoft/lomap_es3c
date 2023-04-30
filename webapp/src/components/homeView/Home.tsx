@@ -9,7 +9,7 @@ import { useSession } from '@inrupt/solid-ui-react';
 import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-authn-browser";
 import { checkRegister, registerUser } from '../../api/api';
 import Swal from 'sweetalert2';
-import { getFriendsFromPod, getFriendsNamesFromPod } from '../Amigos/podsFriends';
+import { getFriendsFromPod, getFriendsNamesFromPod } from '../../solid/podsFriends';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -93,7 +93,7 @@ export const Home = () => {
           showConfirmButton: false
         });
       }
-    }, 1500);
+    }, 3500);
   }
   
   useEffect(() => {

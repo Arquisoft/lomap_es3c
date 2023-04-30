@@ -18,7 +18,7 @@ import {
 
 import { FOAF } from "@inrupt/vocab-common-rdf";
 
-import { getMapsFriendFromPod } from "../map/markUtils/MarkUtils";
+import { getMapsFriendFromPod } from "./MarkUtils";
 
 export async function getFriendsFromPod(session) {
 

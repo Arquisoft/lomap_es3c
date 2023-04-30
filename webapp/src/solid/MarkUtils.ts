@@ -1,6 +1,6 @@
 import { createContainerAt, getContainedResourceUrlAll, getFile, getSolidDataset, overwriteFile, solidDatasetAsMarkdown } from "@inrupt/solid-client";
 import { JsonLdDocument } from "jsonld";
-import { MarkerInfo } from "../Map";
+import { MarkerInfo } from "../components/map/Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
 import { v4 as uuidv4 } from 'uuid';
 

@@ -20,11 +20,11 @@ jest.mock("@inrupt/solid-ui-react", () => ({
   }),
 }));
 
-jest.mock('../map/markUtils/MarkUtils', () => ({
+jest.mock('../../solid/MarkUtils', () => ({
   getMapsFromPod: (session: Session) => { return Promise.resolve(["mapa"]); },
 }));
 
-jest.mock('../Amigos/podsFriends', () => ({
+jest.mock('../../solid/podsFriends', () => ({
   getFriendsNamesFromPod: jest.fn(),
   getFriendsFromPod: () => { return Promise.resolve(["https://podes3c.inrupt.net"]); },
   addToKnowInPod: jest.fn()

@@ -12,7 +12,7 @@ jest.mock("@inrupt/solid-ui-react", () => ({
     }),
   }));
 
-  jest.mock("../map/markUtils/MarkUtils", () => ({
+  jest.mock("../../solid/MarkUtils", () => ({
     getMapsFriendFromPod: (session: Session, friendUrl: string) => (Promise.resolve(["mapa1","mapa2"])),
   }));
 

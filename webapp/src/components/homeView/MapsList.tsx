@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapInfo} from '../map/Map';
-import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
+import { getMapsFromPod, getMarkersOfMapFromPod } from '../../solid/MarkUtils';
 
 const height = window.innerHeight * 0.30;
 

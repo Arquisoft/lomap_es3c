@@ -4,7 +4,7 @@ import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
 import ReviewForm from "../formPlace/ReviewForm";
 import ReviewVista from "../formPlace/ReviewVista";
-import { updateMarkerReview } from "../markUtils/MarkUtils";
+import { updateMarkerReview } from "../../../solid/MarkUtils";
 import { getViewCategory } from "../formPlace/ComboBoxCategoria";
 
 export interface PointViewDrawerInfo {

@@ -5,7 +5,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import Swal from 'sweetalert2';
-import { getFriendsMapsFromPod, getMarkersOfFriendMapFromPod } from '../Amigos/podsFriends';
+import { getFriendsMapsFromPod, getMarkersOfFriendMapFromPod } from '../../solid/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
 import { Session } from '@inrupt/solid-client-authn-browser';
 //import { pruebaBBDD } from '../../api/api';
