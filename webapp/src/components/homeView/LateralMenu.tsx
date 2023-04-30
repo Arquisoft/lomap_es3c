@@ -3,12 +3,8 @@ import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Check from '@mui/icons-material/Check';
 import { Box, Collapse } from '@mui/material';
-import VirtualizedList from './MapsList';
-import MapsList from './MapsList';
 import FriendsList from './FriendsList';
 import {MapInfo } from '../map/Map';
 import { useState } from 'react';
@@ -32,7 +28,7 @@ export default function LateralMenu(props:MapInfo) {
   }
 
   function usuarioMapa() {
-    if(props.selectedMap === null || props.selectedMap == undefined) {
+    if(props.selectedMap === null || props.selectedMap === undefined) {
       return (
         <div style={{ color: "#313131c7" }}>
           <h2 style={{borderBottom: "solid 3px black", fontSize: "2em", textAlign: "center"}} >Mapa</h2>

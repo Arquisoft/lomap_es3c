@@ -18,7 +18,7 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
 import createMapWindow from './CreateMap';
 import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
-import MapFilter, { MapFilterInfo } from '../map/filter/MapFilter';
+import MapFilter from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
 import { getMapsFromPod } from '../map/markUtils/MarkUtils';
@@ -34,16 +34,10 @@ export interface TopBarInfo{
 
 function TopBar(topBarInfo: TopBarInfo) {
   const { session } = useSession();
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
@@ -181,7 +175,7 @@ function TopBar(topBarInfo: TopBarInfo) {
     let isFriend = false;
     friends.forEach((friend) => {
       let f = friend.split("//")[1].split(".inrupt.net")[0];
-      if (f == userName) {
+      if (f === userName) {
         isFriend = true;
       }
     })
@@ -288,7 +282,7 @@ function TopBar(topBarInfo: TopBarInfo) {
       friendsList.push(`<option value="${topBarInfo.friendsURL[i]}">${topBarInfo.friendsNames[i]}</option>`);
     }
 
-    if(maps.length == 0 || friendsList.length == 0) {
+    if(maps.length === 0 || friendsList.length === 0) {
       Swal.fire({
         icon: 'info',
         title: 'No tienes mapas/amigos',
@@ -331,7 +325,7 @@ function TopBar(topBarInfo: TopBarInfo) {
 
       if (userName != null && provider != null) {
         getSolicitudes(userName, provider).then((solicitudes) => {
-          if (solicitudes.length == 0) {
+          if (solicitudes.length === 0) {
             Swal.fire({
               icon: 'info',
               title: 'No tienes solicitudes de amistad',

@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import { Fragment, useState } from "react";
 
 
@@ -51,7 +51,7 @@ function MapFilter(props:MapFilterInfo) {
         return (
           <Fragment key={key}>
             <Checkbox id={key} checked={value} onChange={handleCheckboxChange(key)} color="default" />
-            <label htmlFor={key}><img style={{maxWidth:'2em'}} src={"/"+key+".png"} /></label>
+            <label htmlFor={key}><img style={{maxWidth:'2em'}} src={"/"+key+".png"} alt={`Icono de la categoría de ${key}`} /></label>
           </Fragment>
         );
       })}

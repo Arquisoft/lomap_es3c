@@ -98,6 +98,7 @@ export const Home = () => {
   
   useEffect(() => {
     showLoadingDialog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   

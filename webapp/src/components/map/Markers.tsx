@@ -1,5 +1,5 @@
 import { Icon } from "leaflet";
-import { Marker, Popup } from "react-leaflet";
+import { Marker } from "react-leaflet";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { MarkerInfo } from "./Map";
 import { Session } from "@inrupt/solid-client-authn-browser";

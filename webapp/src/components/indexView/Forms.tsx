@@ -1,4 +1,4 @@
-import { Box, Avatar, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import { useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import { AboutUs } from './AboutUs';

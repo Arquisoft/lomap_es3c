@@ -1,6 +1,4 @@
-import { Box, Avatar, Typography } from '@mui/material'
-import { useState } from 'react'
-import ImageComponent from '../Image';
+import { Box, Typography } from '@mui/material'
 
 export const WhatIs = () => {
     return (

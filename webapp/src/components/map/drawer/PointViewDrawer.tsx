@@ -33,6 +33,7 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
             setImageListItems(items);
         };
         fetchImages();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state]);
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     };
 
     const onSubmitReview = async (review: any) => {
-        if (props.marker.review == undefined) {
+        if (props.marker.review === undefined) {
             props.marker.review = [];
         }
         props.marker.review.push(review);

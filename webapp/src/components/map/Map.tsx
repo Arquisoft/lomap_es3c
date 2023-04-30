@@ -9,7 +9,7 @@ import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
 import createMapWindow from '../homeView/CreateMap';
 import PointViewDrawer from './drawer/PointViewDrawer';
-import addMarker, { AddMarkerInfo } from './AddMarker';
+import addMarker from './AddMarker';
 
 export interface MarkerInfo {
     authorWebId:string;
@@ -74,8 +74,8 @@ function Map(props: MapInfo) {
     }
 
     const mapOnClick = (e: LatLng) => {
-        if(!(props.editable == undefined || props.editable === false)) {
-            if (props.selectedMap == undefined) {
+        if(!(props.editable === undefined || props.editable === false)) {
+            if (props.selectedMap === undefined) {
                 nuevoMapa();
             } else {
                 setSelectedPosition([

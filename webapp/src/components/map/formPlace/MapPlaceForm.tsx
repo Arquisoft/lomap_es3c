@@ -2,10 +2,8 @@ import React, { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import ComboBoxCategoria, { getInterCategory } from './ComboBoxCategoria';
-import SliderMapPlace from './SliderMapPlace';
 import { MarkerInfo } from '../Map';
-import { DrawerInfo } from '../drawer/PointCreateDrawer';
-import { Box, Collapse } from '@mui/material';
+import { Box } from '@mui/material';
 import Swal from 'sweetalert2';
 
 interface FormProps {

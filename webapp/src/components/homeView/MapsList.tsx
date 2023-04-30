@@ -4,11 +4,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
-import { styled } from '@mui/material';
-import Swal from 'sweetalert2';
 import { useSession } from '@inrupt/solid-ui-react';
 import { MapInfo} from '../map/Map';
-import { useState } from 'react';
 import { getMapsFromPod, getMarkersOfMapFromPod } from '../map/markUtils/MarkUtils';
 
 const height = window.innerHeight * 0.37;
@@ -29,6 +26,7 @@ export default function MapsList(mapLists:MapInfo) {
     }else{
       mapLists.setSites([]); 
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [mapLists.sites]);
 
   const clickMap = async (map: string) => {

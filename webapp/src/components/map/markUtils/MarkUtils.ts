@@ -1,13 +1,8 @@
-import { Access, WithResourceInfo, createAclFromFallbackAcl, createContainerAt, getContainedResourceUrlAll, getFile, saveAclFor, getResourceAcl, getSolidDataset, getSolidDatasetWithAcl, hasAccessibleAcl, hasFallbackAcl, hasResourceAcl, overwriteFile, setAgentResourceAccess, saveFileInContainer, universalAccess, setAgentDefaultAccess, getAgentResourceAccess, getFileWithAcl, saveSolidDatasetAt } from "@inrupt/solid-client";
+import { createContainerAt, getContainedResourceUrlAll, getFile, getSolidDataset, overwriteFile } from "@inrupt/solid-client";
 import { JsonLdDocument } from "jsonld";
 import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
-import { getSolidDatasetWithAccessDatasets } from "@inrupt/solid-client/dist/acp/acp";
 import { v4 as uuidv4 } from 'uuid';
-import { LinkedResourceUrlAll } from "@inrupt/solid-client/dist/interfaces";
-import Swal from "sweetalert2";
-import { setAgentAccess } from "@inrupt/solid-client/dist/universal";
-import { grantReadAccessToFriend } from "../../Amigos/podsFriends";
 
 let selectedMapFile: string;
 
@@ -97,7 +92,7 @@ export async function updateMarkerReview(session: Session, marker: MarkerInfo, s
   try {
     const parsedContent = JSON.parse(selectedMapFile);
     for (const element of parsedContent.spatialCoverage) {
-      if (marker.name == element.name) {
+      if (marker.name === element.name) {
         element.review = marker.review;
         break;
       }
