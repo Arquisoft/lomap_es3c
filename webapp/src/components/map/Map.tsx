@@ -94,7 +94,7 @@ function MapView(props: MapInfo) {
         >
             <MapEventHandler onClick={mapOnClick} />
             <Markers session={props.session} marker={props.markers} selectedCategories={props.selectedCategories} setSelectedCategories={props.setSelectedCategories} setIsViewPointDrawerSelected={setIsViewPointDrawerSelected} setSelectedMarker={setSelectedMarker}></Markers>
-            <PointViewDrawer session={props.session} opened={isViewPointDrawerSelected} toggleDrawer={toggleViewPointDrawer} marker={selectedMarker} map={props.selectedMap}></PointViewDrawer>
+            <PointViewDrawer session={props.session} opened={isViewPointDrawerSelected} setOpened={setIsViewPointDrawerSelected} toggleDrawer={toggleViewPointDrawer} marker={selectedMarker} map={props.selectedMap}></PointViewDrawer>
             <PlaceDrawer opened={isCreateDrawerSelected} onSubmit={onSubmitAddMarker} toggleDrawer={toggleCreateDrawer}></PlaceDrawer>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

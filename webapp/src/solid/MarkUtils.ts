@@ -101,7 +101,7 @@ export async function updateMarkerReview(session: Session, marker: MarkerInfo, s
 
     const updatedFile = new File([updatedContent], parsedContent.name, { type: "application/ld+json" });
     await overwriteFileInPod(session, updatedFile, marker.authorWebId + "/private/lomap/" + selectedMap);
-  } catch (error) { }
+  } catch (error) {}
 }
 
 export async function getMapsFromPod(session: Session) {
