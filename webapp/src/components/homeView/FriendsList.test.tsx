@@ -51,7 +51,7 @@ describe('FriendsList', () => {
 function renderAndCheck(){
     const session = new Session;
         const { getByText } = render(
-            <FriendsList children={[]} friendsNames={['israel']} session={session} markers={[]} setMarkers={()=>{}} selectedMap={"mapa"} setSelectedMap={()=>{}} sites={[]} setSites={()=>{}} setEditable={()=>{}} friendsURL={["https://israel11.inrupt.net/profile/card#me"]} mySelectedMap={0} setMySelectedMap={()=>{}} setMapUser={()=>{}}></FriendsList>
+            <FriendsList children={[]} friendsNames={['israel']} session={session} markers={[]} setMarkers={()=>{}} selectedMap={"mapa"} setSelectedMap={()=>{}} sites={[]} setSites={()=>{}} setEditable={()=>{}} friendsURL={["https://israel11.inrupt.net/profile/card#me"]} mySelectedMap={0} setMySelectedMap={()=>{}}></FriendsList>
 
         );
 

@@ -4,7 +4,6 @@ import { MarkerInfo } from "../Map";
 import { Session } from "@inrupt/solid-client-authn-browser";
 import ReviewForm from "../formPlace/ReviewForm";
 import ReviewVista from "../formPlace/ReviewVista";
-import { updateMarkerReview } from "../../../solid/MarkUtils";
 import { getViewCategory } from "../formPlace/ComboBoxCategoria";
 import { fetchImages, onSubmitReviewHelper, toggleDrawerHelper } from "../../../helper/PointViewDrawerHelper";
 
@@ -27,6 +26,7 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     useEffect(() => {
         setState(props.opened);
         fetchImages(props.marker.images,fetchImage,setImageListItems);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.opened]);
 
     const fetchImage = async (img: string) => {

@@ -7,7 +7,6 @@ import PlaceDrawer from './drawer/PointCreateDrawer';
 import {Session } from '@inrupt/solid-client-authn-browser';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
-import createMapWindow from '../../helper/CreateMap';
 import PointViewDrawer from './drawer/PointViewDrawer';
 import addMarker from '../../solid/AddMarker';
 import{mapOnClickHelper} from '../../helper/MapHelper';

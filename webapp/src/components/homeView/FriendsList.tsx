@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import { getFriendsMapsFromPod, getMarkersOfFriendMapFromPod } from '../../solid/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
 import { Session } from '@inrupt/solid-client-authn-browser';
-//import { pruebaBBDD } from '../../api/api';
 
 export interface FriendMapInfo {
   children: [];
@@ -27,7 +26,6 @@ export interface FriendMapInfo {
   friendsNames:string[];
   mySelectedMap:number;
   setMySelectedMap:any;
-  setMapUser:any;
 }
 
 export default function FriendsList(friendMap:FriendMapInfo) {
@@ -104,8 +102,7 @@ export default function FriendsList(friendMap:FriendMapInfo) {
               friendMap.setMarkers(markers);}).catch((error)=>{
               });            
             friendMap.setSelectedMap(value);
-            friendMap.setMySelectedMap(-1); 
-            friendMap.setMapUser(friendsNamesList[index]);
+            friendMap.setMySelectedMap(-1);
             Swal.close();
           }
         })

@@ -17,8 +17,6 @@ export default function LateralMenu(props:MapInfo) {
 
   const [openFriends, setOpenFriends] = useState(false);
 
-  const [mapUser, setMapUser] = useState<String>("");
-
   const handleCollapseMaps = () => {
     setOpenMaps(!openMaps);
   }
@@ -62,7 +60,7 @@ export default function LateralMenu(props:MapInfo) {
             <MapListAux open={openMaps} session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} 
                         setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} 
                         setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} mySelectedMap={props.mySelectedMap} 
-                        setMySelectedMap={props.setMySelectedMap} setMapUser={setMapUser} >
+                        setMySelectedMap={props.setMySelectedMap} >
             </MapListAux>
           </Collapse>
         </Box>
@@ -77,7 +75,7 @@ export default function LateralMenu(props:MapInfo) {
             <FriendsList session={props.session} markers={props.markers} setMarkers={props.setMarkers} selectedMap={props.selectedMap} 
                          setSelectedMap={props.setSelectedMap} sites={props.sites} setSites={props.setSites} editable={props.editable} 
                          setEditable={props.setEditable} friendsURL={props.friendsURL} friendsNames={props.friendsNames} 
-                         mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap} setMapUser={setMapUser}  >
+                         mySelectedMap={props.mySelectedMap} setMySelectedMap={props.setMySelectedMap} >
             </FriendsList>
           </Collapse>
         </Box>

@@ -1,4 +1,4 @@
-import { createContainerAt, getContainedResourceUrlAll, getFile, getSolidDataset, overwriteFile, solidDatasetAsMarkdown } from "@inrupt/solid-client";
+import { createContainerAt, getContainedResourceUrlAll, getFile, getSolidDataset, overwriteFile } from "@inrupt/solid-client";
 import { JsonLdDocument } from "jsonld";
 import { MarkerInfo } from "../components/map/Map";
 import { Session } from "@inrupt/solid-client-authn-browser";

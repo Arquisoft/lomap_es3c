@@ -9,9 +9,8 @@ import { useSession } from '@inrupt/solid-ui-react';
 import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-authn-browser";
 import { checkRegister, registerUser } from '../../api/api';
 import Swal from 'sweetalert2';
-import { getFriendsFromPod, getFriendsNamesFromPod } from '../../solid/podsFriends';
 import MapView from '../map/Map';
-import { loadFriendsHelper, showLoadingDialogHelper } from '../../helper/HomeHelper';
+import { loadFriendsHelper } from '../../helper/HomeHelper';
 
 const IzqBox = styled(Box)({
   width: "80%",
@@ -133,6 +132,7 @@ export const Home = () => {
 
   useEffect(() => {
     showLoadingDialog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadFriends = async () => {
