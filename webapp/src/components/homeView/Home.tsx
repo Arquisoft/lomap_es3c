@@ -76,7 +76,7 @@ export const Home = () => {
   }, []);
 
   const loadFriends = async () => {
-    loadFriendsHelper(session,setFriendsURL,setFriendsNames);
+    await loadFriendsHelper(session,setFriendsURL,setFriendsNames);
   }
   
   return (
