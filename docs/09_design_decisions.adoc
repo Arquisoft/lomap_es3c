@@ -1,14 +1,6 @@
 [[section-design-decisions]]
 == Decisiones de diseño
 
-[options="header",cols="2,2"]
-|===
-|Contexto   |Decision 
-| Es necesario almacenar las relaciones entre los usuarios, así como los lugares destacados de cada uno de estos. Del mismo modo, se han de almacenar ciertas caracteristicas, comentarios, etc. de cada ubicación. | Para guardar los datos se usará MongoDB.
-| Necesitamos obtener los datos de los usuario, id y contraseña, para poder identificarse | Utilizaremos un sistema de PODS para obtener los datos cliente.
-| Será necesario poder mostrar la opción de ver las diferentes ubicaciones en un mapa. | Para ello usaremos Maps API.
-|===
-
 [role="arc42help"]
 ****
 .Contents
@@ -31,3 +23,19 @@ Various options:
 * more detailed in form of separate sections per decision
 * ADR (architecture decision record) for every important decision
 ****
+
+[options="header",cols="2,2"]
+|===
+|Contexto   |Decision 
+| Es necesario almacenar las relaciones entre los usuarios, así como los lugares destacados de cada uno de estos. Del mismo modo, se han de almacenar ciertas caracteristicas, comentarios, etc. de cada ubicación. | Para guardar los datos se usarán los pods en todo momento, puedioendose guardar una copia de la información obtenida en la base de datos de mongo para disminuir tiempos de espera.
+
+| Necesitamos identificar a los usuarios en nuestra aplicación para que no se creen mapas anonimos | Para esto redireccionaremos a los usuarios a un login de SOLID del distribuidor de pods que seleccionen y así de paso obtendremos un token de inicio de sesión que nos facilitará el proceso de la persistencia con los pods.
+
+| Será necesario mostrar un mapa donde los usuarios podrán ver sus ubicaciones, así como la de sus amigos y todos los comentarios establecidos en cada punto. | Para ello usaremos una API externa, en nuestro caso emplearemos OpenStreetMaps.
+
+| A la hora de crear la interfáz gráfica se optó por cuidar su diseño. | Para ello usaremos MUI lo que facilitará el desarrollo de interfaces gráficas más visuales.
+
+| Se buscaron libreriás para que respecto a ciertas partes tediosas del desarrollo del backend fueran más amenas. | Se empleará expressjs para desarrollar ciertas partes de la aplicación y mongoose para facilitar la comunicación con la base de datos.
+
+| Es neciesario realizar una gran cantidad de tests y tener una covertura mínima. | Se empleará SonarCloud, Jest, Gatling.
+|===

@@ -51,17 +51,17 @@ For multiple environments or alternative deployments please copy that section of
 _**Diagrama general**_
 
 :imagesdir: images/
-image::Overview_Diagram.png[]
+image::OverviewDiagrama.png[]
 
 
 Componentes::
 
-* El cliente accederá a nuestra aplicación LoMap (Parte de vista) y tendrá que registrarse o iniciar sesión.
+* El cliente accederá desde su dispositivo a nuestra aplicación desplegada en un servidor de Amazon (AWS).
 
-* Una vez introducidas sus credenciales la parte del modelo (Aceso a datos) se encargará de verifecarlas (Uso de PODs).
+* Tras acceder se le mostrará el indice que posee información un login que redirecciona a un login que dependerá del distribuidor de pods seleccionado.
 
-* La aplicación principal se le mostrará al usuario la parte de la vista con el que este interactuará.
+* Tras iniciar sesión con el servicio pods correspondiente se le redireccionará a la página principal de la aplicación, donde el solo verá una página formada por una gran cantidad de componentes con sus diferentes funcionalidades.
 
-* Del mismo modo el controlador manejaraá los datos y ciertas librerias (Maps API) 
+* Estos compomentes pueden llegar a estar formados por más componentes y podrán usar también APIs externas (maps API), así como llamadas a funciones TypeScript y JavaScript de ficheros adicionales (principalemnte para realizar la conexión con los PODS). Estos componentes también podrán realizar peticiones a la base de datos.
 
-* Mientras que la parte del modelo se encargará del acceso a datos (MongoDB y PODs) y su persistencia.
+* Respecto a la persistencia, la mayoría de la infirmación se guardará en los PODS, siendo la base de datos en mongoDB unica y exclusivamente para aumentar la eficiencia de la aplicación.

@@ -37,7 +37,7 @@ In any case the tree should include links to the scenarios of the following sect
 ****
 
 :imagesdir: images/
-image::arbolAp10.png[]
+image::arbolAp10.jpeg[]
 
 === Escenario de calidad
 
