@@ -72,10 +72,65 @@ export const Home = () => {
   
   const [mySelectedMap, setMySelectedMap] = useState(-1);
 
+  //const showLoadingDialog = async () => {
+  //  setTimeout(() => showLoadingDialogHelper(session,navigate,loadFriends), 3500);
+  //}
+
   const showLoadingDialog = async () => {
-    setTimeout(() => showLoadingDialogHelper(session,navigate,loadFriends), 3500);
-  }
+    let loadingTimer: NodeJS.Timeout;
+    let sessionTimer: NodeJS.Timeout;
   
+    Swal.fire({
+      title: 'Cargando...',
+      text: 'Espere un instante mientras preparamos todo',
+      timer: 12000,
+      allowOutsideClick: false,
+      timerProgressBar: true,
+      showConfirmButton: false,
+      didOpen: () => {
+        // Comprobar cada segundo si el objeto session tiene valor
+        sessionTimer = setInterval(() => {
+          if (session.info.isLoggedIn) {
+            // Si el objeto session tiene valor, detener los temporizadores
+            clearInterval(loadingTimer);
+            clearInterval(sessionTimer);
+
+            loadFriends().then(() => {
+              setTimeout(() => {
+                // Mostrar el diálogo de carga completa y ejecutar la función loadFriends
+                Swal.close()
+                Swal.fire({
+                  title: '¡Listo!',
+                  text: 'Todo está preparado',
+                  icon: 'success',
+                  timer: 2000,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                });
+              }, 1000)
+            });
+          }
+        }, 1000);
+      },
+      willClose: () => {
+        // Si el diálogo se cierra, detener los temporizadores
+        clearInterval(loadingTimer);
+        clearInterval(sessionTimer);
+
+        if(!session.info.isLoggedIn) {
+          navigate('/');
+          Swal.fire({
+            title: 'Ha ocurrido un error',
+            icon: 'error',
+            text: 'No se ha podido realizar la autenticación correctamente',
+            timer: 3000,
+            showConfirmButton: false
+          })
+        }
+      }
+    });
+  };
+
   useEffect(() => {
     showLoadingDialog();
   }, []);
