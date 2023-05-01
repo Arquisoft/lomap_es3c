@@ -30,40 +30,25 @@ There are many notations for describing scenarios, e.g.
 
 ****
 === Nivel 0
-[plantuml,"Sequence diagram01",png]
-----
-actor Usuario
-entity LoMap
-Usuario -> LoMap: Solicita registro de cuenta
-database MongoDB as "MongoDB"
-LoMap--> Usuario: Envía ventana de registro
-Usuario -> LoMap: Introduce información de registro
-LoMap -> MongoDB: Almacena información de registro
-alt Información de registro correcta
-MongoDB--> LoMap : Confirmación de registro
-LoMap--> Usuario: Notifica sobre registro correcto
-LoMap--> Usuario: Envía ventana de inicio de sesión
-else Información de registro incorrecta
-MongoDB--> LoMap: Informa sobre invalidez de datos
-LoMap--> Usuario: Notifica sobre registro incorrecto
-end
-----
-==== Inicio de sesión
+==== Identificación
 [plantuml,"Sequence diagram02",png]
 ----
 actor Usuario
 entity LoMap
-Usuario -> LoMap: Solicita inicio de sesión
-database MongoDB as "MongoDB"
+entity Inrupt
+Usuario -> LoMap: Solicita identificación
+LoMap--> Inrupt: Redirige identificación
+Inrupt--> LoMap: Envía ventana de identificación
 LoMap--> Usuario: Envía ventana de inicio de sesión
-Usuario -> LoMap: Introduce información de inicio de sesión
-LoMap--> MongoDB: Envía información de inicio de sesión
-MongoDB--> LoMap: Envía información
-LoMap--> LoMap: Comprueba información
-alt Información de inicio correcta
-LoMap--> Usuario: Muestra resultado de inicio de sesión
-else Información de inicio incorrecta
-LoMap--> Usuario: Notifica sobre inicio de sesión incorrecto
+Usuario -> LoMap: Introduce información de identificación
+LoMap--> Inrupt: Envía información de identificación
+Inrupt--> Inrupt: Comprueba información
+alt Información de identificación correcta
+Inrupt-->Lomap: Identificación correcta
+LoMap--> Usuario: Muestra resultado de identificación
+else Información de identificación incorrecta
+Inrupt-->Lomap: Identificación incorrecta
+LoMap--> Usuario: Muestra resultado de identificación
 end
 ----
 
@@ -73,6 +58,7 @@ end
 actor Usuario
 entity LoMap
 Usuario -> LoMap: Selecciona un lugar en el mapa
+Lomap --> Usuario: 
 Usuario -> LoMap: Añade lugar en el mapa
 database Pod as "Pods"
 LoMap--> Usuario: Envía ventana de creación de un lugar
@@ -160,30 +146,7 @@ Pod--> LoMap: Enviar lugares
 LoMap--> Usuario: Mostrar lugares de amigos
 ----
 === Nivel 1
-==== Registro de usuarios
-[plantuml,"Sequence diagram1",png]
-----
-actor Usuario
-entity LoMap
-Usuario -> LoMap: Solicita registro de cuenta
-entity API_REST
-database MongoDB as "MongoDB"
-LoMap--> Usuario: Envía ventana de registro
-Usuario -> LoMap: Introduce información de registro
-LoMap -> API_REST: Envía información de registro
-API_REST -> MongoDB: Almacena información de registro
-alt Información de registro correcta
-MongoDB--> API_REST : Confirmación de registro
-API_REST--> LoMap: Notifica sobre registro correcto
-LoMap--> Usuario: Notifica sobre registro correcto
-LoMap--> Usuario: Envía ventana de inicio de sesión
-else Información de registro incorrecta
-MongoDB--> API_REST: Informa sobre invalidez de datos
-API_REST--> LoMap: Notifica sobre registro incorrecto
-LoMap--> Usuario: Notifica sobre registro incorrecto
-end
-----
-==== Inicio de sesión
+==== Identificación
 [plantuml,"Sequence diagram2",png]
 ----
 actor Usuario
