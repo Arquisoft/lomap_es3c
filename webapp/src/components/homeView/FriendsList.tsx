@@ -103,6 +103,7 @@ export default function FriendsList(friendMap:FriendMapInfo) {
               });            
             friendMap.setSelectedMap(value);
             friendMap.setMySelectedMap(-1);
+            Swal.close();
           }
         })
       }
