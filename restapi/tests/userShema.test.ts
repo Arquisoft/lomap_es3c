@@ -1,4 +1,4 @@
-import User from "./userSchema";
+import User from "../src/userSchema";
 
 describe('User model', () => {
     test('should create a valid schema', () => {
