@@ -22,7 +22,7 @@ import MapFilter from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, grantReadAccessToFriend } from '../../solid/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
 import { getMapsFromPod } from '../../solid/MarkUtils';
-import { getSolicitudesHelper, miCuentaHelper } from '../../helper/TopBarHelper';
+import { getBioFromPodHelper, getSolicitudesHelper, miCuentaHelper } from '../../helper/TopBarHelper';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 
@@ -110,19 +110,7 @@ function TopBar(topBarInfo: TopBarInfo) {
   }
 
   async function getBioFromPod(session: Session): Promise<string> {
-    // Obtener la URL del archivo de biografía en la carpeta pública
-    const bioFileUrl = `${session.info.webId?.split('/profile')[0]}/public/bio.txt`;
-
-    try {
-      // Obtener el contenido del archivo de biografía utilizando la función getFile
-      const file = await getFile(bioFileUrl, { fetch: session.fetch });
-      const content = await file.text();
-      console.log(`La biografía recuperada del POD es: ${content}`);
-      return content;
-    } catch (e) {
-      console.log(`No se ha encontrado un archivo de biografía en la URL: ${bioFileUrl}`);
-      return "";
-    }
+    return getBioFromPodHelper(session);
   }
 
   const miCuenta = async () => {
