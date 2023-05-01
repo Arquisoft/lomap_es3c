@@ -3,6 +3,8 @@ import Swal from "sweetalert2";
 import { getFriendsFromPod, getFriendsNamesFromPod } from "../solid/podsFriends";
 
 export function showLoadingDialogHelper(session:Session,navigate:any,loadFriends:any){
+    console.log("session");
+    console.log(session);
     let loadingTimer: NodeJS.Timeout;
     let sessionTimer: NodeJS.Timeout;
   
@@ -16,12 +18,16 @@ export function showLoadingDialogHelper(session:Session,navigate:any,loadFriends
       didOpen: () => {
         // Comprobar cada segundo si el objeto session tiene valor
         sessionTimer = setInterval(() => {
+          console.log(session);
+          console.log(session.info.isLoggedIn);
           if (session.info.isLoggedIn) {
+            console.log("Entro en logged in");
             // Si el objeto session tiene valor, detener los temporizadores
             clearInterval(loadingTimer);
             clearInterval(sessionTimer);
 
             loadFriends().then(() => {
+              console.log("Entro en load friends");
               setTimeout(() => {
                 // Mostrar el diálogo de carga completa y ejecutar la función loadFriends
                 Swal.close()
