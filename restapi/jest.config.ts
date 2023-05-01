@@ -5,8 +5,10 @@ export default {
     },
     collectCoverage: true,
     collectCoverageFrom: [
-        "api.ts",
-        "!server.ts",
-        "!src/*Schema.ts",
+        "api.ts",  
+    ],
+    testPathIgnorePatterns : [
+        "/src/" 
     ]
+    
 }
