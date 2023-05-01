@@ -4,9 +4,6 @@ export default {
         "^.+\\.tsx?$": "ts-jest"
     },
     collectCoverage: true,
-    testPathIgnorePatterns: [
-        "src/"
-    ],
     collectCoverageFrom: [
         "api.ts",
     ]
