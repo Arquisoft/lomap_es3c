@@ -88,7 +88,7 @@ image::Level2.png[]
 
 Motivación::
 
-La aplicación LoMap se ve dividida en 3 capas del MVC (Modelo Vista Controlador) que se especificarán en el siguiente nivel. Además se incorparan las API que complementarán la aplicación LoMap
+La aplicación LoMap se ve dividida en 2 capas que se especificarán en el siguiente nivel. Además se incorparan las API que complementarán la aplicación LoMap
 
 
 Bloques de construcción contenidos::
@@ -119,4 +119,4 @@ part of arc42 for additional levels.
 image::Level3.png[]
 
 Motivación::
-Se detallan las 3 capas del modelo para especificar la estructura del sistema.
+Se detallan las 2 capas anteriores para especificar la estructura del sistema.
