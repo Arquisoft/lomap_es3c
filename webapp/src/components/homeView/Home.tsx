@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { useSession } from '@inrupt/solid-ui-react';
 import { getDefaultSession, handleIncomingRedirect } from "@inrupt/solid-client-authn-browser";
 import { checkRegister, registerUser } from '../../api/api';
-import Swal from 'sweetalert2';
 import MapView from '../map/Map';
 import { loadFriendsHelper, showLoadingDialogHelper } from '../../helper/HomeHelper';
 
