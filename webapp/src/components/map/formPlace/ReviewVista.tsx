@@ -10,13 +10,13 @@ function ReviewVista(props:ReviewProps){
 
     if(props.reviews !== undefined){
         return (
-            <div className='text-center' style={{borderTop: "black 0.1em solid"}}>
-              {props.reviews.map((review: { id: React.Key | null | undefined; author: { identifier: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }; reviewBody: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; reviewRating: { ratingValue: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }; datePublished: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }) => (
+            <div className='text-center' style={{borderTop: "black 0.1em solid", backgroundColor: "white"}}>
+              {props.reviews.map((review: { id: React.Key | null | undefined; author: { identifier: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }; reviewBody: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; reviewRating: { ratingValue: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | null | undefined; }; datePublished: number; }) => (
                 <div key={reviewKey++} className='mb-3'>
                   <div>
                     <br/>
                     <h4>{review.author.identifier}</h4>
-                    <p>Date: {review.datePublished} - Rating:  {review.reviewRating.ratingValue}</p>
+                    <p>Date: {new Date(review.datePublished).toLocaleString()} - Rating:  {review.reviewRating.ratingValue}</p>
                     <p>{review.reviewBody}</p>
                   </div>
                 </div>

@@ -30,7 +30,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
   }
 
   return (
-    <Box sx={{ backgroundColor: "rgba(25, 118, 210, 0.8)", paddingRight: "1em" }}>
+    <Box sx={{ backgroundColor: "white", paddingRight: "1em" }}>
       <Box sx={{ height: "1em" }} />
       <h2 className='text-center mb-5'><i>Añade un lugar</i></h2>
       <form name="addPlace" id='formMarker' onSubmit={handleSubmit}>
@@ -63,7 +63,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
               </div>
         <Box sx={{ height: "1em" }} />
         <div className='d-flex flex-column justify-content-center' style={{ alignItems: "center" }}>
-          <label htmlFor='image-button' className='text-center'><strong>Subir imágenes</strong></label>
+          <label htmlFor='image-button' className='text-center' style={{marginBottom: "0.75em"}}><strong>Subir imágenes</strong></label>
           <input
             id='image-button'
             name='images'
@@ -75,7 +75,7 @@ function MapPlaceForm(props: FormProps): JSX.Element {
             onChange={handleFileInputChange}
           />
         </div>
-        <Box sx={{ height: "3em" }} />
+        <Box sx={{ height: "1em" }} />
         <div className='text-center'>
           <Button variant="contained" type="submit" sx={{
             my: 2,

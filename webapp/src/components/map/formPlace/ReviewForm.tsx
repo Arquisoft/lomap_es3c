@@ -46,7 +46,7 @@ function ReviewForm(props: ReviewFormProps) {
     props.handleSubmit(review);
   }
 
-  return (<div className='text-center'>
+  return (<div className='text-center' style={{backgroundColor: "white"}}>
     <Button variant="contained" onClick={handleToggle} sx={{
       my: 2,
       backgroundColor: "black",
