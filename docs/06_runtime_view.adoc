@@ -44,10 +44,10 @@ Usuario -> LoMap: Introduce información de identificación
 LoMap--> Inrupt: Envía información de identificación
 Inrupt--> Inrupt: Comprueba información
 alt Información de identificación correcta
-Inrupt-->Lomap: Identificación correcta
+Inrupt-->LoMap: Identificación correcta
 LoMap--> Usuario: Muestra resultado de identificación
 else Información de identificación incorrecta
-Inrupt-->Lomap: Identificación incorrecta
+Inrupt-->LoMap: Identificación incorrecta
 LoMap--> Usuario: Muestra resultado de identificación
 end
 ----
@@ -58,7 +58,7 @@ end
 actor Usuario
 entity LoMap
 Usuario -> LoMap: Selecciona un lugar en el mapa
-Lomap --> Usuario: 
+LoMap --> Usuario: 
 Usuario -> LoMap: Añade lugar en el mapa
 database Pod as "Pods"
 LoMap--> Usuario: Envía ventana de creación de un lugar
@@ -67,38 +67,42 @@ LoMap-> Pod: Añade lugar
 Pod--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra nuevo lugar en el mapa
 ----
-==== Compartir lugar
+==== Compartir lugares
 [plantuml,"Sequence diagram04",png]
 ----
 actor Usuario
 entity LoMap
-Usuario -> LoMap: Selecciona un lugar (ya añadido)
-Usuario -> LoMap: Compartir lugar con amigos
+Usuario -> LoMap: Compartir con amigos
+LoMap --> Usuario: Envía ventana compartir lugares
 database Pod as "Pods"
-LoMap-> Pod : Añade lugar
+Usuario -> LoMap: Amigo seleccionado
+LoMap-> Pod : Modifica permisos
 Pod--> LoMap: Confirma operación
-LoMap--> Usuario: Muestra nuevo lugar en los lugares compartidos
+LoMap--> Usuario: Confirma operación
 ----
-==== Añadir información a lugar
+==== Añadir review a lugar
 [plantuml,"Sequence diagram05",png]
 ----
 actor Usuario
 entity LoMap
 Usuario -> LoMap: Selecciona un lugar (ya añadido)
-Usuario -> LoMap: Añadir información al lugar
+LoMap-->Usuario: Vista punto
+Usuario -> LoMap: Añadir review al lugar
 database Pod as "Pods"
 LoMap-> Pod: Actualiza información sobre el lugar
 Pod--> LoMap: Confirma operación
-LoMap--> Usuario: Muestra lugar con información actualizada
+LoMap--> Usuario: Confirma operación
 ----
 ==== Visualizar lugares
 [plantuml,"Sequence diagram06",png]
 ----
 actor Usuario
 entity LoMap
-Usuario -> LoMap: Solicita ver los lugares
+Usuario -> LoMap: Solicita ver los mapas
+LoMap --> Usuario: Muestra mapas
+Usuario -> LoMap: Selecciona un mapa
 database Pod as "Pods"
-LoMap-> Pod: Solicita los lugares del usuario
+LoMap-> Pod: Solicita los puntos del mapa
 Pod--> LoMap: Envía lugares
 LoMap--> Usuario: Muestra lugares
 ----
@@ -107,32 +111,19 @@ LoMap--> Usuario: Muestra lugares
 ----
 actor Usuario
 entity LoMap
-Usuario -> LoMap: Filtrar lugares
-LoMap--> Usuario: Envía ventana de filtros
-Usuario -> LoMap: Introduce filtros
-database Pod as "Pods"
-LoMap--> LoMap: Comprobar validez de filtros
-alt Filtros correctos
-LoMap-> Pod: Solicitar los lugares filtrados
-Pod--> LoMap: Devolver lugares filtrados
-LoMap--> Usuario: Mostrar lugares
-else Filtros incorrectos
-Pod --> LoMap: Notifica sobre error
-LoMap--> Usuario: Reinicia ventana de filtros
-end
+Usuario -> LoMap: Introduce filtros (con un mapa seleccionado previamente)
+LoMap--> LoMap: Aplica los filtros
+LoMap--> Usuario: Mostrar lugares filtrados
 ----
-==== Añadir amigo
+==== Enviar solicitud de amigo
 [plantuml,"Sequence diagram08",png]
 ----
 actor Usuario1
 actor Usuario2
 Usuario2 -> Usuario1: Envía identificador de amigo
 entity LoMap
-Usuario1->LoMap: Añadir amigo
-database Pod as "Pods"
-LoMap-> Pod: Añade un amigo
-Pod--> LoMap: Confirma operación
-LoMap--> Usuario1: Muestra lista de amigos
+Usuario1->LoMap: Envia solicitud amigo
+LoMap--> Usuario2: Envía solicitud
 ----
 ==== Listar lugares de amigos
 [plantuml,"Sequence diagram09",png]
@@ -153,12 +144,12 @@ actor Usuario
 entity LoMap
 Usuario -> LoMap: Solicita inicio de sesión
 entity API_REST
-database MongoDB as "MongoDB"
+database Pods as "Pods"
 LoMap--> Usuario: Envía ventana de inicio de sesión
 Usuario -> LoMap: Introduce información de inicio de sesión
 LoMap--> API_REST: Envía información de inicio de sesión
-API_REST -> MongoDB: Busca información
-MongoDB -> API_REST: Envía información
+API_REST -> Pods: Busca información
+Pods -> API_REST: Envía información
 API_REST--> API_REST: Comprueba información
 alt Información de inicio correcta
 API_REST--> LoMap: Notifica sobre inicio correcto
@@ -186,35 +177,37 @@ Pod--> API_REST: Confirma operación
 API_REST--> LoMap: Confirma operación
 LoMap--> Usuario: Muestra nuevo lugar en el mapa
 ----
-==== Compartir lugar
+==== Compartir lugares
 [plantuml,"Sequence diagram4",png]
 ----
 actor Usuario
 entity LoMap
-Usuario -> LoMap: Selecciona un lugar (ya añadido)
-Usuario -> LoMap: Compartir lugar con amigos
+Usuario -> LoMap: Compartir con amigos
+LoMap --> Usuario: Envía ventana compartir lugares
 entity API_REST
 database Pod as "Pods"
-LoMap-> API_REST: Envía información sobre el lugar
-API_REST-> Pod : Añade lugar
+Usuario -> LoMap: Amigo seleccionado
+LoMap->API_REST: Solicita modificar permisos
+API_REST-> Pod : Modifica permisos
 Pod--> API_REST: Confirma operación
-API_REST--> LoMap: Confirma operación
-LoMap--> Usuario: Muestra nuevo lugar en los lugares compartidos
+API_REST -->LoMap:Confirma operación
+LoMap--> Usuario: Confirma operación
 ----
-==== Añadir información a lugar
+==== Añadir review a lugar
 [plantuml,"Sequence diagram5",png]
 ----
 actor Usuario
 entity LoMap
 Usuario -> LoMap: Selecciona un lugar (ya añadido)
-Usuario -> LoMap: Añadir información al lugar
+LoMap-->Usuario: Vista punto
+Usuario -> LoMap: Añadir review al lugar
 entity API_REST
+LoMap-> API_REST: Sobrescribir punto con review nueva
 database Pod as "Pods"
-LoMap-> API_REST: Envía información adicional sobre el lugar
 API_REST-> Pod: Actualiza información sobre el lugar
 Pod--> API_REST: Confirma operación
 API_REST--> LoMap: Confirma operación
-LoMap--> Usuario: Muestra lugar con información actualizada
+LoMap--> Usuario: Confirma operación
 ----
 ==== Visualizar lugares
 [plantuml,"Sequence diagram6",png]
@@ -235,38 +228,27 @@ LoMap--> Usuario: Muestra lugares
 ----
 actor Usuario
 entity LoMap
-Usuario -> LoMap: Filtrar lugares
-LoMap--> Usuario: Envía ventana de filtros
-Usuario -> LoMap: Introduce filtros
-entity API_REST
-database Pod as "Pods"
-LoMap-> API_REST: Enviar solicitud filtrada
-API_REST--> API_REST: Comprobar validez de filtros
-alt Filtros correctos
-API_REST-> Pod: Solicitar los lugares filtrados
-Pod--> API_REST: Devolver lugares filtrados
-API_REST--> LoMap: Enviar lugares
-LoMap--> Usuario: Mostrar lugares
-else Filtros incorrectos
-API_REST --> LoMap: Notifica sobre filtrado incorrecto
-LoMap--> Usuario: Reinicia ventana de filtros
-end
+Usuario -> LoMap: Introduce filtros (con un mapa seleccionado previamente)
+LoMap--> LoMap: Aplica los filtros
+LoMap--> Usuario: Mostrar lugares filtrados
 ----
-==== Añadir amigo
+==== Enviar solicitud de amigo
 [plantuml,"Sequence diagram8",png]
 ----
 actor Usuario1
 actor Usuario2
 Usuario2 -> Usuario1: Envía identificador de amigo
 entity LoMap
-Usuario1->LoMap: Añadir amigo
-entity API_REST
-LoMap-> API_REST: Envía solicitud
-database Pod as "Pods"
-API_REST-> Pod: Añade un amigo
-Pod--> API_REST: Confirma operación
-API_REST--> LoMap: Confirma operación
-LoMap--> Usuario1: Muestra lista de amigos
+database MongoDB as "MongoDB"
+Usuario1->LoMap: Envia solicitud amigo
+LoMap-->LoMap: Comprueba existencia y amistad usuario2
+alt Existe y no son amigos
+LoMap->MongoDB: Registrar solicitud
+MongoDB-->LoMap: Envía solicitud
+LoMap--> Usuario2: Envía solicitud
+else No existe o no son amigos
+LoMap--> Usuario1: Informa error
+end
 ----
 ==== Listar lugares de amigos
 [plantuml,"Sequence diagram9",png]
@@ -276,9 +258,9 @@ entity LoMap
 Usuario -> LoMap: Solicitar ver los lugares de amigos
 entity API_REST
 database Pod as "Pods"
-LoMap-> API_REST: Enviar solicitud ver lugares
-API_REST-> Pod: Solicitar los lugares compartidos por amigos
-Pod--> API_REST: Devolver lugares de amigos
+LoMap-> API_REST: Solicitar los lugares compartidos por amigos
+API_REST->Pod:Solicitar los lugares compartidos por amigos
+Pod--> API_REST: Enviar lugares
 API_REST--> LoMap: Enviar lugares
 LoMap--> Usuario: Mostrar lugares de amigos
 ----
