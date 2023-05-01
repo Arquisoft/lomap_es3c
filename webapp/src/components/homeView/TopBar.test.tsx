@@ -1,4 +1,4 @@
-import { fireEvent, getByText, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import TopBar from "./TopBar";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Session } from "@inrupt/solid-client-authn-browser";
