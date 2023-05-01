@@ -6,8 +6,5 @@ export default {
     collectCoverage: true,
     collectCoverageFrom: [
         "api.ts",
-    ],
-    coveragePathIgnorePatterns: [
-        "src/"
     ]
 }
