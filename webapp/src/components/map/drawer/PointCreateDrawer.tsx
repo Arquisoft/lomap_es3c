@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import MapPlaceForm from '../formPlace/MapPlaceForm';
 import { useEffect } from 'react';
+import { toggleDrawerHelper } from '../../../helper/PointViewDrawerHelper';
 
 export interface DrawerInfo {
   opened : boolean;
@@ -20,20 +21,7 @@ export default function PlaceDrawer(props:DrawerInfo) {
 
 
   //En funcion del booleano desplegamos u ocultamos el menu lateral
-  const toggleDrawer =
-    ( open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return;
-      }
-
-      setState(open);
-      props.toggleDrawer(open);
-    };
+  const toggleDrawer = toggleDrawerHelper(setState,props.toggleDrawer);
 
   //Mostramos el formularo para añadir un punto
   const list = () => (
