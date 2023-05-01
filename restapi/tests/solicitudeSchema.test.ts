@@ -1,4 +1,4 @@
-import Solicitude from "./solicitudeSchema";
+import Solicitude from "../src/solicitudeSchema";
 
 describe('Solicitude model', () => {
     test('should create a valid schema', () => {
