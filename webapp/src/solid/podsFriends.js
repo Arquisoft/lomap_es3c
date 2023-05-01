@@ -84,8 +84,8 @@ export async function getFriendsMapsFromPod(friendUrl, session) {
 
   try {
     let res = await getMapsFriendFromPod(session, friendUrl);
-
-    return res;
+    let aux = res.map(map=>{return decodeURIComponent(map)});
+    return aux;
 
   } catch (e) {
     console.error(e);
