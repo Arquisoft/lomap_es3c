@@ -10,10 +10,12 @@ interface Props {
 export const RegisterProvider = ({ handleFocus, handleBlur }: Props) => {
     const [provider, setProvider] = useState('');
 
+    let redirect = window.location.origin.concat("/home"); 
+
     const identification = async function () {
         await login({
             oidcIssuer: provider,
-            redirectUrl: "http://localhost:3000/home",//Url a la que nos llevara una vez logeado
+            redirectUrl: redirect,//Url a la que nos llevara una vez logeado
             clientName: "LoMap_es3c"
         });
     }
