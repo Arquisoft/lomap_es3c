@@ -22,12 +22,7 @@ api.get(
   "/user/isRegistered",
   async (req: Request, res: Response): Promise<Response> => {
     try {
-      const userName = req.query.userName;
-      const userWebId = req.query.userWebId;
-      const provider = req.query.provider;
-
-      const user = await User.findOne({ userName, userWebId, provider });
-
+      const user = await User.findOne({ userName: req.query.userName, userWebId: req.query.userWebId, provider: req.query.provider }).lean();
       if (user) {
         return res.status(200).send({ isRegistered: true });
       } else {
