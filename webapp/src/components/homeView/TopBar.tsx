@@ -20,7 +20,7 @@ import createMapWindow from '../../helper/CreateMap';
 import { existsSolicitude, existsUser, registerSolicitude } from '../../api/api';
 import MapFilter from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, grantReadAccessToFriend } from '../../solid/podsFriends';
-import { getFile, overwriteFile } from '@inrupt/solid-client';
+import { overwriteFile } from '@inrupt/solid-client';
 import { getMapsFromPod } from '../../solid/MarkUtils';
 import { getBioFromPodHelper, getSolicitudesHelper, miCuentaHelper } from '../../helper/TopBarHelper';
 
