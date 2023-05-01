@@ -40,7 +40,7 @@ defineFeature(feature, test => {
       await page.type('#password', password);
       await expect(page).toClick('button', { text: 'Log In' });
       await page.waitForNavigation(); 
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(7000);
     });
 
     when('I try to display the friends list', async () => {

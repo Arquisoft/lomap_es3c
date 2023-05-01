@@ -29,7 +29,6 @@ defineFeature(feature, test => {
     let provider: string;
 
     given('An user in LoMap', async () => {
-      await page.setViewport({ width: 1366, height: 768 });
       await page.evaluate(() => {
         document.documentElement.requestFullscreen();
       });
@@ -48,19 +47,27 @@ defineFeature(feature, test => {
     });
 
     when('I select the Opciones -> Nuevo mapa', async () => {
+      await page.setViewport({ width: 1366, height: 768 });
+      await page.waitForTimeout(500);
       await expect(page).toClick('button', { text: 'Opciones' });
-      await page.waitForSelector('.MuiMenuItem-root');
-      await page.click('.MuiMenuItem-root:first-child');
+      await page.waitForTimeout(500);
+      await page.waitForSelector('#nuevoMapa');
+      await page.click('#nuevoMapa');
     });
 
 
+
     then('I can type the name of the new map', async () => {
-      const inputElement = await page.$('input[autocapitalize="none"]');
+      await page.waitForTimeout(500);
+      const inputElement = await page.$('input.swal2-input');
       if (inputElement !== null) {
         await inputElement.type('Mapa de ejemplo');
       } else {
         console.error('No se pudo encontrar el elemento de entrada.');
       }
+      const pageContent = await page.content();
+      const textExists = pageContent.includes('Introduzca el nombre del mapa');
+      expect(textExists).toBe(true);
     });
   })
 

@@ -29,7 +29,6 @@ defineFeature(feature, test => {
     let provider: string;
 
     given('An user in LoMap', async () => {
-      await page.setViewport({ width: 1366, height: 768 });
       await page.evaluate(() => {
         document.documentElement.requestFullscreen();
       });
@@ -48,19 +47,26 @@ defineFeature(feature, test => {
     });
 
     when('I select the Opciones -> Nuevo amigo', async () => {
+      await page.setViewport({ width: 1366, height: 768 });
+      await page.waitForTimeout(500);
       await expect(page).toClick('button', { text: 'Opciones' });
-      await page.waitForSelector('.MuiMenuItem-root');
-      await page.click('.MuiMenuItem-root:nth-child(2)');
+      await page.waitForTimeout(500);
+      await page.waitForSelector('#nuevoAmigo'); 
+      await page.click('#nuevoAmigo');
     });
 
 
     then('I can type the name of new friend', async () => {
+      await page.waitForTimeout(500);
       const inputElement = await page.$('#userName');
       if (inputElement !== null) {
         await inputElement.type('Amigo de ejemplo');
       } else {
         console.error('No se pudo encontrar el elemento de entrada.');
       }
+      const pageContent = await page.content();
+      const textExists = pageContent.includes('Introduzca el nombre del usuario');
+      expect(textExists).toBe(true);
     });
   })
 

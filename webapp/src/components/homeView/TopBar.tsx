@@ -438,8 +438,8 @@ function TopBar(topBarInfo: TopBarInfo) {
               onClose={handleCloseOptions}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={nuevoMapa}>Nuevo Mapa</MenuItem>
-              <MenuItem onClick={nuevoAmigo}>Nuevo Amigo</MenuItem>
+              <MenuItem id = "nuevoMapa" onClick={nuevoMapa}>Nuevo Mapa</MenuItem>
+              <MenuItem id = "nuevoAmigo" onClick={nuevoAmigo}>Nuevo Amigo</MenuItem>
               <hr />
               <MenuItem onClick={compartirMapas}>Compartir Mapas</MenuItem>
             </Menu>
