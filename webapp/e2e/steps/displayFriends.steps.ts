@@ -45,7 +45,7 @@ defineFeature(feature, test => {
 
     when('I try to display the maps list', async () => {
       await page.click('li#misAmigos');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(2500);
     });
 
 
