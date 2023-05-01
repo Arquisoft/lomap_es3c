@@ -5,7 +5,7 @@ export default {
     },
     collectCoverage: true,
     testPathIgnorePatterns: [
-        "/restapi/src/"
+        "src/"
     ],
     collectCoverageFrom: [
         "api.ts",
