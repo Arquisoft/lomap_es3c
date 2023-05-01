@@ -24,6 +24,10 @@ jest.mock('../../solid/MarkUtils', () => ({
   getMapsFromPod: (session: Session) => { return Promise.resolve(["mapa"]); },
 }));
 
+jest.mock('@inrupt/solid-client-authn-browser', () => ({
+  logout: () => { return Promise.resolve(); },
+}));
+
 jest.mock('../../solid/podsFriends', () => ({
   getFriendsNamesFromPod: jest.fn(),
   getFriendsFromPod: () => { return Promise.resolve(["https://podes3c.inrupt.net"]); },
@@ -48,7 +52,8 @@ jest.mock("../../api/api", () => ({
   getSolicitudes: (userName: string, provider: string) => {
     return Promise.resolve([{ senderName: "podes3c", senderProvider: "Inrupt" }]);
   },
-  deleteSolicitude: jest.fn()
+  deleteSolicitude: jest.fn(),
+  deleteUser:jest.fn()
 }));
 
 function renderAndCheckCorrectRender() {
@@ -292,7 +297,7 @@ test("Rechazar solicitud de amistad", async () => {
   }
 
 });
-/*
+
 test("Comprobamos el cierre de sesion", async () => {
 
   const { getByText } = render(
@@ -315,5 +320,5 @@ test("Comprobamos el cierre de sesion", async () => {
     }
   }
 });
-*/
+
 

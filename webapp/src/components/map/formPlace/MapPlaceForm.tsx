@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import ComboBoxCategoria, { getInterCategory } from './ComboBoxCategoria';
-import { MarkerInfo } from '../Map';
+import ComboBoxCategoria from './ComboBoxCategoria';
 import { Box } from '@mui/material';
-import Swal from 'sweetalert2';
+import { handleFileInputChangeHelper, handleSubmitHelper } from '../../../helper/MapPlaceFormHelper';
 
 interface FormProps {
   action: any;
@@ -23,36 +22,11 @@ function MapPlaceForm(props: FormProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileInputChange = () => {
-    // Obtener la lista de archivos seleccionados
-    const fileList = inputRef.current?.files;
-
-    // Convertir la lista de archivos en un arreglo de tipo File[]
-    setFilesArray(Array.from(fileList as FileList) as File[]);
+    handleFileInputChangeHelper(inputRef,setFilesArray);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Evita que el formulario se envíe automáticamente
-    // Aquí se debe crear el objeto a partir de los datos del formulario
-    const form = document.getElementById('formMarker') as HTMLFormElement;
-    const formData = new FormData(form);
-    let marker: MarkerInfo = {
-      authorWebId:"",
-      name: formData.get('name') as string,
-      categoria: getInterCategory(selectedCategory),
-      review:[],
-      description: formData.get('description') as string,
-      images: filesArray,
-      coords: [0, 0]
-      // Aquí se deben agregar las propiedades del objeto nuevo
-    };
-    props.action(marker); // Añade el objeto a la lista
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Marcador añadido correctamente',
-      showConfirmButton: false,
-      timer: 2000
-    })
+    handleSubmitHelper(event,selectedCategory,filesArray,props.action);
   }
 
   return (
