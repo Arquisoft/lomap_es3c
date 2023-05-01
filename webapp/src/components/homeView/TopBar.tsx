@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
 import createMapWindow from '../../helper/CreateMap';
-import {  existsSolicitude, existsUser,  registerSolicitude } from '../../api/api';
+import { existsSolicitude, existsUser, registerSolicitude } from '../../api/api';
 import MapFilter from '../map/filter/MapFilter';
 import { addToKnowInPod, getFriendsFromPod, grantReadAccessToFriend } from '../../solid/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
