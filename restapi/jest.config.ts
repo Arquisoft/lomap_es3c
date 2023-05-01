@@ -5,6 +5,8 @@ export default {
     },
     collectCoverage: true,
     collectCoverageFrom: [
+        "!src/*",
+        "!server.ts",
         "api.ts",
     ]
 }
