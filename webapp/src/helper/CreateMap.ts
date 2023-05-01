@@ -1,6 +1,6 @@
 import { Session } from "@inrupt/solid-client-authn-browser";
 import Swal from "sweetalert2";
-import { createMap } from "../map/markUtils/MarkUtils";
+import { createMap } from "../solid/MarkUtils";
 
 function createMapWindow(session:Session){
     Swal.fire({

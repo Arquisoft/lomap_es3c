@@ -7,9 +7,9 @@ import PlaceDrawer from './drawer/PointCreateDrawer';
 import {Session } from '@inrupt/solid-client-authn-browser';
 import MapEventHandler from './MapEventHandler';
 import { Markers } from './Markers';
-import createMapWindow from '../homeView/CreateMap';
 import PointViewDrawer from './drawer/PointViewDrawer';
-import addMarker from './AddMarker';
+import addMarker from '../../solid/AddMarker';
+import{mapOnClickHelper} from '../../helper/MapHelper';
 
 export interface MarkerInfo {
     authorWebId:string;
@@ -44,7 +44,7 @@ export interface MapInfo {
     setMySelectedMap:any;
 }
 
-function Map(props: MapInfo) {
+function MapView(props: MapInfo) {
 
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
@@ -74,23 +74,8 @@ function Map(props: MapInfo) {
     }
 
     const mapOnClick = (e: LatLng) => {
-        if(!(props.editable === undefined || props.editable === false)) {
-            if (props.selectedMap === undefined) {
-                nuevoMapa();
-            } else {
-                setSelectedPosition([
-                    e.lat,
-                    e.lng
-                ]);
-                //Cuando hacemos click en el mapa indicamos que está seleccionado para desplegar el menu lateral
-                setIsCreateDrawerSelected(true);
-            }
-        }
+        mapOnClickHelper(e,props.session,props.editable,props.selectedMap,setSelectedPosition,setIsCreateDrawerSelected);
     }
-
-    const nuevoMapa = () => {
-        createMapWindow(props.session);
-    };
 
     const toggleCreateDrawer = (isCreateDrawerSelected: boolean) => {
         setIsCreateDrawerSelected(isCreateDrawerSelected);
@@ -118,4 +103,4 @@ function Map(props: MapInfo) {
         </MapContainer >
     );
 }
-export default Map;
+export default MapView;

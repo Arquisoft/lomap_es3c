@@ -1,6 +1,6 @@
 import { Session } from "@inrupt/solid-client-authn-browser";
-import { MarkerInfo } from "./Map";
-import { addMarkerToPod } from "./markUtils/MarkUtils";
+import { MarkerInfo } from "../components/map/Map";
+import { addMarkerToPod } from "./MarkUtils";
 
 export interface AddMarkerInfo {
     marker: MarkerInfo;

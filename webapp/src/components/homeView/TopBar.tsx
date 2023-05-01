@@ -16,12 +16,12 @@ import { Session, logout } from "@inrupt/solid-client-authn-browser";
 import { useNavigate } from 'react-router-dom';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { useSession } from '@inrupt/solid-ui-react';
-import createMapWindow from './CreateMap';
+import createMapWindow from '../../helper/CreateMap';
 import { deleteSolicitude, deleteUser, existsSolicitude, existsUser, getSolicitudes, registerSolicitude } from '../../api/api';
 import MapFilter from '../map/filter/MapFilter';
-import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../Amigos/podsFriends';
+import { addToKnowInPod, getFriendsFromPod, getFriendsNamesFromPod, grantReadAccessToFriend } from '../../solid/podsFriends';
 import { getFile, overwriteFile } from '@inrupt/solid-client';
-import { getMapsFromPod } from '../map/markUtils/MarkUtils';
+import { getMapsFromPod } from '../../solid/MarkUtils';
 
 const settings = ['Mi Perfil', 'Mi Cuenta', 'Cerrar Sesión'];
 

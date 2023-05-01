@@ -5,10 +5,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import Swal from 'sweetalert2';
-import { getFriendsMapsFromPod, getMarkersOfFriendMapFromPod } from '../Amigos/podsFriends';
+import { getFriendsMapsFromPod, getMarkersOfFriendMapFromPod } from '../../solid/podsFriends';
 import { useSession } from '@inrupt/solid-ui-react';
 import { Session } from '@inrupt/solid-client-authn-browser';
-//import { pruebaBBDD } from '../../api/api';
 
 export interface FriendMapInfo {
   children: [];
@@ -101,11 +100,9 @@ export default function FriendsList(friendMap:FriendMapInfo) {
             friendMap.setEditable(false);
             getMarkersOfFriendMapFromPod(session, friendsList[index],value).then((markers) => {
               friendMap.setMarkers(markers);}).catch((error)=>{
-                  console.error("Buena tarde")
               });            
             friendMap.setSelectedMap(value);
-            friendMap.setMySelectedMap(-1); 
-            Swal.close();
+            friendMap.setMySelectedMap(-1);
           }
         })
       }

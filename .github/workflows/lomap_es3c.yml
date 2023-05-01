@@ -2,9 +2,11 @@ name: CI for LOMAP ES3C
 
 on: 
   push:
-    branches: [ develop ]
+    branches: [ develop,master]
   pull_request:
-    branches: [ develop ]
+    branches: [ develop,master]
+  release:
+    types: [published]
 
 jobs:
   unit-tests:

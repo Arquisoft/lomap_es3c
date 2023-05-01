@@ -17,7 +17,6 @@ export default function LateralMenu(props:MapInfo) {
 
   const [openFriends, setOpenFriends] = useState(false);
 
-
   const handleCollapseMaps = () => {
     setOpenMaps(!openMaps);
   }
