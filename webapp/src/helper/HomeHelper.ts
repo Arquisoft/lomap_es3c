@@ -2,12 +2,11 @@ import { Session } from "@inrupt/solid-client-authn-browser";
 import Swal from "sweetalert2";
 import { getFriendsFromPod, getFriendsNamesFromPod } from "../solid/podsFriends";
 
-export function showLoadingDialogHelper(session:Session,navigate:any,loadFriends:any){
-    console.log("session");
-    console.log(session);
-    let loadingTimer: NodeJS.Timeout;
-    let sessionTimer: NodeJS.Timeout;
-  
+export async function showLoadingDialogHelper(session:Session,navigate:any,loadFriends:any){
+  let loadingTimer: NodeJS.Timeout;
+  let sessionTimer: NodeJS.Timeout;
+
+  await new Promise<void>(async (resolve, reject) => {
     Swal.fire({
       title: 'Cargando...',
       text: 'Espere un instante mientras preparamos todo',
@@ -18,17 +17,18 @@ export function showLoadingDialogHelper(session:Session,navigate:any,loadFriends
       didOpen: () => {
         // Comprobar cada segundo si el objeto session tiene valor
         sessionTimer = setInterval(() => {
-          console.log(session);
-          console.log(session.info.isLoggedIn);
+          console.log("Registrado: " + session.info.isLoggedIn);
           if (session.info.isLoggedIn) {
-            console.log("Entro en logged in");
             // Si el objeto session tiene valor, detener los temporizadores
             clearInterval(loadingTimer);
             clearInterval(sessionTimer);
 
-            loadFriends().then(() => {
-              console.log("Entro en load friends");
-              setTimeout(() => {
+            resolve();
+
+            console.log("Entro en load friends");
+            setTimeout(async () => {
+              try {
+                await loadFriends();
                 // Mostrar el diálogo de carga completa y ejecutar la función loadFriends
                 Swal.close()
                 Swal.fire({
@@ -39,8 +39,10 @@ export function showLoadingDialogHelper(session:Session,navigate:any,loadFriends
                   showConfirmButton: false,
                   allowOutsideClick: false
                 });
-              }, 1000)
-            });
+              } catch (error) {
+                reject(error);
+              }
+            }, 1000)
           }
         }, 1000);
       },
@@ -61,11 +63,14 @@ export function showLoadingDialogHelper(session:Session,navigate:any,loadFriends
         }
       }
     });
+  });
 }
 
-export async function loadFriendsHelper(session:Session,setFriendsURL:any,setFriendsNames:any) {
-    const friendsURLResult = await getFriendsFromPod(session);
-    setFriendsURL(friendsURLResult);
-    const friendsNamesResult = await getFriendsNamesFromPod(friendsURLResult);
-    setFriendsNames(friendsNamesResult);
-  }
+
+export async function loadFriendsHelper(session:Session,setFriendsURL:any,setFriendsNames:any): Promise<void> {
+  const friendsURLResult = await getFriendsFromPod(session);
+  setFriendsURL(friendsURLResult);
+  const friendsNamesResult = await getFriendsNamesFromPod(friendsURLResult);
+  setFriendsNames(friendsNamesResult);
+}
+

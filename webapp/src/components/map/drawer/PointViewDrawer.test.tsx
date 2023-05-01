@@ -43,7 +43,7 @@ test("Comprobamos que el drawer se renderiza correctamente", async () => {
   session.info.isLoggedIn=true;
 
   const { getByText } = render(
-    <PointViewDrawer session={session} opened={opened} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
+    <PointViewDrawer session={session} opened={opened} setOpened={()=>{}} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
   );
 
   expect(getByText("Categoria: Tienda", { selector: 'h3' })).toBeInTheDocument();
@@ -63,7 +63,7 @@ test("Comprobamos que la review se crea correctamente", async () => {
   session.info.isLoggedIn=true;
 
   const { getByText } = render(
-    <PointViewDrawer session={session as Session} opened={opened} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
+    <PointViewDrawer session={session as Session} opened={opened} setOpened={()=>{}} toggleDrawer={() =>{}} marker={marker} map={"Mapa de prueba"}></PointViewDrawer>
   );
   let botonValoracion = getByText("Añadir Valoración");
   expect(botonValoracion).toBeInTheDocument();

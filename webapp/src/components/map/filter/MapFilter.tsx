@@ -1,5 +1,6 @@
 import { Checkbox } from "@mui/material";
 import { Fragment, useState } from "react";
+import { handleCheckBoxChangeHelper } from "../../../helper/MapFilterHelper";
 
 
 export interface MapFilterInfo{
@@ -32,16 +33,7 @@ function MapFilter(props:MapFilterInfo) {
   });
   
   const handleCheckboxChange = (name: string) => (e: { target: { checked: any; }; }) => {
-    setChecked({
-      ...isChecked,
-      [name]: e.target.checked
-    });
-
-    if (e.target.checked) {
-      props.setSelectedCategories([...props.selectedCategories, name]);
-    } else {
-      props.setSelectedCategories(props.selectedCategories.filter(category => category !== name));
-    }
+    handleCheckBoxChangeHelper(name,e,setChecked,isChecked,props.setSelectedCategories,props.selectedCategories);
   };
   
   return (

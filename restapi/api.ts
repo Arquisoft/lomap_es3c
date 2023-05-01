@@ -22,7 +22,12 @@ api.get(
   "/user/isRegistered",
   async (req: Request, res: Response): Promise<Response> => {
     try {
-      const user = await User.findOne({ userName: req.query.userName, userWebId: req.query.userWebId, provider: req.query.provider }).lean();
+      const userName = req.query.userName;
+      const userWebId = req.query.userWebId;
+      const provider = req.query.provider;
+
+      const user = await User.findOne({ userName: userName?.toString(), userWebId: userWebId?.toString(), provider: provider?.toString() });
+      
       if (user) {
         return res.status(200).send({ isRegistered: true });
       } else {
@@ -56,7 +61,7 @@ api.get(
       const userName = req.query.userName;
       const provider = req.query.provider;
 
-      const user = await User.findOne({ userName: userName, provider: provider });
+      const user = await User.findOne({ userName: userName?.toString(), provider: provider?.toString() });
 
       if (user) {
         return res.status(200).send({ exists: true });
@@ -78,7 +83,7 @@ api.get(
       const senderName = req.query.senderName;
       const senderProvider = req.query.senderProvider;
 
-      const solicitude = await Solicitude.findOne({ senderName, senderProvider, receiverName, receiverProvider});
+      const solicitude = await Solicitude.findOne({ senderName: senderName?.toString(), senderProvider: senderProvider?.toString(), receiverName: receiverName?.toString(), receiverProvider: receiverProvider?.toString() });
 
       if (solicitude) {
         return res.status(200).send({ exists: true });
@@ -114,7 +119,7 @@ api.get(
       const receiverName = req.query.userName;
       const receiverProvider = req.query.provider;
 
-      const solicitudes = await Solicitude.find({ receiverName: receiverName, receiverProvider: receiverProvider });
+      const solicitudes = await Solicitude.find({ receiverName: receiverName?.toString(), receiverProvider: receiverProvider?.toString() });
 
       return res.status(200).send({ solicitudes: solicitudes });
     } catch (error) {
@@ -131,7 +136,7 @@ api.post(
     let senderProvider = req.body.senderProvider;
     let receiverName = req.body.receiverName;
     let receiverProvider = req.body.receiverProvider;
-    await Solicitude.deleteOne({senderName, senderProvider, receiverName, receiverProvider});
+    await Solicitude.deleteOne({senderName: senderName.toString(), senderProvider: senderProvider.toString(), receiverName: receiverName.toString(), receiverProvider: receiverProvider.toString()});
     // Manejar el retorno
     return res.status(200).send({ deleted: true });
   }
@@ -142,7 +147,7 @@ api.post(
   async (req: Request, res: Response): Promise<Response> => {
     // Hacer la llamada
     let userWebId = req.body.userWebId;
-    await User.deleteOne({userWebId : userWebId});
+    await User.deleteOne({userWebId : userWebId.toString()});
     // Manejar el retorno
     return res.status(200).send({ deleted: true });
   }

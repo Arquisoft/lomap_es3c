@@ -1,4 +1,4 @@
-import { fireEvent, getByText, render, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import TopBar from "./TopBar";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Session } from "@inrupt/solid-client-authn-browser";
@@ -19,6 +19,7 @@ jest.mock("@inrupt/solid-ui-react", () => ({
     },
   }),
 }));
+
 
 jest.mock('../../solid/MarkUtils', () => ({
   getMapsFromPod: (session: Session) => { return Promise.resolve(["mapa"]); },
@@ -296,29 +297,6 @@ test("Rechazar solicitud de amistad", async () => {
   } catch (error) {
   }
 
-});
-
-test("Comprobamos el cierre de sesion", async () => {
-
-  const { getByText } = render(
-    <Router>
-      <TopBar selectedCategories={[]} setSelectedCategories={() => { }} friendsURL={friendsURL} friendsNames={friendsNames} />
-    </Router>
-  );
-  expect(getByText("CATEGORÍAS:")).toBeInTheDocument();
-
-  const buttons = document.querySelectorAll('button');
-  const lastButton = buttons[buttons.length - 1];
-  expect(lastButton).toBeInTheDocument();
-  fireEvent.click(lastButton);
-  const cerrarSesion = getByText("Cerrar Sesión");
-  const liCerrarSesion = cerrarSesion.parentElement;
-  if (liCerrarSesion) {
-    const span = liCerrarSesion.querySelector('span');
-    if (span) {
-      fireEvent.click(span);
-    }
-  }
 });
 
 

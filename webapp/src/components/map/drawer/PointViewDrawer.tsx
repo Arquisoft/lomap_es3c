@@ -10,6 +10,7 @@ import { fetchImages, onSubmitReviewHelper, toggleDrawerHelper } from "../../../
 export interface PointViewDrawerInfo {
     session: Session;
     opened: boolean;
+    setOpened:any;
     toggleDrawer: any;
     marker: MarkerInfo;
     map: string;
@@ -36,14 +37,14 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
         imagenElemento.src = aux.contentUrl;
         return (
             <ImageListItem key={imageCount++}>
-                <img src={imagenElemento.src} alt={`Imagen ${imageCount++}`} style={{ width: '10.25em', height: '10.25em' }}
-                />
+                <img src={imagenElemento.src} alt={`Imagen ${imageCount++}`} style={{ width: '10.25em', height: '10.25em' }}/>
             </ImageListItem>
         );
     };
 
     const onSubmitReview = async (review: any) => {
         await onSubmitReviewHelper(props.marker,props.session,props.map,setState,toggleDrawer,review);
+        props.setOpened(false);
     }
 
     //En funcion del booleano desplegamos u ocultamos el menu lateral
@@ -53,11 +54,11 @@ export default function PointViewDrawer(props: PointViewDrawerInfo) {
     const list = () => (
         <Box sx={{
             width: 450,
-            backgroundColor: "rgba(25, 118, 210, 0.8)",
+            backgroundColor: "white",
         }}
             role="presentation"
         >
-            <h2 className='text-center'><strong>Nombre: </strong>{props.marker.name}</h2>
+            <h2 className='text-center' style={{marginTop: "0.5em"}}><strong>Nombre: </strong>{props.marker.name}</h2>
             <h3 className='text-center' style={{fontSize: "1.25em"}}>Categoria: {getViewCategory(props.marker.categoria)}</h3>
             <br/>
             <h3 style={{marginLeft: "1em"}}>Coordenadas</h3>
