@@ -59,7 +59,7 @@ export default function FriendsList(friendMap:FriendMapInfo) {
       title: 'Cargando mapas...',
       showConfirmButton: false,
       allowOutsideClick: false
-    });
+    }).catch();
 
     var mapas = await getFriendsMapsFromPod(friend, session)
 
@@ -107,7 +107,7 @@ export default function FriendsList(friendMap:FriendMapInfo) {
           }
         })
       }
-    })
+    }).catch();
   };
 
   function renderRow(props: ListChildComponentProps) {

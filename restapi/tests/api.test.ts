@@ -160,7 +160,7 @@ describe('Eliminar usuario del sistema', () => {
 
 describe('LANZAMIENTO DE EXCEPCIONES POR ERRORES', () => {
     test('Usuario registrado / no registrado', async () => {
-        mongoose.disconnect();
+        await mongoose.disconnect();
         let name: string = "exampleName";
         let webId: string = "https://exampleName.inrupt.net";
         let prov: string = "inrupt";
