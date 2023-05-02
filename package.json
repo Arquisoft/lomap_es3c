@@ -1,5 +1,11 @@
 {
+  "name": "mi-proyecto",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node api/dist/server.js"
+  },
   "dependencies": {
+    "express": "^4.17.1",
     "@inrupt/solid-client-authn-browser": "^1.13.3",
     "leaflet": "^1.9.3",
     "mapbox-gl": "^1.13.3",

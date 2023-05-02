@@ -4,7 +4,8 @@
   "scripts": {
     "start": "ts-node-dev ./server.ts",
     "prod": "ts-node ./server.ts &",
-    "test": "jest --runInBand --coverage"
+    "test": "jest --runInBand --coverage",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
