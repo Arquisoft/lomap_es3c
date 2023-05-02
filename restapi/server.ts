@@ -16,15 +16,25 @@ const httpsPort = 5001;
 const metricsMiddleware:RequestHandler = promBundle({includeMethod: true});
 app.use(metricsMiddleware);
 
+app.disable("x-powered-by");
+
 app.use(cors());
 app.use(bp.json());
 
 app.use("/api", api)
 
 const options = {
-    key: fs.readFileSync(process.env.SSL_PRIVKEY),
-    cert: fs.readFileSync(process.env.SSL_CERT)
+    key:  fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem')
   };
+
+  app.use((req, res, next) => {
+    if (req.secure) {
+      next();
+    } else {
+      res.redirect(`https://${req.headers.host}${req.url}`);
+    }
+  });
 
 https.createServer(options, app).listen(httpsPort, () => {
     console.log(`Restapi server started on port ${httpsPort}`);
