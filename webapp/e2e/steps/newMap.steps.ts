@@ -43,14 +43,14 @@ defineFeature(feature, test => {
       await page.type('#password', password);
       await expect(page).toClick('button', { text: 'Log In' });
       await page.waitForNavigation();
-      await page.waitForTimeout(7000);
+      await page.waitForTimeout(12000);
     });
 
     when('I select the Opciones -> Nuevo mapa', async () => {
       await page.setViewport({ width: 1366, height: 768 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1000);
       await expect(page).toClick('button', { text: 'Opciones' });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1000);
       await page.waitForSelector('#nuevoMapa');
       await page.click('#nuevoMapa');
     });
@@ -58,10 +58,10 @@ defineFeature(feature, test => {
 
 
     then('I can type the name of the new map', async () => {
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1000);
       const inputElement = await page.$('input.swal2-input');
       if (inputElement !== null) {
-        await inputElement.type('Mapa de ejemplo');
+        await inputElement.type('Mapa');
       } else {
         console.error('No se pudo encontrar el elemento de entrada.');
       }

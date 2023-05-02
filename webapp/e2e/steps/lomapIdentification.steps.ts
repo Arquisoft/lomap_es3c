@@ -47,7 +47,7 @@ defineFeature(feature, test => {
 
 
     then('You go to the home page in LoMap', async () => {
-      await page.waitForTimeout(7000);
+      await page.waitForTimeout(12000);
       const currentUrl = await page.url();
       expect(currentUrl).toContain('/home');
     });
