@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   if (req.secure) {
     next();
   } else {
-    if (typeof req.query.url === "string" && req.query.url.startsWith("https:")) {
+    if (typeof req.query.url === "string" && req.query.url.startsWith("https://98.71.248.38")) {
       res.redirect(`https://${req.headers.host}${req.url}`);
   }
   }
