@@ -20,24 +20,26 @@ api.get(
 
 api.get(
   "/user/isRegistered",
-  async (req: Request, res: Response): Promise<Response> => {
+  (req: Request, res: Response): void => {
     try {
       const userName = req.query.userName;
       const userWebId = req.query.userWebId;
       const provider = req.query.provider;
 
-      const user = await User.findOne({ userName: userName?.toString(), userWebId: userWebId?.toString(), provider: provider?.toString() });
-      
-      if (user) {
-        return res.status(200).send({ isRegistered: true });
-      } else {
-        return res.status(200).send({ isRegistered: false });
-      }
+      User.findOne({ userName: userName?.toString(), userWebId: userWebId?.toString(), provider: provider?.toString() })
+        .then((user) => {
+          if (user) {
+            res.status(200).send({ isRegistered: true });
+          } else {
+            res.status(200).send({ isRegistered: false });
+          }
+        })
     } catch (error) {
-      return res.status(500).send({ error: 'Error al buscar usuario' });
+      res.status(500).send({ error: 'Error al buscar usuario' });
     }
   }
 );
+
 
 api.post(
   "/user/add",
@@ -76,25 +78,27 @@ api.get(
 
 api.get(
   "/solicitude/exists",
-  async (req: Request, res: Response): Promise<Response> => {
+  (req: Request, res: Response): void => {
     try {
       const receiverName = req.query.receiverName;
       const receiverProvider = req.query.receiverProvider;
       const senderName = req.query.senderName;
       const senderProvider = req.query.senderProvider;
 
-      const solicitude = await Solicitude.findOne({ senderName: senderName?.toString(), senderProvider: senderProvider?.toString(), receiverName: receiverName?.toString(), receiverProvider: receiverProvider?.toString() });
-
-      if (solicitude) {
-        return res.status(200).send({ exists: true });
-      } else {
-        return res.status(200).send({ exists: false });
-      }
+      Solicitude.findOne({ senderName: senderName?.toString(), senderProvider: senderProvider?.toString(), receiverName: receiverName?.toString(), receiverProvider: receiverProvider?.toString() })
+        .then((solicitude) => {
+          if (solicitude) {
+            res.status(200).send({ exists: true });
+          } else {
+            res.status(200).send({ exists: false });
+          }
+        })
     } catch (error) {
-      return res.status(500).send({ error: 'Error al buscar solicitud' });
+      res.status(500).send({ error: 'Error al buscar solicitud' });
     }
   }
 );
+
 
 api.post(
   "/solicitude/add",
