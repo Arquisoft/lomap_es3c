@@ -64,7 +64,7 @@ La seguridad en LoMap será un aspecto muy importante ya que cada usuario almace
 
 === Testeabilidad
 
-Antes de que cualquier cambio se realice se probará todos los escenarios posible dejandolos documentados para su posible reutilización en un futuro. Tambien habrá pruebas no solo defuncionalidad sino tambien de tiempo de respuesta.
+Antes de que cualquier cambio se realice, se probará todos los escenarios posible dejandolos documentados para su posible reutilización en un futuro. Tambien habrá pruebas no solo unitarios (de webapp y restapi) sino tambien de carga y end to end.
 
 === Persistencia
-Los datos se almacenarán en una base de datos NoSQL llamada MongoDB.
+Los datos se almacenarán en los pods siendo la base de datos para gestionar las solicitudes de amistad y mejorar el rendimiento de la aplicación.

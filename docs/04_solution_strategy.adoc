@@ -34,7 +34,7 @@ Refer to details in the following sections.
 |TypeScript| Lenguaje de programación que añade funcionalidad a Javascript y permite fácilmente la escalabilidad del código, además de detección de errores más rápidamente. Enfocado en la lógica de negocio.
 |Docker| Orientado al despliegue de aplicaciones con todas las dependencias necesarias del proyecto.
 |Jest| Framework de pruebas JavaScript simple y rápido.
-|Maps API| Para la creación de mapas y el uso de funciones variadas relativas a ello. La API permite realizar un consumo del servicio web de manera fácil y cómoda.
+|Open Street Maps| Para la creación de mapas y el uso de funciones variadas relativas a ello. La API permite realizar un consumo del servicio web de manera fácil y cómoda.
 |MongoDB| Sistema de base de datos NoSQL orientado a documentos. 
 |Bootstrap| Librería de código abierto para el diseño de aplicaciones, permitiendo un diseño web adaptable sin dificultad.
 |===
