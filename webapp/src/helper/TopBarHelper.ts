@@ -89,6 +89,7 @@ export async function getSolicitudesHelper(session:Session){
                   showConfirmButton: false,
                   timer: 1500
                 }).then(() => {
+                  deleteSolicitude(userName, provider, user.split("-")[0], user.split("-")[1]);
                   addToKnowInPod(session, "https://" + user.split("-")[0] + "." + user.split("-")[1] + ".net/profile/card#me");
                 });
               } else if (result.isDenied) {
