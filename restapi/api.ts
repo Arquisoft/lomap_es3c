@@ -1,10 +1,11 @@
-import express, { Request, Response, Router } from 'express';
+import { Request, Response, Router } from 'express';
 import User from './src/userSchema';
 import Solicitude from './src/solicitudeSchema';
+const express = require("express");
+const serverless = require("serverless-http");
 
-const mongoose = require('mongoose');
-
-const api:Router = express.Router()
+const app = express();
+const api = express.Router();
 
 
 // BBDD Conf 5/6 - Método que implementa el GET/POST
@@ -152,5 +153,7 @@ api.post(
     return res.status(200).send({ deleted: true });
   }
 )
+app.use(`/.netlify/functions/api`, api);
 
-export default api;
+module.exports = app;
+module.exports.handler = serverless(app);
