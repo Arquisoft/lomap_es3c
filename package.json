@@ -5,14 +5,15 @@
     "start": "node api/dist/server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
     "@inrupt/solid-client-authn-browser": "^1.13.3",
+    "express": "^4.17.1",
     "leaflet": "^1.9.3",
     "mapbox-gl": "^1.13.3",
     "mongoose": "^7.0.3",
     "react-mapbox-gl": "^5.1.1",
     "react-window": "^1.8.8",
-    "sweetalert2": "^11.7.3"
+    "sweetalert2": "^11.7.3",
+    "typescript": "^5.0.4"
   },
   "devDependencies": {
     "@types/react-window": "^1.8.5"
