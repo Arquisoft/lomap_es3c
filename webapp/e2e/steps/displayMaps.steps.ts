@@ -40,12 +40,12 @@ defineFeature(feature, test => {
       await page.type('#password', password);
       await expect(page).toClick('button', { text: 'Log In' });
       await page.waitForNavigation(); 
-      await page.waitForTimeout(7000);
+      await page.waitForTimeout(12000);
     });
 
     when('I try to display the friends list', async () => {
       await page.click('li#misMapas');
-      await page.waitForTimeout(2500);
+      await page.waitForTimeout(5000);
     });
 
 

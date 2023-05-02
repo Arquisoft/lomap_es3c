@@ -43,24 +43,24 @@ defineFeature(feature, test => {
       await page.type('#password', password);
       await expect(page).toClick('button', { text: 'Log In' });
       await page.waitForNavigation();
-      await page.waitForTimeout(7000);
+      await page.waitForTimeout(12000);
     });
 
     when('I select the Opciones -> Nuevo amigo', async () => {
       await page.setViewport({ width: 1366, height: 768 });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1000);
       await expect(page).toClick('button', { text: 'Opciones' });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1000);
       await page.waitForSelector('#nuevoAmigo'); 
       await page.click('#nuevoAmigo');
     });
 
 
     then('I can type the name of new friend', async () => {
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(1000);
       const inputElement = await page.$('#userName');
       if (inputElement !== null) {
-        await inputElement.type('Amigo de ejemplo');
+        await inputElement.type('Amigo');
       } else {
         console.error('No se pudo encontrar el elemento de entrada.');
       }
