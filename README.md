@@ -3,7 +3,7 @@
 [![CI for LOMAP ES3C](https://github.com/Arquisoft/lomap_es3c/actions/workflows/lomap_es3c.yml/badge.svg)](https://github.com/Arquisoft/lomap_es3c/actions/workflows/lomap_es3c.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es3c&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es3c)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es3c&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es3c)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/a3b48550-66c0-4dcd-9c38-9d6678859161/deploy-status)](https://app.netlify.com/sites/lomapes3c/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c513a965-bb85-4405-9775-017d7e02091a/deploy-status)](https://app.netlify.com/sites/lomapes3c/deploys)
 
 <p float="left">
 <img src="https://blog.wildix.com/wp-content/uploads/2020/06/react-logo.jpg" height="100">
