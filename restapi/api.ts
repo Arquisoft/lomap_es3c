@@ -13,8 +13,8 @@ const api:Router = express.Router()
 
 api.get(
   "/test",
-  async (req: Request, res: Response): Promise<Response> => {
-    return res.status(200).json();
+  (req: Request, res: Response): void => {
+    res.status(200).json();
   }
 );
 
