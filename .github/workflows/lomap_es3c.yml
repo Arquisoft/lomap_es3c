@@ -48,7 +48,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@v5
       env:
-        API_URI: http://${{ secrets.DEPLOY_HOST }}:5000/api
+        API_URI: https://${{ secrets.DEPLOY_HOST }}:5000/api
       with:
           name: arquisoft/lomap_es3c/webapp
           username: ${{ github.actor }}
@@ -58,6 +58,9 @@ jobs:
           buildargs: API_URI
   docker-push-restapi:
     name: Push restapi Docker Image to GitHub Packages
+    env:
+            SSL_CERT: ${{ secrets.SSL_CERT }}
+            SSL_PRIVKEY: ${{ secrets.SSL_PRIVKEY }}
     runs-on: ubuntu-latest
     needs: [e2e-tests]
     steps:
@@ -70,6 +73,7 @@ jobs:
           password: ${{ secrets.DOCKER_PUSH_TOKEN }}
           registry: ghcr.io
           workdir: restapi
+          buildargs: SSL_CERT,SSL_PRIVKEY
   deploy:
     name: Deploy over SSH
     runs-on: ubuntu-latest
