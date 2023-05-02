@@ -1,0 +1,10 @@
+{
+  "simulation": "LoadTest",
+  "simulationId": "loadtest-20230501233942035",
+  "start": 1682984387657,
+  "description": "Load Test LomapEs3C",
+  "scenarios": ["LoadTest"],
+  "assertions": [
+
+  ]
+}
